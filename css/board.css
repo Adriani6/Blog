@@ -1,0 +1,137 @@
+body{
+    width: 100%;
+    margin: 0 auto;
+    background-color: #FAFAFA;
+    font-family: 'Droid Sans', sans-serif;
+}
+
+.nav_top{
+    height: 40px;
+    line-height: 36px;
+    background-color: #434343;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+.nav_top_content{
+    float: right;
+    color: white;
+    font-size: 18px;
+
+    https://jonbellah.com/create-a-simple-css-dropdown/
+}
+.nav_top_content:hover .login{
+
+}
+.nav_mid{
+    height: 140px;
+    background-color: orange;
+    box-shadow: inset 0 4px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
+}
+.nav_bottom{
+    height: 50px;
+    -webkit-box-shadow: inset 0 -1px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
+    -moz-box-shadow: inset 0 -1px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
+    -khtml-box-shadow: inset 0 -1px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
+    border-color: rgb(217,217,217);
+    background-color: #ed8106;
+    box-shadow: inset 0 4px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
+}
+.nav_items{
+    width: 80%;
+    line-height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+li.nav{
+    float: left;
+    margin-right: 15px;
+}
+ul.nav{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+a.nav{
+    display: block;
+    width: 50px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px
+}
+.container{
+    width:80%;
+    margin-right:auto;
+    margin-left:auto;
+}
+.body_wrapper{
+    width: 74%;
+    height: 700px;
+    background-color: white;
+    border: 0px solid #242424;
+    float:left;
+}
+.widget{
+    margin-top:0;
+    width: 20%;
+    height: 200px;
+    background-color:white;
+    float: right;
+
+}
+
+.body_wrapper, .widget{
+    margin-top:15px;
+    display:inline-block;
+    border-radius: 6px;
+}
+.head{
+    width:100%;
+    box-shadow: 6px 0px 5px -5px #C1CDCD;
+    background-color:orange;
+    height:40px;
+    display:inline-block;
+    margin-top:0;
+    border-radius: 6px 6px 0 0;
+
+    color:white;
+    line-height: 40px;
+    text-indent: 10px;
+    font-size: 20px;
+
+}
+.login{
+    display: none;
+    background-color: #434343;
+    height: 200px;
+    width: 100%;
+    margin-top:0;
+}
+.shadow{
+    box-shadow: 6px 7px 5px -5px #C1CDCD, -6px 7px 5px -5px #C1CDCD;
+}
+.login_form{
+    width:15%;
+    line-height: 40px;
+    margin-right: auto;
+    margin-left: auto;
+    color: white;
+    padding-top: 20px;
+}
+.right{
+    float:right;
+    display: inline-block;
+}
+.left{
+    float:left;
+    display:inline-block;
+}
+input{
+    padding: 10px;
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
+}
+input[type="submit"]{
+    width: 93px;
+}
