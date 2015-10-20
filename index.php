@@ -37,7 +37,7 @@
     <div class="nav_bottom">
         <div class="nav_items">
             <ul class="nav">
-                <li class="nav"><a href="#" class="nav">Home</a></li>
+                <li class="nav"><a href="#" class="nav">Home123</a></li>
                 <li class="nav"><a href="#" class="nav">Adventures</a></li>
             </ul>
         </div>
