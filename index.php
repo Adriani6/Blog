@@ -30,7 +30,8 @@
     </div>
     <div class="nav_top">
         <div class="nav_top_content">
-</div>
+		Login/Register
+		</div>
     </div>
     <div class="nav_mid"></div>
     <div class="nav_bottom">
