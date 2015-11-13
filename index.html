@@ -1,3 +1,6 @@
+<?php
+	require_once: 'utils/utils.php'; ?>
+
 <!doctype html>
 
 <html lang="en">
@@ -10,7 +13,6 @@
 
     <link rel="stylesheet" href="css/board.css">
 	<link rel="stylesheet"	href="bootstrap_css/bootstrap.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
     <script src="js/html_utils.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/effects/effects.js"></script>
@@ -64,9 +66,11 @@
     <div class="nav_mid"></div>
     <div class="nav_bottom">
         <div class="nav_items">
-            <ul class="nav">
-                <li class="nav"><a href="#" class="nav">Home</a></li>
-                <li class="nav"><a href="#" class="nav">Adventures</a></li>
+            <ul class="nav_board">
+                <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
+                <li class="nav_board"><a href="adventures.php" class="nav_board">Adventures</a></li>
+				<li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
+				<li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
             </ul>
         </div>
     </div>
@@ -74,18 +78,25 @@
 	<div style="margin-left: 100px; margin-right: 100px;">
 		<div class="row" style="margin: 0 auto;">
 		  <div class="col-md-8">
-		  <div class="panel panel-default" style="margin-top: 10px;">
-			  <div class="panel-heading" style="background-color: orange;">Title</div>
-			  <div class="panel-body">
-				Adventure content
-			  </div>
+			<div class="panel panel-default" style="margin-top: 10px;">
+				<div class="panel-heading" style="background-color: orange;">Title</div>
+					<div class="panel-body">
+						Adventure content
+				</div>
 			</div>
-		  </div>
+		</div>
 		  	<!--
 				Left side widget boxes
 			-->
-			<div class="col-md-4">.col-md-4</div>
-			<!-- End of Widgets code -->
+			<div class="col-md-4">
+				<div class="panel panel-default" style="margin-top: 10px;">
+						<div class="panel-heading" style="background-color: orange;">Widget Title</div>
+							<div class="panel-body">
+								Widget content
+							</div>
+				</div>
+			</div>
+				
 		</div>
     </div>    
 

@@ -1,3 +1,6 @@
+<?php
+	require_once: 'utils/utils.php'; ?>
+
 <!doctype html>
 
 <html lang="en">
@@ -9,7 +12,7 @@
     <meta name="author" content="SitePoint">
 
     <link rel="stylesheet" href="css/board.css">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet"	href="bootstrap_css/bootstrap.min.css">
     <script src="js/html_utils.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/effects/effects.js"></script>
@@ -19,15 +22,42 @@
 </head>
 
 <body>
-    <div class="login">
-        <form method="post" class="login_form" id="field" action="register/register.php">
-            <p><input type="text" name="username" placeholder="Username" id="field"></p>
-            <p><input type="password" name="password" placeholder="Password" id="field"></p>
+    <div class="container-fluid login">
 
-            <input type="submit" value="Login" class="login_button"> <input type="submit" value="Register" class="login_button">
-        </form>
+		<div class="row">
+		  
+			<div class="center-block">
+				<div class="col-md-4" ></div>
+				<div class="col-md-4" style="margin-top: 5px;">
+					<form class="form-horizontal">
+					<h4 style="color: white;">Enter your login Credentials:</h4>
+					  <div class="form-group">
+						<label for="input" class="col-sm-2 control-label" style="color: white;">Username</label>
+						<div class="col-sm-10">
+						  <input type="user" class="form-control" id="input" placeholder="Username">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label for="input" class="col-sm-2 control-label" style="color: white;">Password</label>
+						<div class="col-sm-10">
+						  <input type="password" class="form-control" id="input" placeholder="Password">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+						  <button type="submit" class="btn btn-default">Sign in</button>
+						  <button type="submit" class="btn btn-default">Register</button>
+						</div>
+					  </div>
+					</form>
+				</div>
+				<div class="col-md-4" ></div>
+			</div>
+		  
+		</div>
 
     </div>
+
     <div class="nav_top">
         <div class="nav_top_content">
 		Login/Register
@@ -36,24 +66,40 @@
     <div class="nav_mid"></div>
     <div class="nav_bottom">
         <div class="nav_items">
-            <ul class="nav">
-                <li class="nav"><a href="#" class="nav">Home</a></li>
-                <li class="nav"><a href="#" class="nav">Adventures</a></li>
+            <ul class="nav_board">
+                <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
+                <li class="nav_board"><a href="adventures.php" class="nav_board">Adventures</a></li>
+				<li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
+				<li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
             </ul>
         </div>
     </div>
-    <div class="container">
-        <div class="body_wrapper shadow">
-            <div class="head">Adventure #1</div>
-        </div>
-        <div class="widget shadow">
-            <div class="head">Calendar</div>
-        </div>
+	
+	<div style="margin-left: 100px; margin-right: 100px;">
+		<div class="row" style="margin: 0 auto;">
+		  <div class="col-md-8">
+			<div class="panel panel-default" style="margin-top: 10px;">
+				<div class="panel-heading" style="background-color: orange;">Title</div>
+					<div class="panel-body">
+						Adventure content
+				</div>
+			</div>
+		</div>
+		  	<!--
+				Left side widget boxes
+			-->
+			<div class="col-md-4">
+				<div class="panel panel-default" style="margin-top: 10px;">
+						<div class="panel-heading" style="background-color: orange;">Widget Title</div>
+							<div class="panel-body">
+								Widget content
+							</div>
+				</div>
+			</div>
+				
+		</div>
+    </div>    
 
-        <div class="widget shadow">
-            <div class="head">Widget #2</div>
-        </div>
-    </div>
 
 </body>
 </html>

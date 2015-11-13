@@ -1,8 +1,7 @@
-body{
+document{
     width: 100%;
     margin: 0 auto;
     background-color: #FAFAFA;
-    font-family: 'Droid Sans', sans-serif;
 }
 
 .nav_top{
@@ -38,28 +37,34 @@ body{
     background-color: #ed8106;
     box-shadow: inset 0 4px rgba(0,0,0,.1),inset 0 1px rgba(255,255,255,.2);
 }
+a.nav_board:hover{
+	text-decoration: none;
+	color: orange;
+}
 .nav_items{
     width: 80%;
     line-height: 50px;
     margin-left: auto;
     margin-right: auto;
 }
-li.nav{
+li.nav_board{
     float: left;
-    margin-right: 15px;
+	display: inline;
+
 }
-ul.nav{
+ul.nav_board{
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
-a.nav{
+a.nav_board{
     display: block;
-    width: 50px;
     color: white;
     text-decoration: none;
-    font-size: 20px
+    font-size: 20px;
+	white-space: nowrap;
+	margin-right: 25px;
 }
 
 .body_wrapper{
