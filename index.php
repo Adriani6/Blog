@@ -1,5 +1,5 @@
 <?php
-	require_once 'utils/utils.php'; ?>
+	require_once 'utils/mysql.php'; ?>
 
 <!doctype html>
 
