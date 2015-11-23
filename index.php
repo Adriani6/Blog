@@ -1,5 +1,7 @@
 <?php
-	require_once 'utils/mysql.php'; ?>
+	require_once 'utils/mysql.php'; 
+	require_once 'utils/debugging.php';
+	?>
 
 <!doctype html>
 
