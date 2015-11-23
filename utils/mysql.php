@@ -13,6 +13,9 @@ class MySQL{
 		}
 				
 		$result = mysqli_query($connection, $query);
+		if(!$result){
+			die('Could not query:' . mysql_error());
+		}
 				
 		return $result;
 			

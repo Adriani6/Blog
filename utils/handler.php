@@ -1,8 +1,6 @@
 <?php
 require_once 'mysql.php';
 
-protected hash;
-
 session_start();
 
 class Handler{
@@ -15,11 +13,19 @@ class Handler{
 	}
 	
 	function login($username, $password){
-		if(password_verify($password . $salt, $hashed)){
-			$this->hash = $
+		$hashed = $this->sql->query("SELECT * FROM users WHERE login = '". $username ."'");
+		$row = mysqli_fetch_row($hashed);
+
+		if(password_verify($password . $this->salt, $row[2])){
+			$this->setCookieF($username);
+			
+			$passHash = password_hash($password . $this->salt, PASSWORD_DEFAULT);
+			
+			$this->openSession($row[3], $username, $passHash);
+			header('Location: ../index.php');
 				return true;
 			}else{
-				return false;
+				echo "Incorrect Credentials.";
 			}
 	}
 	
@@ -33,8 +39,20 @@ class Handler{
 		
 	}
 	
-	function setCookie(){
-
+	function logOut(){
+		session_destroy();
+	}
+		
+	function setCookieF($name){
+		setcookie("blog", $name, time() + (86400 * 30), "/");
+	}
+	
+	function openSession($type, $user, $hash){
+		$_SESSION['user'] = $user;
+		$_SESSION['hash'] = $hash;
+		if(isset($type)){
+			$_SESSION['type'] = $type;
+		}
 	}
 	
 }

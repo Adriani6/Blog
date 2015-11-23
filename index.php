@@ -1,3 +1,10 @@
+<?php
+require 'utils/handler.php';
+$isLoggedIn = false;
+if(isset($_SESSION['user']) && isset($_SESSION['hash'])){
+	$isLoggedIn = true;
+}
+?>
 <!doctype html>
 
 <html lang="en">
@@ -11,7 +18,7 @@
     <link rel="stylesheet" href="css/board.css">
 	<link rel="stylesheet"	href="bootstrap_css/bootstrap.min.css">
     <script src="js/html_utils.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
     <script src="js/effects/effects.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -22,8 +29,20 @@
     <div class="container-fluid login">
 
 		<div class="row">
-		  
 			<div class="center-block">
+		  <?php if($isLoggedIn){
+			?>		
+	<!-- List User Options Here -->
+			<div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
+			<a href="">User CP</a><br />
+			<?php if(isset($_SESSION['type']) && $_SESSION['type'] === "ADMIN"){ 
+			?>
+			<a href="">Admin CP</a><br />
+			<?php } ?>
+			<a href="utils/requests.php?a=logout">Log Out</a>
+			</div>
+			
+			<?php }else{ ?>
 				<div class="col-md-4" ></div>
 				<div class="col-md-4" style="margin-top: 5px;">
 					<form class="form-horizontal" action="utils/requests.php" method="POST">
@@ -43,21 +62,27 @@
 					  <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 						  <button type="submit" name="login" class="btn btn-default">Sign in</button>
+						  <button type="submit" name="register" class="btn btn-default">Register</button>
 						  <a href="register.php" style="float: right;">Don't have an account? Register!</a>
 						</div>
 					  </div>
 					</form>
 				</div>
 				<div class="col-md-4" ></div>
-			</div>
-		  
+<?php }?>
+				</div>
 		</div>
 
     </div>
 
     <div class="nav_top">
         <div class="nav_top_content">
+		<?php if($isLoggedIn){
+			echo $_SESSION['user'];
+			?>
+		<?php }else{ ?>
 		Login/Register
+		<?php } ?>
 		</div>
     </div>
     <div class="nav_mid"></div>
