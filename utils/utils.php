@@ -2,11 +2,10 @@
 
 	require_once 'mysql.php';
 	
-	function querySQL($query){
-		$result = mysqli_query($connection, $query);
+	$mysql = new MySQL();
 		
-		return $result;
-		
+	function getResultsAsJSON($sqlResult){
+		//Convert Results to JSON.
 	}
 
 ?>

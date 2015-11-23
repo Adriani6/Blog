@@ -1,20 +1,22 @@
 <?php
-$server = "eu-cdbr-azure-north-d.cloudapp.net";
-$user = "b3216f07d20ee7";
-$pass = "d597404f";
-$db = "blog-db";
+class MySQL{
+	protected $server = "localhost";
+	protected $user = "root";
+	protected $pass = "";
+	protected $db = "blog";
+	protected $port = 3306;
 
-$connection = new mysqli_connect($server, $user, $pass, $db);
-
-if($connection->connection_error){
-	die("Connection Failed.")
+	function query($query){
+		$connection = mysqli_connect($this->server, $this->user, $this->pass, $this->db, $this->port);
+		if(mysqli_connect_errno()){
+			echo "Connection Failed.";
+		}
+				
+		$result = mysqli_query($connection, $query);
+				
+		return $result;
+			
+	}
+	
 }
-mysqli_query($connection, "
-CREATE TABLE Users(
-user_id int Primary Key,
-username varchar(30) not null,
-password varchar(30) not null,
-)
-
-");
 ?>

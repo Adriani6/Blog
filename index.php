@@ -1,15 +1,10 @@
-<?php
-	require_once 'utils/mysql.php'; 
-	require_once 'utils/debugging.php';
-	?>
-
 <!doctype html>
 
 <html lang="en">
 <head>
     <meta charset="utf-8">
 
-    <title>Template Example</title>
+    <title>Adventures</title>
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="SitePoint">
 
@@ -31,24 +26,24 @@
 			<div class="center-block">
 				<div class="col-md-4" ></div>
 				<div class="col-md-4" style="margin-top: 5px;">
-					<form class="form-horizontal">
+					<form class="form-horizontal" action="utils/requests.php" method="POST">
 					<h4 style="color: white;">Enter your login Credentials:</h4>
 					  <div class="form-group">
 						<label for="input" class="col-sm-2 control-label" style="color: white;">Username</label>
 						<div class="col-sm-10">
-						  <input type="user" class="form-control" id="input" placeholder="Username">
+						  <input type="username" name="username" class="form-control" id="input" placeholder="Username">
 						</div>
 					  </div>
 					  <div class="form-group">
 						<label for="input" class="col-sm-2 control-label" style="color: white;">Password</label>
 						<div class="col-sm-10">
-						  <input type="password" class="form-control" id="input" placeholder="Password">
+						  <input type="password" name="password" class="form-control" id="input" placeholder="Password">
 						</div>
 					  </div>
 					  <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-						  <button type="submit" class="btn btn-default">Sign in</button>
-						  <button type="submit" class="btn btn-default">Register</button>
+						  <button type="submit" name="login" class="btn btn-default">Sign in</button>
+						  <a href="register.php" style="float: right;">Don't have an account? Register!</a>
 						</div>
 					  </div>
 					</form>
