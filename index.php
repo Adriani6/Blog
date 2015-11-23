@@ -34,10 +34,10 @@ if(isset($_SESSION['user']) && isset($_SESSION['hash'])){
 			?>		
 	<!-- List User Options Here -->
 			<div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
-			<a href="">User CP</a><br />
+			<a href="panel/usercp.php">User CP</a><br />
 			<?php if(isset($_SESSION['type']) && $_SESSION['type'] === "ADMIN"){ 
 			?>
-			<a href="">Admin CP</a><br />
+			<a href="panel/admincp.php">Admin CP</a><br />
 			<?php } ?>
 			<a href="utils/requests.php?a=logout">Log Out</a>
 			</div>
