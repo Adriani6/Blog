@@ -1,8 +1,11 @@
 <?php
-require 'utils/handler.php';
+require_once 'utils/handler.php';
+require_once 'utils/requests.php';
+
 $isLoggedIn = false;
-if(isset($_SESSION['user']) && isset($_SESSION['hash'])){
+if(isset($_SESSION['user'])){
 	$isLoggedIn = true;
+	$handler->checkCookie($_SESSION['user']);
 }
 ?>
 <!doctype html>
@@ -34,7 +37,7 @@ if(isset($_SESSION['user']) && isset($_SESSION['hash'])){
 			?>		
 	<!-- List User Options Here -->
 			<div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
-			<a href="panel/usercp.php">User CP</a><br />
+			<a href="panel/login.php">User CP</a><br />
 			<?php if(isset($_SESSION['type']) && $_SESSION['type'] === "ADMIN"){ 
 			?>
 			<a href="panel/admincp.php">Admin CP</a><br />
@@ -62,7 +65,6 @@ if(isset($_SESSION['user']) && isset($_SESSION['hash'])){
 					  <div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 						  <button type="submit" name="login" class="btn btn-default">Sign in</button>
-						  <button type="submit" name="register" class="btn btn-default">Register</button>
 						  <a href="register.php" style="float: right;">Don't have an account? Register!</a>
 						</div>
 					  </div>

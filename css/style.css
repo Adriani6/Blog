@@ -90,6 +90,7 @@ body{
 	background-color:#FAFAFA;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size:13px;
+	height:100%;
 }
 form {
     width: 80%;
@@ -111,4 +112,27 @@ input {padding:5px; border:2px solid #ccc;
 -webkit-border-radius: 5px;
     border-radius: 5px;
 	width:50%;
+}
+.absoluteCenter{
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+.form_box{
+	margin-top: 40%;
+	height: 200px;
+	width: 100%;
+	background-color: grey;
+   
+	background: rgba(232, 232, 232, .5);
+}
+.wm {
+	bottom: 0px;
+    position: absolute;
+    opacity: 0.25;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
 }
