@@ -20,8 +20,9 @@ if(isset($_SESSION['user'])){
 
     <link rel="stylesheet" href="css/board.css">
 	<link rel="stylesheet"	href="bootstrap_css/bootstrap.min.css">
+	<script src="js/jquery.js"></script>
     <script src="js/html_utils.js"></script>
-    <script src="js/jquery.js"></script>
+
     <script src="js/effects/effects.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +30,7 @@ if(isset($_SESSION['user'])){
 </head>
 
 <body>
+
     <div class="container-fluid login">
 
 		<div class="row">

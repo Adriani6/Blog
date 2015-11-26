@@ -39,13 +39,14 @@ class Handler{
 			
 			#Set cookie with session logout time.
 			$this->setCookieF($username);
-			
+						
 			#Opens a new Session with global/session variables.
 			$this->openSession($row[3], $username);
 				#Return true
 				return true;
+
 			}else{
-				echo "Incorrect Credentials.";
+				header("Location: ../login.php?err=authError");
 			}
 	}
 	
@@ -53,6 +54,7 @@ class Handler{
 
 		$pass = password_hash($password . $this->salt, PASSWORD_DEFAULT);
 		$this->sql->query("INSERT INTO users (login, password) VALUES ('". $username ."', '". $pass ."')");
+		header("Location: ../index.php");
 		if (mysql_errno() == 1062) {
 			echo "Username already taken.";
 		}
@@ -83,9 +85,14 @@ class Handler{
 	
 	function openSession($type, $user){
 		$_SESSION['user'] = $user;
+		$_SESSION['token'] = $this->generateToken();
 		if(isset($type)){
 			$_SESSION['type'] = $type;
 		}
+	}
+	
+	function generateToken(){
+		return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
 	}
 	
 }

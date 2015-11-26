@@ -1,8 +1,9 @@
 <?php 
 	require_once '../utils/handler.php'; 
-	define('Token', TRUE);
+	
+	$tokenUrl = $_SESSION['token'];
 	if(empty($_SESSION['ucp'])){
-		header("Location: login.php?err=auth");
+		#header("Location: login.php?err=auth");
 	}else{
 		unset($_SESSION['ucp']);
 	}?>
@@ -11,6 +12,9 @@
 <head>
 <script src="../js/html_utils.js"></script>
 <link rel="stylesheet" href="../bootstrap_css/bootstrap.min.css">
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 <div class="container-fluid">
@@ -20,9 +24,10 @@
 		<ul class="nav nav-pills nav-stacked" style="width: 150px; position: absolute; margin-top:30%;">
 			<li role="presentation" class="active"><a href="#">Profile</a></li>
 			<li role="presentation"><a href="#">My Comments</a></li>
-			<?php if(isset($_SESSION['type']) && $_SESSION['type'] === "AUTHOR" || $_SESSION['type'] === "ADMIN"){ ?>
+			<?php if(isset($_SESSION['type'])){
+				if($_SESSION['type'] === "AUTHOR" || $_SESSION['type'] === "ADMIN"){ ?>
 			<li role="presentation"><a href="#">My Adventures</a></li>
-			<?php } ?>
+			<?php } } ?>
 			<li role="presentation"><a href="../index.php">Log Out</a></li>
 		</ul>
 	  </div>
