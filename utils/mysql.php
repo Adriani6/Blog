@@ -1,9 +1,9 @@
 <?php
 class MySQL{
-	protected $server = "localhost";
-	protected $user = "root";
-	protected $pass = "";
-	protected $db = "blog";
+	protected $server = "eu-cdbr-azure-north-d.cloudapp.net";
+	protected $user = "b3216f07d20ee7";
+	protected $pass = "d597404f";
+	protected $db = "blog-db";
 	protected $port = 3306;
 
 	function query($query){
