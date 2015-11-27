@@ -46,7 +46,7 @@ class Handler{
 				return true;
 
 			}else{
-				header("Location: ../login.php?err=authError");
+				return false;
 			}
 	}
 	
