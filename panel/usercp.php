@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="../bootstrap_css/bootstrap.min.css">
 <script>
 var xmlhttp = new XMLHttpRequest();
-var url = "../utils/requests.php?data='usercp'";
+var url = "../utils/requests.php?data=usercp";
 
 xmlhttp.onreadystatechange=function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -27,9 +27,9 @@ xmlhttp.send();
 function myFunction(response) {
     var arr = JSON.parse(response);
     var i;
-	for(i = 0; i < arr.length; i++){
-		document.getElementById("name").value = arr[i];
-	}
+	var out = "";
+
+	document.getElementById("name").innerHTML = arr[0].Name;
 }
 </script>
 </head>

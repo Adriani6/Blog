@@ -1,8 +1,10 @@
 <?php
-	
+
 	require_once 'handler.php';
+	require_once 'mysql.php';
 	
 	$handler = new Handler();
+	$sql = new MySQL();
 	
 	#Check for form POST & Handle a login/register request.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -32,9 +34,9 @@
 	#Data Request Handle
 	if(isset($_GET['data'])){
 		//if($_SESSION('Token') === $_GET['token']){
-			if($_GET['data'] === 'usercp'){
+			if($_GET['data'] === "usercp"){
 				
-				$result = $this->handler->sql->query("SELECT login, type FROM users WHERE login = 'Adriani6' LIMIT = 1");
+				$result = $sql->query("SELECT login, type FROM users WHERE login = 'Adriani6'");
 				$outp = "[";
 				while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
 					if ($outp != "[") {$outp .= ",";}
@@ -43,7 +45,7 @@
 				}
 				$outp .="]";
 				
-				print(json_encode($outp));
+				echo($outp);
 				//}
 		}else{
 					echo "You're not permitted to request Data.";
