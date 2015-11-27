@@ -9,16 +9,31 @@
 	#Check for form POST & Handle a login/register request.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if(isset($_POST['login'])){
-			$handler->login($_POST['username'], $_POST['password']);
-			header("Location: ../index.php");
+			if($handler->login($_POST['username'], $_POST['password'])){
+				header("Location: ../index.php");
+			}else{
+				header('Location: ../login.php?err=authError');
+			}
+			
 		}else if(isset($_POST['loginUCP'])){
 			if($handler->login($_POST['username'], $_POST['password'])){
 				header('Location: ../panel/usercp.php');
 				$_SESSION['ucp'] = true;
+			}else{
+				header('Location: ../panel/login.php?err=auth');
 			}
 			
 		}else if(isset($_POST['register'])){
-			$handler->register($_POST['username'], $_POST['password']);
+			if(isset($_POST['username']) && isset($_POST'password']) && isset($_POST['cpassword'])){
+				if($_POST['password'] === $_POST['cpassword']){
+					$handler->register($_POST['username'], $_POST['password']);
+				}else{
+					//Passwords don't match.
+				}
+			}else{
+				//Not all fields were filled in.
+			}
+			
 		}
 	
 	}
@@ -41,6 +56,8 @@
 				while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
 					if ($outp != "[") {$outp .= ",";}
 					$outp .= '{"Name":"'  . $rs["login"] . '",';
+					$outp .= '{"Country":"'  . $rs["country"] . '",';
+					$outp .= '{"Verified":"'  . $rs["verified"] . '",';
 					$outp .= '"Type":"'   . $rs["type"]        . '"}';
 				}
 				$outp .="]";

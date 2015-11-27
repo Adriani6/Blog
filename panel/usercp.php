@@ -30,6 +30,9 @@ function myFunction(response) {
 	var out = "";
 
 	document.getElementById("name").innerHTML = arr[0].Name;
+	document.getElementById("loc").innerHTML = arr[0].Country;
+	document.getElementById("ver").innerHTML = arr[0].Verified;
+	document.getElementById("type").innerHTML = arr[0].Type;
 }
 </script>
 </head>
@@ -52,7 +55,11 @@ function myFunction(response) {
 	   <!-- Start Profile Tab -->
 		<div id="profile" style="background-color: orange; height: 100px; margin-top: 10%; width: 100%;">
 		<h3>Profile</h3>
-		<div id="name"></div>
+		Your Name: <div id="name"></div><br />
+		Location: <div id="loc"></div><br />
+		Verified: <div id="ver"></div><br />
+		Type: <div id="type"></div><br />
+		
 		</div>
 		<!-- End Profile Tab -->
 	  </div>
