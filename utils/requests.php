@@ -31,11 +31,20 @@
 	
 	#Data Request Handle
 	if(isset($_GET['data'])){
-		if($_SESSION('Token') === $_GET['token']){
+		//if($_SESSION('Token') === $_GET['token']){
 			if($_GET['data'] === 'usercp'){
-				echo json_encode($this->handler->sql->query("SELECT * FROM users"));
-		
+				
+				$result = $this->handler->sql->query("SELECT login, type FROM users WHERE login = 'Adriani6' LIMIT = 1");
+				$outp = "[";
+				while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+					if ($outp != "[") {$outp .= ",";}
+					$outp .= '{"Name":"'  . $rs["login"] . '",';
+					$outp .= '"Type":"'   . $rs["type"]        . '"}';
 				}
+				$outp .="]";
+				
+				print(json_encode($outp));
+				//}
 		}else{
 					echo "You're not permitted to request Data.";
 		}

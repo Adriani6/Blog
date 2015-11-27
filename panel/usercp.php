@@ -1,7 +1,7 @@
 <?php 
-	require_once '../utils/handler.php'; 
+	require_once '../utils/requests.php'; 
 	
-	$tokenUrl = $_SESSION['token'];
+	//$tokenUrl = $_SESSION['token'];
 	if(empty($_SESSION['ucp'])){
 		#header("Location: login.php?err=auth");
 	}else{
@@ -12,8 +12,25 @@
 <head>
 <script src="../js/html_utils.js"></script>
 <link rel="stylesheet" href="../bootstrap_css/bootstrap.min.css">
-<script type="text/javascript">
+<script>
+var xmlhttp = new XMLHttpRequest();
+var url = "../utils/requests.php?data='usercp'";
 
+xmlhttp.onreadystatechange=function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        myFunction(xmlhttp.responseText);
+    }
+}
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+function myFunction(response) {
+    var arr = JSON.parse(response);
+    var i;
+	for(i = 0; i < arr.length; i++){
+		document.getElementById("name").value = arr[i];
+	}
+}
 </script>
 </head>
 <body>
@@ -35,6 +52,7 @@
 	   <!-- Start Profile Tab -->
 		<div id="profile" style="background-color: orange; height: 100px; margin-top: 10%; width: 100%;">
 		<h3>Profile</h3>
+		<div id="name"></div>
 		</div>
 		<!-- End Profile Tab -->
 	  </div>
