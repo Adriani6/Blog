@@ -14,7 +14,7 @@ if(isset($_SESSION['user'])){
 <head>
     <meta charset="utf-8">
 
-    <title>Adventures</title>
+    <title>Test</title>
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="SitePoint">
 
