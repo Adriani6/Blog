@@ -24,16 +24,7 @@
 			}
 			
 		}else if(isset($_POST['register'])){
-			if(isset($_POST['username']) && isset($_POST'password']) && isset($_POST['cpassword'])){
-				if($_POST['password'] === $_POST['cpassword']){
-					$handler->register($_POST['username'], $_POST['password']);
-				}else{
-					//Passwords don't match.
-				}
-			}else{
-				//Not all fields were filled in.
-			}
-			
+					$handler->register($_POST['username'], $_POST['password'], $_POST['cpassword'], $_POST['name'], $_POST['country']);
 		}
 	
 	}

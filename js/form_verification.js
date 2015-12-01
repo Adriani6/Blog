@@ -1,3 +1,4 @@
+/*
 function verifyPasswords(){
 	if(document.getElementById("password").value != "" && document.getElementById("cpassword").value != ""){
 		if(document.getElementById("password").value == document.getElementById("cpassword").value){
@@ -15,3 +16,4 @@ var $input = $('#form');
 $input.on('keyup', function () {
 		verifyPasswords();
 });
+*/

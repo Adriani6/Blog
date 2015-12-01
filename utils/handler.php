@@ -2,6 +2,9 @@
 
 #Requires the MySQL Class, so connection can be established.
 require_once 'mysql.php';
+require_once 'support_functions.php';
+
+$mySQL = new MySQL();
 
 #Starts a session by default on the site.
 session_start();
@@ -19,7 +22,13 @@ class Handler{
 	protected $salt = "Ct4adbUeU8";
 	#sql, MySQL connection, set in constructor.
 	protected $sql;
-	
+	# registration attempt result
+	protected $registrationResult = '';
+
+	public function getRegistrationResult() {
+		return $this->registrationResult;
+	}
+
 	#Constructor for the class.
 	function __construct(){
 		#Opens new MySQL connection to the blog database.
@@ -49,16 +58,61 @@ class Handler{
 				return false;
 			}
 	}
-	
-	function register($username, $password){
 
-		$pass = password_hash($password . $this->salt, PASSWORD_DEFAULT);
-		$this->sql->query("INSERT INTO users (login, password) VALUES ('". $username ."', '". $pass ."')");
-		header("Location: ../index.php");
-		if (mysql_errno() == 1062) {
-			echo "Username already taken.";
+	function register($username, $password, $cppassword, $name, $country){
+		if (empty($username)){
+			$this->registrationResult .= "Username field is required.<br>";
+            echo "<script type='text/javascript'>alert('".$this->registrationResult."');</script>";
 		}
-		
+		else if(strlen($username) < 3 ) {
+			$this->registrationResult .= "Username must be at least 6 characters long.<br>";
+		}
+		else if(strlen($username) > 50 ) {
+			$this->registrationResult .= "Username cannot be longer than 50 characters.<br>";
+		}
+        else if($this->sql->selectUser($username)) {
+            $this->registrationResult .= "Username is already taken<br>";
+        }
+
+		if(empty($password)) {
+			$this->registrationResult .= "Password field is required.\n";
+		}
+		else if(strlen($password) < 6 ) {
+			$this->registrationResult .= "Password must be at least 6 characters long.<br>";
+		}
+		else if(strlen($password) > 50 ) {
+			$this->registrationResult .= "Password cannot be longer than 50 characters.<br>";
+		}
+
+		if(!preg_match("/^[a-zA-Z1-9]*$/",$username)){
+			$this->registrationResult .= "Username can only contain letters and digits.";
+		}
+
+		if($password != $cppassword){
+			$this->registrationResult .= "Passwords do not match.";
+		}
+
+        //echo "<script type='text/javascript'>alert('".$this->registrationResult."');</script>";
+
+		if($this->registrationResult != ''){
+            //echo "<script type='text/javascript'>alert('yo');</script>";
+			return 0;
+		}
+
+		$hash = password_hash($password . $this->salt, PASSWORD_DEFAULT);
+        $name = polish($name);
+        $country = polish($country);
+
+        $result = $this->sql->query("SELECT id FROM country WHERE name = '".$country."'");
+        if($result->num_rows == 0) {
+            $this->registrationResult .= "An error occurred. Please try again later.";
+            return 0;
+        }
+
+        $row = $result->fetch_assoc();
+
+		$this->sql->query("INSERT INTO users (login, password, name, country_id)
+                           VALUES ('". $username ."', '". $hash ."','".$name."','".$row['id']."')");
 	}
 	
 	function logOut(){
@@ -94,6 +148,8 @@ class Handler{
 	function generateToken(){
 		return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
 	}
-	
+
+	// Removes additional white spaces and takes care of all unsafe characters
+	// Use to validate data from forms
 }
 ?>

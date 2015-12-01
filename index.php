@@ -1,4 +1,6 @@
 <?php
+//phpinfo();
+
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
 
