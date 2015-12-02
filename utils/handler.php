@@ -38,7 +38,7 @@ class Handler{
 	#Login handles the verification of hashs.
 	function login($username, $password){
 		#Query the Database for users details.
-		$hashed = $this->sql->query("SELECT * FROM users WHERE login = '". $username ."'");
+		$hashed = $this->sql->query("SELECT * FROM users WHERE username = '". $username ."'");
 		#Gets the whole row from MySQL Results.
 		$row = mysqli_fetch_row($hashed);
 
@@ -46,11 +46,14 @@ class Handler{
 		if(password_verify($password . $this->salt, $row[2])){
 			#The passwords match.
 			
-			#Set cookie with session logout time.
-			$this->setCookieF($username);
-						
-			#Opens a new Session with global/session variables.
-			$this->openSession($row[3], $username);
+			if(!isset($_SESSION['username']) && !isset($_SESSION['token'])){
+				#Set cookie with session logout time.
+				$this->setCookieF($username);
+							
+				#Opens a new Session with global/session variables.
+				$this->openSession($row[3], $username);	
+			}
+
 				#Return true
 				return true;
 

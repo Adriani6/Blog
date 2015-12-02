@@ -39,25 +39,34 @@
 	
 	#Data Request Handle
 	if(isset($_GET['data'])){
-		//if($_SESSION('Token') === $_GET['token']){
+	if($_SESSION['token'] === $_GET['token']){
 			if($_GET['data'] === "usercp"){
 				
-				$result = $sql->query("SELECT login, type FROM users WHERE login = 'Adriani6'");
+				$result = $sql->query("SELECT username, type, country, verified, name FROM users WHERE username = '".$_GET['username']."'");
 				$outp = "[";
 				while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
 					if ($outp != "[") {$outp .= ",";}
-					$outp .= '{"Name":"'  . $rs["login"] . '",';
-					$outp .= '{"Country":"'  . $rs["country"] . '",';
-					$outp .= '{"Verified":"'  . $rs["verified"] . '",';
+					$outp .= '{"Username":"'  . $rs["username"] . '",';
+					$outp .= '"Name":"'  . $rs["name"] . '",';
+					$outp .= '"Verified":"'  . $rs["verified"] . '",';
+					$outp .= '"Location":"'  . $rs["country"] . '",';
 					$outp .= '"Type":"'   . $rs["type"]        . '"}';
 				}
 				$outp .="]";
 				
 				echo($outp);
-				//}
+				
+			}elseif($_GET['data'] === "ucp_update"){
+					$sql->query("UPDATE users SET username = '".$_GET['change']."' WHERE username = '".$_GET['username']."' ");
+					$_SESSION['user'] = $_GET['username'];
+					echo "Adrian";
+				}else{
+					die("Invalid data type request.");
+				}
 		}else{
-					echo "You're not permitted to request Data.";
+					//die("Invalid token. Data Request Unauthorized.");
+					echo $_GET['token'] . $_SESSION['token'];
 		}
 	}
-
+	
 ?>
