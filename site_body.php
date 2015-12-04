@@ -28,8 +28,14 @@ if(isset($_SESSION['user'])){
     <meta name="author" content="SitePoint">
 
     <link rel="stylesheet" href="css/board.css">
-    <link rel="stylesheet"	href="bootstrap_css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous">
+
     <script src="js/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
     <script src="js/html_utils.js"></script>
 
     <script src="js/effects/effects.js"></script>
@@ -104,7 +110,7 @@ if(isset($_SESSION['user'])){
         <ul class="nav_board">
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
             <li class="nav_board"><a href="adventures.php" class="nav_board">Adventures</a></li>
-            <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
+            <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
         </ul>
     </div>
