@@ -19,7 +19,7 @@
 <script>
 var xmlhttp = new XMLHttpRequest();
 
-var url = "../utils/requests.php?data=usercp&token=<?php echo $_SESSION['token']; ?>&username=<?php echo $_SESSION['user']; ?>";
+var url = "../utils/requests.php?data=usercp&token=<?php echo $_SESSION['token']; ?>";
 
 xmlhttp.onreadystatechange=function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -49,14 +49,13 @@ function myFunction(response) {
 $(document).ready(function(){
 	$('#save').click(function(){
 		var newval = document.getElementById("editedVal").value;
-		alert(newval);
-		var dataString = "&token=<?php echo $_SESSION['token']; ?>&username=<?php echo $_SESSION['user']; ?>&data=ucp_update&change="+newval;
+		var dataString = "data=ucpupdate&token=<?php echo $_SESSION['token']; ?>&username=<?php echo $_SESSION['user']; ?>";
 		
            $.ajax({
                     type: "GET",
-                    url: "../utils/requests.php",
+                    url: "../utils/requests.php?",
                     data: {
-                        thing: dataString
+                        data: dataString
                     },
                 
                 success:function (msg) {
