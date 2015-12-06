@@ -27,11 +27,8 @@ require_once("site_body.php");
     <h4>Add adventure</h4>
     <hr />
 
-    <?php
-        if(isset($_POST['description'])){
-            print_r($_FILES);
-        }
-    ?>
+    <div id="add_adventure_success" style="display:none;" class="alert alert-success"></div>
+    <div id="add_adventure_fail" style="display:none;" class="alert alert-danger"></div>
 
     <form class="form-horizontal" action="new_adventure.php" method="POST" enctype="multipart/form-data" id="new_adventure_form">
         <div class="form-group">
@@ -72,6 +69,8 @@ require_once("site_body.php");
                 </div>
             </div>
         </div>
+
+        <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -147,6 +146,8 @@ require_once("site_body.php");
 
                 $( "#new_adventure_form" ).on( "submit", function( event ) {
                     event.preventDefault();
+                    $("#add_adventure_success").hide();
+                    $("#add_adventure_fail").hide();
 
                     var XX = new FormData(this);
 
@@ -169,7 +170,17 @@ require_once("site_body.php");
                         // Code to run if the request succeeds;
                         // the response is passed to the function
                         success: function( text ) {
-                            alert(text);
+                            if(($).isNumeric(text))
+                            {
+                                $("#add_adventure_success").text("Adventure added. Check it out <a href='/adventure.php?id=" + text + "'>here</a>");
+                                $("#add_adventure_success").show();
+                            }
+                            else
+                            {
+                                $("#add_adventure_fail").text(text);
+                                $("#add_adventure_fail").show();
+                            }
+
                         },
 
 

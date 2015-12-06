@@ -53,5 +53,6 @@ class MySQL{
         else
             return $result->fetch_assoc();
     }
+
 }
 ?>

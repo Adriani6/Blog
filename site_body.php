@@ -111,6 +111,7 @@ if(isset($_SESSION['user'])){
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
             <li class="nav_board"><a href="adventures.php" class="nav_board">Adventures</a></li>
             <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
+            <li class="nav_board"><a href="adventure.php?id=" class="nav_board">Show Adventure</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
         </ul>
     </div>
