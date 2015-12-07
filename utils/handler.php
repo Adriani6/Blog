@@ -65,13 +65,12 @@ class Handler{
 	function register($username, $password, $cppassword, $name, $country){
 		if (empty($username)){
 			$this->registrationResult .= "Username field is required.<br>";
-            echo "<script type='text/javascript'>alert('".$this->registrationResult."');</script>";
 		}
 		else if(strlen($username) < 3 ) {
 			$this->registrationResult .= "Username must be at least 6 characters long.<br>";
 		}
 		else if(strlen($username) > 50 ) {
-			$this->registrationResult .= "Username cannot be longer than 50 characters.<br>";
+			$this->registrationResult .= "Username can be maximum 50 characters long.<br>";
 		}
         else if($this->sql->selectUser($username)) {
             $this->registrationResult .= "Username is already taken<br>";
@@ -105,17 +104,15 @@ class Handler{
 		$hash = password_hash($password . $this->salt, PASSWORD_DEFAULT);
         $name = polish($name);
         $country = polish($country);
+		$country = $this->sql->getMysqli()->real_escape_string($country);
 
-        $result = $this->sql->query("SELECT id FROM country WHERE name = '".$country."'");
-        if($result->num_rows == 0) {
+        if($id = getCountryID($country,$this->sql) == null) {
             $this->registrationResult .= "An error occurred. Please try again later.";
             return 0;
         }
 
-        $row = $result->fetch_assoc();
-
-		$this->sql->query("INSERT INTO users (login, password, name, country_id)
-                           VALUES ('". $username ."', '". $hash ."','".$name."','".$row['id']."')");
+		$this->sql->query("INSERT INTO users (username, password, name, country_id)
+                           VALUES ('". $username ."', '". $hash ."','".$name."','".$id."')");
 	}
 	
 	function logOut(){
