@@ -5,16 +5,25 @@ function polish($var) {
     return trim(stripslashes(htmlspecialchars($var)));
 }
 
-function renderCountrySelectControl($mySQL)
+#Two Optional Parameters incase we need a pre-selected option to show up.
+# $preValue is the value needed selected, $preSelect wether we want it pre-selected or not, if not, it'll return Undefined as selected.
+function renderCountrySelectControl($mySQL, $preValue = "")
 {
-    echo '<div class="form-group">
-                <label for="country" class="col-sm-2 control-label">Country</label>
-                <div class="col-sm-10">
-                    <select name="country" class="form-control" id="country">';
+    echo '
+                
+    <select name="country" class="form-control" id="country">';
 
     $result = $mySQL->query("SELECT name from country");
     while ($row = $result->fetch_assoc()) {
-        echo "<option>" . $row['name'] . "</option>";
+		if(!empty($preSelect)){
+			if($preValue === $row['name']){
+				echo "<option selected>" . $row['name'] . "</option>";	
+			}else{
+				echo "<option>" . $row['name'] . "</option>";
+			}
+		}else{
+			echo "<option>" . $row['name'] . "</option>";
+		}
     }
 
     echo '
@@ -31,9 +40,7 @@ function renderCountrySelectControl($mySQL)
     echo '");
     });
 
-</script>
-</div>
-</div>';
+</script>';
 }
 
 ?>

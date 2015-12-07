@@ -28,16 +28,16 @@
 		}
 	
 	}
-	if($_SERVER['REQUEST_METHOD'] == 'GET'){
 		#Logout Request
 		if(isset($_GET['a'])){
 			if($_GET['a'] === 'logout'){
 				$handler->logout();
 				header('Location: ../index.php');
 			}
-		}
+		}else
 		if(isset($_GET['data'])){
-			if(strcmp($_GET['data'], "usercp")){
+			
+			if($_GET['data'] === "usercp"){
 				if($_SESSION['token'] === $_GET['token']){
 					$result = $sql->query("SELECT username, type, country, verified, name FROM users WHERE username = '".$_SESSION['user']."'");
 					$outp = "[";
@@ -55,17 +55,30 @@
 				}else{
 					echo "Unauthorized Access: Invalid Token.";
 				}
-			}else if(strcmp($_GET['data'], "ucpupdate")){
-				$sql->query("UPDATE users SET username = '".$_GET['change']."' WHERE username = '".$_GET['username']."' ");
-				$_SESSION['user'] = $_GET['username'];				
-				echo "Update Ran";
-			}else{
-				echo "Invalid data request.";
 			}
-
-		}		
+		}
+			
+		if(isset($_POST['val'])){
+			if(strcmp($_POST['val'], "ucpupdate")){
+				if(isset($_POST['change']) && $_POST['change'] === "name"){
+					if(isset($_POST["data"])){
+						$sql->query("UPDATE users SET name = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");
+						$_SESSION['user'] = $_POST['change'];
+						echo "Update Ran";
+					}else{
+						echo "New username cannot be empty.";
+					}
+				}elseif(isset($_POST['change']) && $_POST['change'] === "country") {
+					$sql->query("UPDATE users SET country = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");				
+					echo "Country Updated.";
+				}else{
+					echo "Invalid data change request.";
+				}
+			}
+		}
+				
 	
-	}
+	
 	
 	
 

@@ -46,7 +46,7 @@ class Handler{
 		if(password_verify($password . $this->salt, $row[2])){
 			#The passwords match.
 			
-			if(!isset($_SESSION['username']) && !isset($_SESSION['token'])){
+			if(!isset($_SESSION['user']) && !isset($_SESSION['token'])){
 				#Set cookie with session logout time.
 				$this->setCookieF($username);
 							

@@ -1,5 +1,6 @@
 <?php 
 	require_once '../utils/requests.php'; 
+	require_once("../utils/support_functions.php");
 	
 	//$tokenUrl = $_SESSION['token'];
 	if(empty($_SESSION['ucp'])){
@@ -17,26 +18,31 @@
 <script src="../js/html_utils.js"></script>
 <link rel="stylesheet" href="../bootstrap_css/bootstrap.min.css">
 <script>
-var xmlhttp = new XMLHttpRequest();
+var user = "<?php echo $_SESSION['user']; ?>";
+var token = "<?php echo $_SESSION['token']; ?>";
 
-var url = "../utils/requests.php?data=usercp&token=<?php echo $_SESSION['token']; ?>";
+function loadDetails(){
+	var xmlhttp = new XMLHttpRequest();
 
-xmlhttp.onreadystatechange=function() {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        myFunction(xmlhttp.responseText);
-    }
+	var url = "../utils/requests.php?data=usercp&token=<?php echo $_SESSION['token']; ?>";
+
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			parseResponse(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
 }
-xmlhttp.open("GET", url, true);
-xmlhttp.send();
 
-function myFunction(response) {
+function parseResponse(response) {
     var arr = JSON.parse(response);
     var i;
 	var out = "";
 
 	document.getElementById("username").innerHTML = arr[0].Username;
 	document.getElementById("name").innerHTML = arr[0].Name;
-	document.getElementById("loc").innerHTML = arr[0].Location;
+	//document.getElementById("loc").innerHTML = arr[0].Location;
 	if(arr[0].Verified == "0"){
 		document.getElementById("verified").innerHTML = "Unverified.";
 	}else if(arr[0].Verified == "1"){
@@ -47,24 +53,40 @@ function myFunction(response) {
 
 //Need to get What is being changed and new data.
 $(document).ready(function(){
-	$('#save').click(function(){
-		var newval = document.getElementById("editedVal").value;
-		var dataString = "data=ucpupdate&token=<?php echo $_SESSION['token']; ?>&username=<?php echo $_SESSION['user']; ?>";
+	$('#save, #updateC').click(function(f){
+		var change_type = $(this).attr("name");
+		var validtoken = "<?php echo $_SESSION['token']; ?>";
+		
+		if(change_type == "country"){
+			sendData(validtoken, country, change_type)
+		}else if(change_type == "name"){
+			var newname = document.getElementById("editedVal").value;
+			sendData(validtoken, newname, change_type);
+		}
+		
+		function sendData(param_token, param_data, param_type){
 		
            $.ajax({
-                    type: "GET",
-                    url: "../utils/requests.php?",
+                    
+                    url: '../utils/requests.php',
+					type: 'POST',
                     data: {
-                        data: dataString
-                    },
-                
-                success:function (msg) {
-                    alert("Data Saved: " + msg);
+                        val : 'cpupdate',
+						change : param_type, 
+						token : param_token,
+						data : param_data
+                    },                
+                success:function () {
+                    alert("Update Successful.");
+					loadDetails();
+					hideEdit();
                 }
-	});
+			});
+		}
 });
 });
-	var currentTab = "tab1";
+
+var currentTab = "tab1";
 	
 function changeTab(tabid){
 	var newTab = document.getElementById(tabid);
@@ -78,28 +100,20 @@ function changeTab(tabid){
 
 function showEdit(ee){
 	var form = document.getElementById("form");
-	elementEdited = ee;
 	form.innerHTML = "";
-	if(ee == "name"){
-		form.innerHTML = "Current:<br /><input class='form-control' id='disabledInput' type='text' disabled><br />"+
-		"New:<br /><input type='text' class='form-control' id='editedVal' placeholder='New name'><br />"+
-		"";
-		document.getElementById("disabledInput").value = document.getElementById(ee).innerHTML;
-		document.getElementById("edit").style.visibility = "visible";
-	}else if(ee == "loc"){
-		form.innerHTML = "Current:<br /><input class='form-control' id='disabledInput' type='text' disabled><br />"+
-		"New:<br /><input type='text' class='form-control' placeholder='New location'><br />"+
-		"<span style='float: right; bottom:0;'><input type='submit' id='save' value='Save'></span>";
-		document.getElementById("disabledInput").value = document.getElementById(ee).innerHTML;
-		document.getElementById("edit").style.visibility = "visible";		
-	}
+	form.innerHTML = "Current:<br /><input class='form-control' id='disabledInput' type='text' disabled><br />"+
+	"New:<br /><input type='text' class='form-control' name='name' id='editedVal' placeholder='New name'><br />"+
+	"";
+		
+	document.getElementById("disabledInput").value = document.getElementById(ee).innerHTML;
+	document.getElementById("edit").style.visibility = "visible";
 }
 function hideEdit(){
 	document.getElementById("edit").style.visibility = "hidden";
 }
 </script>
 </head>
-<body>
+<body onload="loadDetails()">
 <div class="container-fluid">	
 	<div class="row">
 	<div id="edit" style="visibility: hidden; z-index: 1000; position: absolute; margin-top: 10%; width: 100%;">
@@ -144,8 +158,8 @@ function hideEdit(){
 			</tr>
 			<tr>
 				<td>Location:</td>
-				<td><div id="loc"></div></td>
-				<td onclick="showEdit('loc')">Edit</td>
+				<td><div id="loc"><?php renderCountrySelectControl($mySQL); ?></div></td>
+				<td id="updateC" name="country">Update</td>
 			</tr>
 			<tr>
 				<td>Status:</td>

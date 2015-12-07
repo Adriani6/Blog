@@ -12,7 +12,7 @@ class MySQL{
 	protected $server = "127.0.0.1";
 	protected $user = "root";
 	protected $pass = "";
-	protected $db = "blog-db";
+	protected $db = "blog";
 	protected $port = "3306";
 
 
