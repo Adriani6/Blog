@@ -112,7 +112,7 @@ class Handler{
         }
 
 		$this->sql->query("INSERT INTO users (username, password, name, country_id)
-                           VALUES ('". $username ."', '". $hash ."','".$name."','".$id."')");
+                           VALUES ('". $username ."', '". $hash ."','".$name."', ".(int)$id.")");
 	}
 	
 	function logOut(){

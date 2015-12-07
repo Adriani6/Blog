@@ -8,6 +8,7 @@ class MySQL{
 	protected $port = "3306";
 
 
+
 /*
 	protected $server = "127.0.0.1";
 	protected $user = "root";
@@ -15,7 +16,6 @@ class MySQL{
 	protected $db = "blog";
 	protected $port = "3306";
 */
-
 	private $mysqli = null;
 
 	public function getMysqli() {
