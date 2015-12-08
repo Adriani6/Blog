@@ -46,20 +46,21 @@ for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
         $result .= "{$rearrayedPictureFILES[$i]['name']} - {$output}";
 }
 
+if(isset($_POST['tag']))
+{
+    foreach ($_POST['tag'] as $tag) {
+        $allowed = array("-");
+        if (!ctype_alnum(str_replace($allowed, '', $tag ))) {
+            $result .= "<{$tag}> tag has invalid value. Tags can only contain characters, digits and the \"-\" symbol.";
+            continue;
+        }
 
-foreach ($_POST['tag'] as $tag) {
-    $allowed = array("-");
-    if (!ctype_alnum(str_replace($allowed, '', $tag ))) {
-        $result .= "<{$tag}> tag has invalid value. Tags can only contain characters, digits and the \"-\" symbol.";
-        continue;
+        if(strlen($tag) < 3)
+            $result .= "<{$tag}> tag is too short. Tags must be at least 3 characters long.";
+        else if(strlen($tag) > 25)
+            $result .= "<{$tag}> tag is too long. Tags can be maximum 25 characters long.";
     }
-
-    if(strlen($tag) < 3)
-        $result .= "<{$tag}> tag is too short. Tags must be at least 3 characters long.";
-    else if(strlen($tag) > 25)
-        $result .= "<{$tag}> tag is too long. Tags can be maximum 25 characters long.";
 }
-
 
 if ($result != "")
 {

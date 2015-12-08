@@ -49,7 +49,7 @@ require_once("site_body.php");
         <div class="form-group">
             <label for="title" class="col-sm-2 control-label">Description: </label>
             <div class="col-sm-10">
-                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"><?php if(isset($_POST['description'])) echo  $_POST['description']; ?></textarea>
+                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"></textarea>
             </div>
         </div>
 
@@ -132,8 +132,6 @@ require_once("site_body.php");
                 });
 
                 $("#add_tag_button").click( function() {
-                    alert($("#add_tag_input").val());
-
                     var new_tag =
                         $(
                             '<span class="add_tag_list_element" style="margin: 2px; display: inline-block;">' +

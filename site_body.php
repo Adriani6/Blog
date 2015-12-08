@@ -118,7 +118,7 @@ if(isset($_SESSION['user'])){
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-default" style="margin-top: 10px;">
                 <div class="panel-heading" style="background-color: orange;">Title</div>
                 <div class="panel-body">
