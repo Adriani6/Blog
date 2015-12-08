@@ -39,14 +39,14 @@
 			
 			if($_GET['data'] === "usercp"){
 				if($_SESSION['token'] === $_GET['token']){
-					$result = $sql->query("SELECT username, type, country, verified, name FROM users WHERE username = '".$_SESSION['user']."'");
+					$result = $sql->query("SELECT username, type, country_id, verified, name FROM users WHERE username = '".$_SESSION['user']."'");
 					$outp = "[";
 					while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
 						if ($outp != "[") {$outp .= ",";}
 						$outp .= '{"Username":"'  . $rs["username"] . '",';
 						$outp .= '"Name":"'  . $rs["name"] . '",';
 						$outp .= '"Verified":"'  . $rs["verified"] . '",';
-						$outp .= '"Location":"'  . $rs["country"] . '",';
+						$outp .= '"Location":"'  . $rs["country_id"] . '",';
 						$outp .= '"Type":"'   . $rs["type"]        . '"}';
 					}
 					$outp .="]";
@@ -69,7 +69,7 @@
 						echo "New username cannot be empty.";
 					}
 				}elseif(isset($_POST['change']) && $_POST['change'] === "country") {
-					$sql->query("UPDATE users SET country = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");				
+					$sql->query("UPDATE users SET country_id = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");				
 					echo "Country Updated.";
 				}else{
 					echo "Invalid data change request.";

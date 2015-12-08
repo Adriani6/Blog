@@ -4,7 +4,7 @@
 require_once 'mysql.php';
 require_once 'support_functions.php';
 
-$mySQL = new MySQL();
+$mySQL = new MySQLClass();
 
 #Starts a session by default on the site.
 session_start();
@@ -19,7 +19,7 @@ session_start();
 class Handler{
 	
 	#Salt, the protected type disallows it to be accessed outside this class.
-	protected $salt = "Ct4adbUeU8";
+
 	#sql, MySQL connection, set in constructor.
 	protected $sql;
 	# registration attempt result
@@ -37,6 +37,7 @@ class Handler{
 	
 	#Login handles the verification of hashs.
 	function login($username, $password){
+		// Now user.class.php
 		#Query the Database for users details.
 		$hashed = $this->sql->query("SELECT * FROM users WHERE username = '". $username ."'");
 		#Gets the whole row from MySQL Results.
@@ -54,12 +55,9 @@ class Handler{
 				$this->openSession($row[3], $username);	
 			}
 
-				#Return true
-				return true;
-
-			}else{
-				return false;
-			}
+		}else{
+			return false;
+		}	
 	}
 
 	function register($username, $password, $cppassword, $name, $country){

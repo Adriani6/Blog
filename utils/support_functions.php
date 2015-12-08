@@ -7,7 +7,7 @@ function polish($var) {
 
 #Two Optional Parameters incase we need a pre-selected option to show up.
 # $preValue is the value needed selected, $preSelect wether we want it pre-selected or not, if not, it'll return Undefined as selected.
-function renderCountrySelectControl($mySQL, $preValue = "")
+function renderCountrySelectControl($mySQL, $preValue = "Poland")
 {
     echo '
                 

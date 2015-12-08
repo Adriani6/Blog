@@ -158,7 +158,7 @@ function hideEdit(){
 			</tr>
 			<tr>
 				<td>Location:</td>
-				<td><div id="loc"><?php renderCountrySelectControl($mySQL, ); ?></div></td>
+				<td><div id="loc"><?php renderCountrySelectControl($mySQL); ?></div></td>
 				<td id="updateC" name="country">Update</td>
 			</tr>
 			<tr>
