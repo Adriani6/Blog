@@ -5,15 +5,17 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/support_functions.php");
 $result = '';
 $countryId = "";
 
+
 if(strlen($_POST['title']) < 5)
     $result .= "Title must be at least 5 characters long.<br>";
 else if(strlen($_POST['title']) > 50)
     $result .= "Title can be maximum 50 characters long.<br>";
 
-if($countryId = getCountryID($_POST['country'],$mysql) == null) {
+if(($countryId = getCountryID($_POST['country'],$mysql)) == null) {
     $result = "An error occurred.";
     exit();
 }
+
 
 if(strlen($_POST['description']) < 5)
     $result .= "Description must be at least 10 characters long.<br>";
@@ -43,6 +45,21 @@ for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
     if ($output != 1)
         $result .= "{$rearrayedPictureFILES[$i]['name']} - {$output}";
 }
+
+
+foreach ($_POST['tag'] as $tag) {
+    $allowed = array("-");
+    if (!ctype_alnum(str_replace($allowed, '', $tag ))) {
+        $result .= "<{$tag}> tag has invalid value. Tags can only contain characters, digits and the \"-\" symbol.";
+        continue;
+    }
+
+    if(strlen($tag) < 3)
+        $result .= "<{$tag}> tag is too short. Tags must be at least 3 characters long.";
+    else if(strlen($tag) > 25)
+        $result .= "<{$tag}> tag is too long. Tags can be maximum 25 characters long.";
+}
+
 
 if ($result != "")
 {
@@ -84,6 +101,13 @@ for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
     $r = $mysql->query("INSERT INTO picture(adventure_id,name)
                    VALUES ('".$adventure_id."','".$pic["unique_name"]."')");
 }
+
+
+foreach ($_POST['tag'] as $tag) {
+    $r = $mysql->query("INSERT INTO tags(adventure_id,value)
+                   VALUES ('".$adventure_id."','".$tag."')");
+}
+
 
 echo $adventure_id;
 ?>

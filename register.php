@@ -43,11 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				   value="<?php if(isset($_POST['name'])) echo  $_POST['name']; ?>">
 		</div>
 	</div>
-
-	<?php
-		renderCountrySelectControl($mySQL);
-	?>
-
+	<div class="form-group">
+		<label for="country" class="col-sm-2 control-label">Country</label>
+		<div class="col-sm-10">
+		<?php
+			renderCountrySelectControl($mySQL);
+		?>
+		</div>
+	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-default" name="register" id="register_button">Register</button>

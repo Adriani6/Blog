@@ -38,9 +38,14 @@ require_once("site_body.php");
                        value="<?php if(isset($_POST['title'])) echo  $_POST['title']; ?>">
             </div>
         </div>
-
-        <?php renderCountrySelectControl($mySQL); ?>
-
+        <div class="form-group">
+            <label for="country" class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-10">
+                <?php
+                renderCountrySelectControl($mySQL);
+                ?>
+            </div>
+        </div>
         <div class="form-group">
             <label for="title" class="col-sm-2 control-label">Description: </label>
             <div class="col-sm-10">
@@ -57,7 +62,7 @@ require_once("site_body.php");
         </div>
 
         <div class="form-group">
-            <label for="title" class="col-sm-2 control-label">Pictures</label>
+            <label class="col-sm-2 control-label">Pictures</label>
             <div class="col-sm-10" id="add_picture_list">
                 <div class="add_picture_list_element">
                     <div class="add_picture_button_div">
@@ -66,6 +71,19 @@ require_once("site_body.php");
                         </span>
                     </div>
                     <!-- uploaded picture name is appended here and button becomes hidden -->
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">Tags</label>
+            <div class="col-sm-10">
+                <div id="add_tag_list"></div>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="add_tag_input" placeholder="Tag" />
+                    <span class="input-group-btn">
+                        <button id="add_tag_button" class="btn btn-default" type="button">Add Tag</button>
+                    </span>
                 </div>
             </div>
         </div>
@@ -98,7 +116,6 @@ require_once("site_body.php");
                     // remove button click
                     $(new_picture).children().last().click(function() {
                         // set value of the file input to nothing because otherwise even after removal it's value is saved in $_FILE
-                        alert($(this).parents().closest(".add_picture_list_element").find("#add_picture_button").val());
                         $(this).parents().closest(".add_picture_list_element").find("#add_picture_button").val("");
 
                         $(this).parents().closest(".add_picture_list_element").remove();
@@ -112,6 +129,27 @@ require_once("site_body.php");
                     $("#add_picture_list").append(copy);
 
                     $(this).parents().closest(".add_picture_list_element").append(new_picture);
+                });
+
+                $("#add_tag_button").click( function() {
+                    alert($("#add_tag_input").val());
+
+                    var new_tag =
+                        $(
+                            '<span class="add_tag_list_element" style="margin: 2px; display: inline-block;">' +
+                            '<input type="hidden"  name="tag[]" value="' + $("#add_tag_input").val() + '"/>' +
+                            '<span class="add_tag_value">' + $("#add_tag_input").val() + '</span>'+
+                            '<a class="btn"><span class="glyphicon glyphicon-remove"></span></a>' +
+                            '</span>'
+                        );
+
+                    // remove button click
+                    $(new_tag).children().last().click(function() {
+                        $(this).parents().closest(".add_tag_list_element").remove();
+                    });
+
+                    $("#add_tag_list").append(new_tag);
+                    $("#add_tag_input").val("");
                 });
 
                 // title preview
