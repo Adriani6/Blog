@@ -36,6 +36,7 @@ if(isset($_SESSION['user'])){
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
     <script src="js/html_utils.js"></script>
+    <script src="js/effects/effects.js"></script>
 
     <script type="text/javascript" src="js/jquery.cookieBar.js"></script>
     <link rel="stylesheet" href="css/jquery.cookieBar.css">
@@ -45,7 +46,7 @@ if(isset($_SESSION['user'])){
         });
     </script>
 
-    <script src="js/effects/effects.js"></script>
+
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
