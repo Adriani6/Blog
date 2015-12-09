@@ -37,7 +37,8 @@ if(isset($_SESSION['user'])){
             crossorigin="anonymous"></script>
     <script src="js/html_utils.js"></script>
 
-    <script type="text/javascript" src="js/jquery.cookiebar.js"></script>
+    <script type="text/javascript" src="js/jquery.cookieBar.js"></script>
+    <link rel="stylesheet" href="css/jquery.cookieBar.css">
     <script type="text/javascript">
         $(document).ready(function(){
             $.cookieBar();
