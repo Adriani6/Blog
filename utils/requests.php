@@ -4,7 +4,7 @@
 	require_once 'mysql.php';
 	
 	$handler = new Handler();
-	$sql = new MySQL();
+	$sql = new MySQLClass();
 	
 	#Check for form POST & Handle a login/register request.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){

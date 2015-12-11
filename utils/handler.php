@@ -32,7 +32,7 @@ class Handler{
 	#Constructor for the class.
 	function __construct(){
 		#Opens new MySQL connection to the blog database.
-		$this->sql = new MySQL();
+		$this->sql = new MySQLClass();
 	}
 	
 	#Login handles the verification of hashs.

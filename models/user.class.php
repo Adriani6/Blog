@@ -2,21 +2,24 @@
 require_once '../utils/mysql.php';
 require_once 'package.class.php';
 require_once 'country.class.php';
+require_once 'adventure.class.php';
 
 class User{
 	
 	protected $salt = "Ct4adbUeU8";
 	private $username;
+	private $userid;
 	private $account_type;
 	private $country;
 	private $verified;
 	private $comments;
-	private $adventures;
+	private $adventures = array();
 	protected $mySQL;
 	
-	function __construct(){
+	function __construct($username){
 		$this->mySQL = new MySQLClass();
-		//$this->loadUserData();
+		$this->username = $username;
+		$this->loadUserData();
 	}
 			
 	static function isLoggedin(){
@@ -47,7 +50,8 @@ class User{
 		$this->country = new Country((int)$row['country_id']);
 		$this->verified = $row['verified'];
 		$this->account_type = $row['type'];
-		
+		$this->userid = $row['user_id'];
+		$this->loadAdventures();
 	}
 	
 	function login($username, $password){
@@ -77,8 +81,32 @@ class User{
 		}		
 	}
 	
+	function getUserId(){
+		return $this->userid;
+	}
+	
 	function getCountry(){
 		return $this->country;
+	}
+	
+	function findAdventure($adventureId){
+		foreach($this->adventures as $adventure){
+			if($adventure->getAdventureId() === $adventureId){
+				return $adventure;
+			}
+		}
+	}
+	
+	function getAdventures(){
+		return $this->adventures;
+	}
+	
+	function loadAdventures(){
+		
+		$adventureids = 4; //Adventures::getAdventureIds($this->getUserId());
+		for($i = 1; $adventureids > $i; $i++){
+			array_push($this->adventures, new Adventure($i));
+		}
 	}
 	
 	static function register($username, $password, $name, $country){
