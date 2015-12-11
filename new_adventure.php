@@ -1,6 +1,16 @@
 <?php
 $title = "Create new adventure";
 require_once("site_body.php");
+
+
+if(isset($_GET['mode']) && isset($_GET['id'])) {
+    if($_GET['mode'] == 'edit') {
+        $id = intval($_GET['id']);
+        $result = $mySQL->query("SELECT * FROM adventure WHERE adventure_id = {$id}");
+        $edit_adventure = $result->fetch_assoc();
+    }
+}
+
 ?>
     <style>
         .btn-file {
@@ -35,21 +45,30 @@ require_once("site_body.php");
             <label for="title" class="col-sm-2 control-label">Title</label>
             <div class="col-sm-10">
                 <input type="text" name="title" class="form-control" id="title" placeholder="Title"
-                       value="<?php if(isset($_POST['title'])) echo  $_POST['title']; ?>">
+                       value="<?php if(isset($edit_adventure['title'])) echo  $edit_adventure['title']; ?>">
             </div>
         </div>
         <div class="form-group">
             <label for="country" class="col-sm-2 control-label">Country</label>
             <div class="col-sm-10">
                 <?php
-                renderCountrySelectControl($mySQL);
+                if (isset($edit_adventure['country_id']))
+                {
+                    $name = getCountryName($edit_adventure['country_id'],$mySQL);
+                }
+                else
+                {
+                    $name = "Unspecified";
+                }
+
+                renderCountrySelectControl($mySQL,$name);
                 ?>
             </div>
         </div>
         <div class="form-group">
             <label for="title" class="col-sm-2 control-label">Description: </label>
             <div class="col-sm-10">
-                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"></textarea>
+                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Description"><?php if(isset($edit_adventure['description'])) echo  $edit_adventure['description']; ?></textarea>
             </div>
         </div>
 
@@ -57,13 +76,37 @@ require_once("site_body.php");
             <label class="col-sm-2 control-label">Main Picture</label>
             <div class="col-sm-10">
                 <span class="btn btn-default btn-file">Upload Picture <input id="main_picture_button" name="main_picture" type="file" /></span>
-                <span id="main_picture_value" style="padding-left: 10px;"></span>
+                <span id="main_picture_value" style="padding-left: 10px;">
+                    <?php
+                    if(isset($edit_adventure['main_picture_id']))
+                    {
+                        $result = $mySQL->query("SELECT * FROM picture where picture_id={$edit_adventure['main_picture_id']}");
+                        $main_picture = $result->fetch_assoc();
+
+                        echo $main_picture['name'];
+                    }
+                    ?>
+                </span>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Pictures</label>
             <div class="col-sm-10" id="add_picture_list">
+                <?php
+                if(isset($edit_adventure['adventure_id']))
+                {
+                    $result = $mySQL->query("SELECT * FROM picture WHERE adventure_id={$edit_adventure['adventure_id']}");
+                    while($picture = $result->fetch_assoc())
+                    {
+                        echo '<div class="edit_picture_element">';
+                        echo '<span>'.$picture['name'].'</span>';
+                        echo '<a class="btn edit_picture_element_remove_btn"><span class="glyphicon glyphicon-remove"></span>Remove</a>';
+                        echo '<input type="hidden" name="edit_picture_id[]" value="'.$picture['picture_id'].'"/>';
+                        echo '</div>';
+                    }
+                }
+                ?>
                 <div class="add_picture_list_element">
                     <div class="add_picture_button_div">
                         <span class="btn btn-default btn-file">Add Picture
@@ -78,7 +121,22 @@ require_once("site_body.php");
         <div class="form-group">
             <label for="title" class="col-sm-2 control-label">Tags</label>
             <div class="col-sm-10">
-                <div id="add_tag_list"></div>
+                <div id="add_tag_list">
+                    <?php
+                        if(isset($edit_adventure['adventure_id']))
+                        {
+                            $result = $mySQL->query("SELECT * FROM tags WHERE adventure_id={$edit_adventure['adventure_id']}");
+                            while($tag = $result->fetch_assoc())
+                            {
+                                echo '<span class="add_tag_list_element" style="margin: 2px; display: inline-block;">';
+                                echo '<input type="hidden"  name="edit_tag_id[]" value="'.$tag['tag_id'].'"/>';
+                                echo '<span class="add_tag_value">'.$tag['value'].'</span>';
+                                echo '<a class="btn edit_tag_button"><span class="glyphicon glyphicon-remove"></span></a>';
+                                echo '</span>';
+                            }
+                        }
+                    ?>
+                </div>
                 <div class="input-group">
                     <input type="text" class="form-control" id="add_tag_input" placeholder="Tag" />
                     <span class="input-group-btn">
@@ -90,13 +148,32 @@ require_once("site_body.php");
 
         <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
 
+        <?php
+            if(isset($edit_adventure['adventure_id']))
+            {
+                echo '<input type="hidden" name="edit" value="true" />';
+                echo '<input type="hidden" name="adventure_id" value="'.$edit_adventure['adventure_id'].'" />';
+            }
+        ?>
+
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" name="create" id="create_button">Create</button>
             </div>
         </div>
-
+    </form>
         <script type="text/javascript">
+            $(document).ready(function() {
+                $(".edit_picture_element_remove_btn").click(function() {
+                    $(this).parents().closest(".edit_picture_element").remove();
+                });
+
+                $(".edit_tag_button").click(function() {
+                    $(this).parents().closest(".add_tag_list_element").remove();
+                });
+            });
+
+
             $(document).ready(function() {
                 // main picture upload
                 $("#main_picture_button").change( function() {
@@ -185,14 +262,14 @@ require_once("site_body.php");
                     $("#add_adventure_success").hide();
                     $("#add_adventure_fail").hide();
 
-                    var XX = new FormData(this);
+                    var formData = new FormData(this);
 
                     $.ajax({
                         // The URL for the request
                         url: "<?php echo '~/../ajax/ajax_new_adventure.php';  ?>",
 
                         // The data to send (will be converted to a query string)
-                        data: XX,
+                        data: formData,
 
                         // Whether this is a POST or GET request
                         type: "POST",
@@ -243,7 +320,7 @@ require_once("site_body.php");
                 });
             });
         </script>
-    </form>
+
 
 <?php
     require_once("adventure_body.php");

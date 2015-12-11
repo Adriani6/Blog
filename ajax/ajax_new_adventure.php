@@ -31,7 +31,7 @@ if ($mainPicture['name'] != "") {
     if ($output != 1)
         $result .= "{$mainPicture['name']} - {$output}";
 }
-else {
+else if(!isset($_POST['edit'])){
     $result .= "You need to select main picture.<br>";
 }
 
@@ -70,27 +70,91 @@ if ($result != "")
 
 
 /***** All form input is valid.
- ***** Attempt to add the adventure.
+ ***** Attempt to add or edit the adventure.
  *****/
-
 $adventure_id = -1;
-$mainPicture["unique_name"] = generateUniqueImageName($mainPicture["name"],"test",$mysql);
-if (move_uploaded_file($mainPicture["tmp_name"], "{$_SERVER['DOCUMENT_ROOT']}/uploads/".$mainPicture["unique_name"]))
+
+if (!isset($_POST['edit'])) // adding adventure
 {
     $r = $mysql->query("INSERT INTO adventure(title,country_id,description)
-                   VALUES ('".$_POST['title']."','".$countryId."','".$_POST['description']."')");
+               VALUES ('".$_POST['title']."','".$countryId."','".$_POST['description']."')");
     $adventure_id = $mysql->getMysqli()->insert_id;
+}
+else // editing adventure
+{
+    // TODO: check user id & adventure_id - in every query !!
+    $adventure_id = $_POST['adventure_id'];
+    $r = $mysql->query("UPDATE adventure
+               SET title='{$_POST['title']}',country_id={$countryId},description='{$_POST['description']}'
+               WHERE adventure_id = {$adventure_id}");
 
+    // update database delete removed pictures
+    $result = $mysql->query("SELECT * FROM picture WHERE adventure_id={$adventure_id}");
+    while($picture = $result->fetch_assoc())
+    {
+        $found = false;
+        foreach ($_POST['edit_picture_id'] as $edit_picture_id)
+        {
+            if($picture['picture_id'] == $edit_picture_id)
+            {
+                // picture has not been removed
+                $found = true;
+            }
+        }
+
+        if($found == false)
+        {
+            // picture has not been removed
+            // unlink file and delete it from database
+            unlink("{$_SERVER['DOCUMENT_ROOT']}/uploads/".$picture['name']);
+            $mysql->query("DELETE FROM picture WHERE picture_id={$picture['picture_id']}");
+        }
+    }
+
+
+    $result = $mysql->query("SELECT * FROM tags WHERE adventure_id={$adventure_id}");
+    while($tag = $result->fetch_assoc())
+    {
+        $found = false;
+        foreach ($_POST['edit_tag_id'] as $edit_tag_id)
+        {
+            if($tag['tag_id'] == $edit_tag_id)
+            {
+                // tag has not been removed
+                echo "FOUND";
+            }
+        }
+
+        if($found == false)
+        {
+            // tag has not been removed
+            // delete it from database
+            $mysql->query("DELETE FROM tags WHERE tag_id={$tag['tag_id']}");
+        }
+    }
+}
+
+if($mainPicture['name'] != "")
+{
+    if (isset($_POST['edit']))
+    {
+        $result = $mysql->query("SELECT * FROM adventure WHERE adventure_id = {$_POST['adventure_id']}");
+        $adventure = $result->fetch_assoc();
+        $result = $mysql->query("SELECT * FROM picture WHERE picture_id = {$adventure['main_picture_id']}");
+        $main_picture = $result->fetch_assoc();
+
+        unlink("{$_SERVER['DOCUMENT_ROOT']}/uploads/".$main_picture['name']);
+        $mysql->query("DELETE FROM picture WHERE picture_id={$main_picture['picture_id']}");
+    }
+
+    $mainPicture["unique_name"] = generateUniqueImageName($mainPicture["name"],"test",$mysql);
+    move_uploaded_file($mainPicture["tmp_name"], "{$_SERVER['DOCUMENT_ROOT']}/uploads/".$mainPicture["unique_name"]);
     $r = $mysql->query("INSERT INTO picture(adventure_id,name)
-                   VALUES ('".$mysql->getMysqli()->insert_id."','".$mainPicture["unique_name"]."')");
+               VALUES ('".$mysql->getMysqli()->insert_id."','".$mainPicture["unique_name"]."')");
     $main_picture_id = $mysql->getMysqli()->insert_id;
 
     $r = $mysql->query("UPDATE adventure SET main_picture_id={$main_picture_id} WHERE adventure_id={$adventure_id}");
-} else {
-    echo "Sorry there was an error adding your adventure.<br>";
-    return;
 }
-
 
 
 for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
@@ -103,10 +167,12 @@ for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
                    VALUES ('".$adventure_id."','".$pic["unique_name"]."')");
 }
 
-
-foreach ($_POST['tag'] as $tag) {
-    $r = $mysql->query("INSERT INTO tags(adventure_id,value)
+if(isset($_POST['tag']))
+{
+    foreach ($_POST['tag'] as $tag) {
+        $r = $mysql->query("INSERT INTO tags(adventure_id,value)
                    VALUES ('".$adventure_id."','".$tag."')");
+    }
 }
 
 

@@ -7,27 +7,28 @@ function polish($var) {
 
 #Two Optional Parameters incase we need a pre-selected option to show up.
 # $preValue is the value needed selected, $preSelect wether we want it pre-selected or not, if not, it'll return Undefined as selected.
-function renderCountrySelectControl($mySQL, $preValue = "Poland")
+function renderCountrySelectControl($mySQL, $preSelect = "Unspecified")
 {
     echo '
                 
     <select name="country" class="form-control" id="country">';
 
     $result = $mySQL->query("SELECT name from country");
-    while ($row = $result->fetch_assoc()) {
-		if(!empty($preSelect)){
-			if($preValue === $row['name']){
-				echo "<option selected>" . $row['name'] . "</option>";	
-			}else{
-				echo "<option>" . $row['name'] . "</option>";
-			}
-		}else{
-			echo "<option>" . $row['name'] . "</option>";
-		}
+    while ($row = $result->fetch_assoc())
+    {
+	    if($preSelect == $row['name'])
+        {
+            echo "<option selected='selected' value='".$row['name']."'>" . $row['name'] . "</option>";
+        }
+        else
+        {
+            echo "<option value='".$row['name']."'>" . $row['name'] . "</option>";
+        }
     }
 
     echo '
-        </select>
+        </select>';
+    /*
         <script type="text/javascript">
     $(document).ready(function(){
         $("#country").val("';
@@ -41,7 +42,8 @@ function renderCountrySelectControl($mySQL, $preValue = "Poland")
     });
 
 </script>';
-}
+*/
+    }
 
 function getCountryID($country,$mySQL) {
     $country = $mySQL->getMysqli()->escape_string($country);
@@ -120,11 +122,11 @@ function validateUploadedImageFile($file) {
 }
 
 function generateUniqueImageName($filename, $username, $mySQL) {
-    $result = $mySQL->query("SELECT COUNT(picture_id) AS c FROM picture");
+    $result = $mySQL->query("SELECT picture_id FROM picture ORDER BY picture_id DESC LIMIT 1");
     $row = $result->fetch_assoc();
     // prevent one user to ever overwrite his file
     $magicNumber = 4263912;
-    $imageName = ($magicNumber+3*$row['c'])."_by_".$username."_".$filename;
+    $imageName = ($magicNumber+3*$row['picture_id'])."_by_".$username."_".$filename;
 
     return $imageName;
 }
