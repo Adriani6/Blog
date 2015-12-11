@@ -20,9 +20,17 @@ if($result->num_rows == 1) {
             $adventure['picture'][$i] = "./uploads/".$picture{'name'};
         $i++;
     }
+
+    $result = $mysql->query("SELECT value FROM tags where adventure_id={$id}");
+    $i = 0;
+    while($tag = $result->fetch_assoc()){
+        $adventure['tag'][$i] = $tag["value"];
+        $i++;
+    }
+
+    $title = $adventure['title'];
 }
 
-$title = $adventure['title'];
 require_once("site_body.php");
 require_once("adventure_body.php");
 ?>
