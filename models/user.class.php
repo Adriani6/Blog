@@ -4,9 +4,10 @@ require_once 'package.class.php';
 require_once 'country.class.php';
 require_once 'adventure.class.php';
 
-class User{
+class User extends Package{
 	
 	protected $salt = "Ct4adbUeU8";
+	
 	private $username;
 	private $userid;
 	private $account_type;
@@ -14,12 +15,12 @@ class User{
 	private $verified;
 	private $comments;
 	private $adventures = array();
-	protected $mySQL;
 	
-	function __construct($username){
-		$this->mySQL = new MySQLClass();
-		$this->username = $username;
-		$this->loadUserData();
+	function __construct($username = ""){
+		if(isset($username)){
+			$this->username = $username;
+			$this->loadUserData();
+		}
 	}
 			
 	static function isLoggedin(){
@@ -42,7 +43,7 @@ class User{
 	
 	function loadUserData(){
 		
-		$data = $this->mySQL->query("SELECT * FROM users WHERE username = '". $this->username ."'");
+		$data = parent::$sql->query("SELECT * FROM users WHERE username = '". $this->username ."'");
 		if($data->num_rows == 0) {
 			return null;
 		}
@@ -66,7 +67,7 @@ class User{
 			$this->username = $username;
 			$this->loadUserData();
 			return "Hello";
-			/*if(!isset($_SESSION['user']) && !isset($_SESSION['token'])){
+			if(!isset($_SESSION['user']) && !isset($_SESSION['token'])){
 				#Set cookie with session logout time.
 				$this->setCookieF($username);
 							
@@ -111,6 +112,22 @@ class User{
 	
 	static function register($username, $password, $name, $country){
 		
+	}
+	
+	function setUserData($username, $userid, $account_type, $country, $verified = "", $comments = ""){
+		if(isset($username, $userid, $account_type, $country, $verified, $comments)){
+			//Write Setters... fetch data the way loadData() works and remove that function.
+			$object = new User();
+			$object->username = $username;
+			$object->userid = $userid;
+			$object->account_type = $account_type;
+			$object->country = $country;
+			$object->verified = $verified;
+			$object->comments = $comments;
+			return $object;
+		}else{
+			return false;
+		}
 	}
 }
 

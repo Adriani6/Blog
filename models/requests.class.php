@@ -6,6 +6,22 @@ require_once 'adventure.class.php';
 
 class Requests{
 	
+	function __construct(){
+		// Request | Token | 
+		
+		if($this->verifyToken(func_get_arg(2))){
+			if(fun_get_arg(1) === "register"){
+				if(!func_num_args > 3){
+					die("Invalid request.");
+				}
+				User->register(func_get_arg(3), func_get_arg(4), isset(func_get_arg(5)), isset(func_get_arg(6)));
+			}
+			
+		}
+		//func_get_arg();
+		//func_num_args();
+	} 
+	
 	private $token = "";
 		
 	function requestDataAccess(){
@@ -30,6 +46,7 @@ class Requests{
 		
 		return false;
 	}
+	
 }
 
 ?>
