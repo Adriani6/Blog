@@ -112,7 +112,8 @@ if(isset($_SESSION['user'])){
     </div>
 </div>
 <div class="nav_mid">
-    <img class="logo" src="imgs/wonderblog.png" alt="Logo" href="index.php">
+    <a href="index.php">
+    <img class="logo" src="imgs/wonderblog.png" alt="Logo">
 </div>
 <div class="nav_bottom">
     <div class="nav_items">
