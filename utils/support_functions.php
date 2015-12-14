@@ -134,4 +134,43 @@ function generateUniqueImageName($filename, $username, $mySQL) {
     return $imageName;
 }
 
+//$adventure['title']
+//$adventure['description']
+//$adventure['country']
+//$adventure['main_picture']
+//$adventure['picture'][]
+//$adventure['tag'][]
+function getAdventure ($id,$mysql) {
+    $result = $mysql->query("SELECT * FROM adventure WHERE adventure_id={$id}");
+
+    if($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+
+        $adventure['title'] = $row['title'];
+        $adventure['description'] = $row['description'];
+        $adventure['country'] = getCountryName($row['country_id'],$mysql);
+        $adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$mysql);
+
+        $result = $mysql->query("SELECT picture_id,name FROM picture where adventure_id={$id}");
+        $i = 0;
+        while($picture = $result->fetch_assoc()){
+            if($picture['picture_id'] != $row['main_picture_id'])
+                $adventure['picture'][$i] = "./uploads/".$picture{'name'};
+            $i++;
+        }
+
+        $result = $mysql->query("SELECT value FROM tags where adventure_id={$id}");
+        $i = 0;
+        while($tag = $result->fetch_assoc()){
+            $adventure['tag'][$i] = $tag["value"];
+            $i++;
+        }
+
+        $title = $adventure['title'];
+        return $adventure;
+    }
+    else
+        return null;
+}
+
 ?>

@@ -11,23 +11,30 @@ class SiteUser
 
     private $username;
     private $userid;
-    private $account_type;
+    private $type;
     private $country;
     private $verified;
 
     public function isLoggedIn(){
-        return $_SESSION['logged_in'];
+        return $_SESSION['siteuser_logged_in'];
     }
 
     public function getUsername(){
-        if(!isLoggedin())
+        if(!$this->isLoggedIn())
             return null;
 
         return $this->username;
     }
 
+    public function getType() {
+        if(!$this->isLoggedIn())
+            return null;
+
+        return $this->type;
+    }
+
     public function isVerified(){
-        if(!isLoggedin())
+        if(!$this->isLoggedIn())
             return null;
 
         if($this->verified == 1)
@@ -37,14 +44,14 @@ class SiteUser
     }
 
     public function getUserId(){
-        if(!isLoggedin())
+        if(!$this->isLoggedIn())
             return null;
 
         return $this->userid;
     }
 
     public function getCountry(){
-        if(!isLoggedin())
+        if(!$this->isLoggedIn())
             return null;
 
         return $this->country;
@@ -55,16 +62,16 @@ class SiteUser
         $this->mySQL = $mySQL;
         //session_start();
 
-        if(isset($_SESSION['logged_in'])) {
-            if ($_SESSION['logged_in'] == true) {
-                $this->username = $_SESSION['username'];
+        if(isset($_SESSION['siteuser_logged_in'])) {
+            if ($_SESSION['siteuser_logged_in'] == true) {
+                $this->username = $_SESSION['siteuser_username'];
                 $this->loadUserData();
             }
             else
-                $_SESSION['logged_in'] = false;
+                $_SESSION['siteuser_logged_in'] = false;
         }
         else
-            $_SESSION['logged_in'] = false;
+            $_SESSION['siteuser_logged_in'] = false;
 
         /*
         if(isset($_COOKIE['username']) && isset($_COOKIE['login_token']))
@@ -94,9 +101,8 @@ class SiteUser
 
         if(password_verify($password . SiteUser::$salt, $row['password']))
         {
-            session_regenerate_id();
-            $_SESSION['logged_in'] = true;
-            $_SESSION['username'] = $username;
+            $_SESSION['siteuser_logged_in'] = true;
+            $_SESSION['siteuser_username'] = $username;
 
             $this->username = $username;
             $this->loadUserData();
@@ -119,8 +125,8 @@ class SiteUser
     {
         //setcookie("username",'',time(),'/');
         //setcookie("login_token",'',time(),'/');
-        $_SESSION['logged_in'] = false;
-        $_SESSION['username'] = null;
+        $_SESSION['siteuser_logged_in'] = false;
+        $_SESSION['siteuser_username'] = null;
 
         $this->username = null;
         $this->userid = null;

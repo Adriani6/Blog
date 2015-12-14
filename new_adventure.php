@@ -3,13 +3,7 @@ $title = "Create new adventure";
 require_once("site_body.php");
 
 
-if(isset($_GET['mode']) && isset($_GET['id'])) {
-    if($_GET['mode'] == 'edit') {
-        $id = intval($_GET['id']);
-        $result = $mySQL->query("SELECT * FROM adventure WHERE adventure_id = {$id}");
-        $edit_adventure = $result->fetch_assoc();
-    }
-}
+
 
 ?>
     <style>
@@ -33,6 +27,43 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
             display: block;
         }
     </style>
+
+<?php
+$error = '';
+
+if($siteUser->isLoggedIn() == false){
+    $error = "You need to be logged in to add adventures.";
+}
+else if($siteUser->getType() == "Reader") {
+    $error = "'Reader' account types cannot add adventures. Contact administrator to upgrade your account.";
+}
+else if(isset($_GET['mode']) && $_GET['mode'] == "edit")
+{
+    $stmt = $mysql->prepare("SELECT * FROM adventure WHERE user_id=? AND adventure_id=?");
+    $stmt->bind_param("ii",$siteUser->getUserId(),$_POST['adventure_id']);
+    $stmt->execute();
+    $r = $stmt->get_result();
+    if($r->num_rows != 1)
+    {
+        $error = "You cannot edit this adventure.";
+    }
+}
+
+if($error != '') {
+    echo "<div class='alert alert-danger'>".$error."</div>";
+    require_once("site_footer.php");
+    exit();
+}
+
+
+if(isset($_GET['mode']) && isset($_GET['id'])) {
+    if($_GET['mode'] == 'edit') {
+        $id = intval($_GET['id']);
+        $result = $mySQL->query("SELECT * FROM adventure WHERE adventure_id = {$id}");
+        $edit_adventure = $result->fetch_assoc();
+    }
+}
+?>
 
     <h4>Add adventure</h4>
     <hr />
@@ -209,6 +240,12 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                 });
 
                 $("#add_tag_button").click( function() {
+                    if($("#add_tag_input").val().length < 3)
+                    {
+                        alert("Tags must be at least 3 characters long.");
+                        return;
+                    }
+
                     var new_tag =
                         $(
                             '<span class="add_tag_list_element" style="margin: 2px; display: inline-block;">' +
@@ -226,30 +263,6 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                     $("#add_tag_list").append(new_tag);
                     $("#add_tag_input").val("");
                 });
-
-                // title preview
-                $("#title").keyup(function(){
-                    if($(this).val() != "")
-                        $("#adventure_title").text($(this).val());
-                    else
-                        $("#adventure_title").text("Title..");
-                })
-
-                // country preview
-                $("#country").change(function(){
-                    if($(this).val() == "Unspecified")
-                        $("#adventure_country").text("Country..");
-                    else
-                        $("#adventure_country").text($(this).val());
-                })
-
-                // description preview
-                $("#description").keyup(function(){
-                    if($(this).val() != "")
-                        $("#adventure_description").text($(this).val());
-                    else
-                        $("#adventure_description").text("Description..");
-                })
 
                 // validation..
                 $(':file').change(function() {
@@ -283,6 +296,7 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                         // Code to run if the request succeeds;
                         // the response is passed to the function
                         success: function( result ) {
+                            //alert(result);
                             if(result.errors.length == 0)
                             {
                                 $("#add_adventure_success").text(JSON.stringify(result, undefined, 2) + "LEN: " +result.errors.length);
@@ -329,7 +343,6 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                         */
 
 
-
                         // Code to run regardless of success or failure
                         /*
                         complete: function( xhr, status ) {
@@ -343,6 +356,5 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
 
 
 <?php
-    require_once("adventure_body.php");
     require_once("site_footer.php");
 ?>

@@ -1,4 +1,4 @@
-<?
+
 <div id="adventure_container">
     <h4 id="adventure_title"><?php if (isset($adventure["title"])) echo $adventure["title"]; else echo "Title.." ?></h4>
     <h6 id="adventure_country"><?php if (isset($adventure["country"])) echo $adventure["country"]; else echo "Country.." ?></h6>
