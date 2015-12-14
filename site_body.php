@@ -1,11 +1,27 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
+require_once 'models/user.class.php';
+
+
 $isLoggedIn = false;
-if(isset($_SESSION['user'])){
-    $isLoggedIn = true;
-    $handler->checkCookie($_SESSION['user']);
+$userObject;
+if(isset($_SESSION['userClass'])){
+	$userObject = $_SESSION['userClass'];
+	$isLoggedIn = $userObject->isLoggedin();
+}else{
+	echo "Class not initialized";
 }
+
+function __autoload($class){
+	$file = "models/".$class.".class.php";
+	require_once($file);
+}
+
+
 ?>
 
 <!doctype html>
@@ -28,8 +44,9 @@ if(isset($_SESSION['user'])){
 
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
+	<!--
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+	-->
     <script src="js/jquery.js"></script>
     <script src="bootstrap_js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
@@ -42,9 +59,9 @@ if(isset($_SESSION['user'])){
     //    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":"https://www.cookielaw.org/the-cookie-law/","theme":"light-floating"};
     </script>
     <!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-    <!-- End Cookie Consent plugin -->
+    <!-- End Cookie Consent plugin
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 	<script>
 	$(document).ready(function(){
 		$("#calendar").click(function(){
@@ -69,7 +86,7 @@ if(isset($_SESSION['user'])){
                 <!-- List User Options Here -->
                 <div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
                     <a href="panel/login.php">User CP</a><br />
-                    <?php if(isset($_SESSION['type']) && $_SESSION['type'] === "ADMIN"){
+                    <?php if($isLoggedIn){
                         ?>
                         <a href="panel/admincp.php">Admin CP</a><br />
                     <?php } ?>
@@ -111,7 +128,7 @@ if(isset($_SESSION['user'])){
 <div class="nav_top">
     <div class="nav_top_content">
         <?php if($isLoggedIn){
-            echo $_SESSION['user'];
+           echo $userObject->getUsername();
             ?>
         <?php }else{ ?>
             Login/Register

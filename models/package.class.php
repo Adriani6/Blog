@@ -1,22 +1,19 @@
 <?php
-require_once '../utils/mysql.php';
+require_once '/../utils/mysql.php';
 require_once 'user.class.php';
-
-session_start();
 
 class Package{
 
 	protected $sql;
 	//Add Salt.
-	protected $salt;
-	private $user;
+	protected $salt = "Ct4adbUeU8";
+	//private $user;
 	
 	function __construct(){
 		$this->sql = new MySQLClass();
-		$this->user = new User();
 	}
 	
-	static function getSalt(){
+	function getSalt(){
 		return $this->salt;
 	}
 	
