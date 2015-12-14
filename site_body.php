@@ -111,7 +111,9 @@ if(isset($_SESSION['user'])){
         <?php } ?>
     </div>
 </div>
-<div class="nav_mid"></div>
+<div class="nav_mid">
+    <img class="logo" src="imgs/wonderblog.png" alt="Logo">
+</div>
 <div class="nav_bottom">
     <div class="nav_items">
         <ul class="nav_board">
