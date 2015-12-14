@@ -17,7 +17,7 @@ class User extends Package{
 	private $adventures = array();
 	
 	function __construct($username = ""){
-		if(isset($username)){
+		if(!empty($username)){
 			$this->username = $username;
 			$this->loadUserData();
 		}
@@ -66,7 +66,7 @@ class User extends Package{
 			
 			$this->username = $username;
 			$this->loadUserData();
-			return "Hello";
+			
 			if(!isset($_SESSION['user']) && !isset($_SESSION['token'])){
 				#Set cookie with session logout time.
 				$this->setCookieF($username);
@@ -114,17 +114,22 @@ class User extends Package{
 		
 	}
 	
-	function setUserData($username, $userid, $account_type, $country, $verified = "", $comments = ""){
+	function setUsername($username){$this->username = $username;}
+	function setUserId($userid){$this->userid = $userid;}
+	function setAccountType($type){$this->account_type = $type;}
+	function setCountry($country){$this->country = $country;}
+	function setVerified($v){$this->verified = $v;}
+	function setComments($c){$this->comments = $c;}
+	
+	function setUserData($userid, $account_type, $country, $verified = "", $comments = ""){
 		if(isset($username, $userid, $account_type, $country, $verified, $comments)){
 			//Write Setters... fetch data the way loadData() works and remove that function.
-			$object = new User();
-			$object->username = $username;
-			$object->userid = $userid;
-			$object->account_type = $account_type;
-			$object->country = $country;
-			$object->verified = $verified;
-			$object->comments = $comments;
-			return $object;
+			//$this->setUsername($username);
+			$this->setUserId($userid);
+			$this->setAccountType($account_type);
+			$this->setCountry(new Country($country));
+			$this->setVerified($verified);
+			$this->setComments($comments);
 		}else{
 			return false;
 		}

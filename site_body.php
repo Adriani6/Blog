@@ -1,7 +1,6 @@
 <?php
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
-
 $isLoggedIn = false;
 if(isset($_SESSION['user'])){
     $isLoggedIn = true;
@@ -40,11 +39,19 @@ if(isset($_SESSION['user'])){
 
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
-        window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":"https://www.cookielaw.org/the-cookie-law/","theme":"light-floating"};
+    //    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":"https://www.cookielaw.org/the-cookie-law/","theme":"light-floating"};
     </script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    <!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     <!-- End Cookie Consent plugin -->
-
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script>
+	$(document).ready(function(){
+		$("#calendar").click(function(){
+			$("#calendar").datepicker();
+		});
+	});
+	</script>
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -122,6 +129,7 @@ if(isset($_SESSION['user'])){
             <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
             <li class="nav_board"><a href="adventure.php?id=" class="nav_board">Show Adventure</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
+			<li class="nav_board"><span id="calendar" class="glyphicon glyphicon-calendar" style="font-size:20px; color: white;"></span></li>
         </ul>
     </div>
 </div>
