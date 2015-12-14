@@ -275,23 +275,43 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                         type: "POST",
 
                         // The type of data we expect back
-                        dataType : "html",//"json",
+                        dataType : "json",//"json",
 
                         processData: false,
                         contentType: false,
 
                         // Code to run if the request succeeds;
                         // the response is passed to the function
-                        success: function( text ) {
-                            if(($).isNumeric(text))
+                        success: function( result ) {
+                            if(result.errors.length == 0)
                             {
-                                $("#add_adventure_success").text("Adventure added. Check it out <a href='/adventure.php?id=" + text + "'>here</a>");
+                                $("#add_adventure_success").text(JSON.stringify(result, undefined, 2) + "LEN: " +result.errors.length);
+                                //$("#add_adventure_success").text("Adventure added. Check it out <a href='/adventure.php?id=" +"'>here</a>");
                                 $("#add_adventure_success").show();
+
+                                $('html, body').animate({
+                                    scrollTop: $("#add_adventure_success").offset().top - 20
+                                }, 2000);
                             }
                             else
                             {
-                                $("#add_adventure_fail").text(text);
+                                var errorMsg;
+                                if(result.mode == "add")
+                                    var errorMsg = "Could not add the adventure. Check the following errors:<br/>";
+                                else if(result.mode == "edit")
+                                    var errorMsg = "Could not edit the adventure. Check the following errors:<br/>";
+
+                                $.each(result.errors, function() {
+                                    errorMsg += "- " + this + "<br/>";
+                                });
+
+                                $("#add_adventure_fail").html(errorMsg);
                                 $("#add_adventure_fail").show();
+
+
+                                $('html, body').animate({
+                                    scrollTop: $("#add_adventure_fail").offset().top - 20
+                                }, 2000);
                             }
 
                         },

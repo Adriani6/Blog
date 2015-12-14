@@ -1,5 +1,5 @@
 <?php
-require_once '../utils/mysql.php';
+require_once ("{$_SERVER['DOCUMENT_ROOT']}/utils/mysql.php");
 
 class Country{
 	private $mySQL;

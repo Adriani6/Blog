@@ -1,6 +1,16 @@
 <?php
+//require_once ("{$_SERVER['DOCUMENT_ROOT']}/utils/utils.php");
+//$siteUser->logOut();
+
 $title = "Register";
 require_once("site_body.php");
+
+if($siteUser->isLoggedIn())
+{
+	echo '<div class="alert alert-warning">You are already registered.</div>';
+	require_once("site_footer.php");
+	exit();
+}
 ?>
 
 <h4>Register</h4>
@@ -8,8 +18,22 @@ require_once("site_body.php");
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if($handler->getRegistrationResult() != '') {
-		echo '<div class="alert alert-danger">'.$handler->getRegistrationResult().'</div>';
+	$result = siteUser::register($_POST['username'], $_POST['password'], $_POST['cpassword'], $_POST['name'], $_POST['country'], $mySQL);
+
+	if($result !== true) {
+		echo '<div class="alert alert-danger">';
+		echo 'Could not register. Check the following errors:<br/>';
+		foreach ($result as $error)
+		{
+			echo "- ".$error."<br/>";
+		}
+		echo '</div>';
+	}
+	else
+	{
+		echo '<div class="alert alert-success">You have been successfuly registered. Welcome aboard, <strong>'.$_POST['username'].'</strong>!</div>';
+		require_once("site_footer.php");
+		exit();
 	}
 }
 ?>
@@ -47,7 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<label for="country" class="col-sm-2 control-label">Country</label>
 		<div class="col-sm-10">
 		<?php
-			renderCountrySelectControl($mySQL);
+			if(isset($_POST['country']))
+				$country = $_POST['country'];
+			else
+				$country = "Unspecified";
+
+			renderCountrySelectControl($mySQL,$country);
 		?>
 		</div>
 	</div>

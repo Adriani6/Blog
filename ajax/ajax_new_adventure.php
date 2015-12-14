@@ -2,25 +2,36 @@
 require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/utils.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/support_functions.php");
 
-$result = '';
-$countryId = "";
+$_POST['title'] = htmlentities($_POST['title']);
+$_POST['description'] = htmlentities($_POST['description']);
 
+$result = array();
+$errors = array();
+$result["errors"] = $errors;
+$result["adventure_id"] = null;
+
+if(isset($_POST['edit']))
+    $result["mode"] = "edit";
+else
+    $result["mode"] = "add";
+
+
+$countryId = -1;
 
 if(strlen($_POST['title']) < 5)
-    $result .= "Title must be at least 5 characters long.<br>";
+    array_push($errors,"Title must be at least 5 characters long.");
 else if(strlen($_POST['title']) > 50)
-    $result .= "Title can be maximum 50 characters long.<br>";
+    array_push($errors,"Title can be maximum 50 characters long.");
 
 if(($countryId = getCountryID($_POST['country'],$mysql)) == null) {
-    $result = "An error occurred.";
-    exit();
+    array_push($errors,"Invalid country.");
 }
 
 
 if(strlen($_POST['description']) < 5)
-    $result .= "Description must be at least 10 characters long.<br>";
+    array_push($errors,"Description must be at least 10 characters long.");
 else if(strlen($_POST['description']) > 1000)
-    $result .= "Description can be maximum 1000 characters long.<br>";
+    array_push($errors,"Description can be maximum 1000 characters long.");
 
 
 $rearrayedPictureFILES = rearrayFiles($_FILES['picture']);
@@ -28,11 +39,11 @@ $mainPicture = $_FILES['main_picture'];
 
 if ($mainPicture['name'] != "") {
     $output = validateUploadedImageFile($mainPicture);
-    if ($output != 1)
-        $result .= "{$mainPicture['name']} - {$output}";
+    if ($output !== true)
+        array_push($errors,"{$mainPicture['name']} - {$output}");
 }
 else if(!isset($_POST['edit'])){
-    $result .= "You need to select main picture.<br>";
+    array_push($errors,"You need to upload main picture.");
 }
 
 
@@ -43,7 +54,7 @@ for ($i = 0; $i < count($rearrayedPictureFILES) - 1; $i++) {
     $output = validateUploadedImageFile($rearrayedPictureFILES[$i]);
 
     if ($output != 1)
-        $result .= "{$rearrayedPictureFILES[$i]['name']} - {$output}";
+        array_push($errors,"{$rearrayedPictureFILES[$i]['name']} - {$output}");
 }
 
 if(isset($_POST['tag']))
@@ -51,20 +62,21 @@ if(isset($_POST['tag']))
     foreach ($_POST['tag'] as $tag) {
         $allowed = array("-");
         if (!ctype_alnum(str_replace($allowed, '', $tag ))) {
-            $result .= "<{$tag}> tag has invalid value. Tags can only contain characters, digits and the \"-\" symbol.";
+            array_push($errors,"<{$tag}> tag has invalid value. Tags can only contain characters, digits and the \"-\" symbol.");
             continue;
         }
 
         if(strlen($tag) < 3)
-            $result .= "<{$tag}> tag is too short. Tags must be at least 3 characters long.";
+            array_push($errors,"<{$tag}> tag is too short. Tags must be at least 3 characters long.");
         else if(strlen($tag) > 25)
-            $result .= "<{$tag}> tag is too long. Tags can be maximum 25 characters long.";
+            array_push($errors,"<{$tag}> tag is too long. Tags can be maximum 25 characters long.");
     }
 }
 
 if ($result != "")
 {
-    echo $result;
+    $result["errors"] = $errors;
+    echo json_encode($result);
     return;
 }
 
@@ -121,7 +133,7 @@ else // editing adventure
             if($tag['tag_id'] == $edit_tag_id)
             {
                 // tag has not been removed
-                echo "FOUND";
+                $found = true;
             }
         }
 
@@ -175,6 +187,7 @@ if(isset($_POST['tag']))
     }
 }
 
+$result["adventure_id"] = $adventure_id;
+echo json_encode($result);
 
-echo $adventure_id;
 ?>

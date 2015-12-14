@@ -2,6 +2,7 @@
 
 	require_once 'handler.php';
 	require_once 'mysql.php';
+	require_once 'utils.php';
 	
 	$handler = new Handler();
 	$sql = new MySQLClass();
@@ -9,9 +10,16 @@
 	#Check for form POST & Handle a login/register request.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if(isset($_POST['login'])){
+			/*
 			if($handler->login($_POST['username'], $_POST['password'])){
 				header("Location: ../index.php");
 			}else{
+				header('Location: ../login.php?err=authError');
+			}*/
+			if($siteUser->login($_POST['username'],$_POST['password'])){
+				header("Location: ../index.php");
+			}
+			else {
 				header('Location: ../login.php?err=authError');
 			}
 			
@@ -24,7 +32,7 @@
 			}
 			
 		}else if(isset($_POST['register'])){
-					$handler->register($_POST['username'], $_POST['password'], $_POST['cpassword'], $_POST['name'], $_POST['country']);
+					//$handler->register($_POST['username'], $_POST['password'], $_POST['cpassword'], $_POST['name'], $_POST['country']);
 		}
 	
 	}

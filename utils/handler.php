@@ -24,6 +24,7 @@ class Handler{
 	protected $sql;
 	# registration attempt result
 	protected $registrationResult = '';
+	private $salt = "Ct4adbUeU8";
 
 	public function getRegistrationResult() {
 		return $this->registrationResult;

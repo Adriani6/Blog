@@ -46,8 +46,11 @@ function renderCountrySelectControl($mySQL, $preSelect = "Unspecified")
     }
 
 function getCountryID($country,$mySQL) {
-    $country = $mySQL->getMysqli()->escape_string($country);
-    $result = $mySQL->query("SELECT id FROM country WHERE name = '".$country."'");
+    $stmt = $mySQL->prepare("SELECT id FROM country WHERE name = ?");
+    $stmt->bind_param("s",$country);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
     if($result->num_rows == 0) {
         return null;
     }
@@ -118,7 +121,7 @@ function validateUploadedImageFile($file) {
         return "File has invalid type - only .jpg and .png file types are allowed.";
     }
 
-    return 1;
+    return true;
 }
 
 function generateUniqueImageName($filename, $username, $mySQL) {
