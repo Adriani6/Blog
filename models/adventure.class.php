@@ -1,7 +1,8 @@
 <?php
 require_once '/../utils/mysql.php';
+require_once 'models/country.class.php';
 
-class Adventure{
+class Adventure extends Country{
 	
 	protected $mysql;
 
@@ -14,9 +15,11 @@ class Adventure{
 	
 	
 
-	function __construct($adventureId){
+	function __construct($adventureId = ""){
 		$this->mysql = new MySQLClass();
-		$this->load($adventureId);
+		if(!empty($adventureId)){
+			$this->load($adventureId);
+		}
 	}
 	
 	public function load($adventureId) {
@@ -54,33 +57,6 @@ class Adventure{
 		}		
 	}*/
 	
-	static function getAdventureFromID($id) {
-		return new Adventure($id);
-	}
-
-	function getTitle(){
-		return $this->title;
-	}
-	
-	function getMainPicture(){
-		return $this->main_picture;
-	}
-	
-	function getCountryId(){
-		return $this->country_id;
-	}
-	
-	function getDescription(){
-		return $this->description;
-	}
-	
-	function getScore(){
-		return $this->score;
-	}
-	
-	function getAdventureId(){
-		return $this->adventureId;
-	}
 	
 	function addVote(){
 		
@@ -89,7 +65,94 @@ class Adventure{
 	function removeVote(){
 		
 	}
+	
+	function getLastFiveAdventures() {
+    $result = $this->mysql->query("SELECT * FROM adventure ORDER BY adventure_id DESC LIMIT 5");
 
+    if($result->num_rows > 0) {
+		$adventure = array();
+		
+	while($row = mysqli_fetch_array($result)){
+		
+		$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
+        //array_push($holder, 'Title' => $row[0], 'Description' => $row['description'], 'Country' => getCountryName($row['country_id'],$this->mysql));
+		array_push($adventure, $holder);
+        //$adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$this->mysql);
+	}
+
+        //$title = $adventure['title'];
+        return $adventure;
+    }
+    else
+        return null;
+	}
+	function getAdventure ($id) {
+		$result = $this->mysql->query("SELECT * FROM adventure WHERE adventure_id={$id}");
+
+		if($result->num_rows == 1) {
+			$row = $result->fetch_assoc();
+
+			$adventure['title'] = $row['title'];
+			$adventure['description'] = $row['description'];
+			$adventure['country'] = parent::getCountryNameById($row['country_id'],$this->mysql);
+			$adventure['main_picture'] = $this->getPictureFilename($row['main_picture_id'],$this->mysql);
+
+			$result = $this->mysql->query("SELECT picture_id,name FROM picture where adventure_id={$id}");
+			$i = 0;
+			while($picture = $result->fetch_assoc()){
+				if($picture['picture_id'] != $row['main_picture_id'])
+					$adventure['picture'][$i] = "./uploads/".$picture{'name'};
+				$i++;
+			}
+
+			$result = $this->mysql->query("SELECT value FROM tags where adventure_id={$id}");
+			$i = 0;
+			while($tag = $result->fetch_assoc()){
+				$adventure['tag'][$i] = $tag["value"];
+				$i++;
+			}
+
+			$title = $adventure['title'];
+			return $adventure;
+		}
+		else
+			return null;
+	}
+	
+	function getAdventurePictures($id){
+		$result = $this->mysql->query("SELECT picture_id,name FROM picture where adventure_id={$id}");
+		$images = array();
+
+		while($picture = $result->fetch_assoc()){
+			//if($picture['picture_id'] != $row['main_picture_id'])
+				array_push($images, "./uploads/".$picture{'name'});
+		}	
+		return $images;
+	}
+	
+	function getPictureFilename($id,$mySQL="") {
+		$id = intval($id);
+		$mysql = $this->mysql;
+		if(!empty($mySQL)){$mysql = $mySQL;}
+		$result = $mysql->query("SELECT name FROM picture WHERE picture_id={$id}");
+		if($result->num_rows == 0) {
+			return null;
+		}
+
+		$row = $result->fetch_assoc();
+		return "./uploads/".$row{'name'};
+	}
+	
+	function createShortDescription($string){
+		$return = preg_split('/\s+/', $string);
+		$return = array_slice($return, 0, 20);
+		
+		$newString = "";
+		foreach($return as $r){
+			$newString .= $r." ";
+		}
+		return $newString;
+	}
 }
 
 ?>

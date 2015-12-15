@@ -6,12 +6,15 @@ class Country{
 	private $country_name;
 	private $country_code;
 	
-	function __construct($countryId) {
+	function __construct($countryId = "") {
 		$this->mySQL = new MySQLClass();
-		$this->createCountryDetails($countryId);
+		if(!empty($countryId)){
+			$this->createCountryDetails($countryId);
+		}
 	}
 	
-	function getCountryNameById($countryId){
+	function getCountryNameById($countryId, $mysql=""){
+		if(!empty($mysql)){$this->mySQL = $mysql;}
 		$id = intval($countryId);
 		$result = $this->mySQL->query("SELECT name FROM country WHERE id = {$id}");
 		if($result->num_rows == 0) {

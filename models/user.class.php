@@ -4,6 +4,10 @@ require_once 'package.class.php';
 require_once 'country.class.php';
 require_once 'adventure.class.php';
 
+/*
+	
+*/
+
 class User extends Package{
 		
 	protected $salt = "Ct4adbUeU8";
@@ -27,6 +31,15 @@ class User extends Package{
 			
 		
 		return false;
+	}
+	
+	function getUsernameFromID($id){
+		$data = $this->sql->query("SELECT username FROM users WHERE user_id = '". $id ."'");
+		if($data->num_rows == 0) {
+			return null;
+		}
+		$row = $data->fetch_assoc();
+		return $row['username'];
 	}
 	
 	function getUsername(){

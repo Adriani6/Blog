@@ -1,6 +1,10 @@
 <?php
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
+require_once 'models/adventure.class.php';
+require_once 'models/country.class.php';
+$a = new Country();
+$adv = new Adventure();
 $isLoggedIn = false;
 if(isset($_SESSION['user'])){
     $isLoggedIn = true;
@@ -139,6 +143,5 @@ if(isset($_SESSION['user'])){
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default" style="margin-top: 10px;">
-                <div class="panel-heading" style="background-color: orange;">Title</div>
-                <div class="panel-body">
+            
+                                

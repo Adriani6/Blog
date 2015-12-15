@@ -1,6 +1,8 @@
 <?php
 $title = "Create new adventure";
 require_once("site_body.php");
+require_once("models/siteuser.class.php");
+$siteUser = new SiteUser($mysql);
 
 
 

@@ -1,9 +1,15 @@
 <?php
+require_once 'models/user.class.php';
 $title = "Home";
+$user = new User();
+
 require_once("site_body.php");
+
+// site content
+include("topadventures.php");
 ?>
 
-	<!-- site content -->
+	
 
 <?php
 require_once("site_footer.php");
