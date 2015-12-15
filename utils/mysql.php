@@ -27,6 +27,7 @@ class MySQLClass{
 	}
 
 	public function query($query){
+		$this->getMysqli()->store_result();
 		$result = $this->getMysqli()->query($query);
 		if(!$result){
 			die('Could not query:' . $this->getMysqli()->error . " Query: ". $query);

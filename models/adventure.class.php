@@ -113,6 +113,7 @@ class Adventure extends Country{
     else
         return null;
 	}
+	
 	function getAdventure ($id) {
 		$result = $this->mysql->query("SELECT * FROM adventure WHERE adventure_id={$id}");
 
