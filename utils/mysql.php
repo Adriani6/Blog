@@ -25,6 +25,10 @@ class MySQLClass{
 		
 	}
 
+	function __destruct(){
+		$this->mysqli->close();
+	}
+	
 	function __construct() {
 		$this->mysqli = new mysqli($this->server, $this->user, $this->pass, $this->db, $this->port);
 		$this::$CONN++;
