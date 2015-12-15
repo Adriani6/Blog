@@ -31,7 +31,7 @@ class MySQLClass{
 		$result = $this->getMysqli()->query($query);
 		var_dump($result);
 		if(!$result){
-			die('Could not query:' . $this->getMysqli()->error . " Query: ". $query);
+			die('Could not query:' . $this->mysqli->error . " Query: ". $query . " " . mysqli_error());
 		}
 
 		return $result;
