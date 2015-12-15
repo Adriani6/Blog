@@ -1,4 +1,6 @@
 <?php
+error_reporting(-1);
+
 phpinfo();
 exit();
 require_once 'models/user.class.php';
