@@ -1,4 +1,6 @@
 <?php
+phpinfo();
+exit();
 require_once 'models/user.class.php';
 $title = "Home";
 $user = new User();
