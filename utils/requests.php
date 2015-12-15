@@ -5,7 +5,7 @@
 	require_once 'utils.php';
 	require_once "/../models/user.class.php";
 	
-	$handler = new Handler();
+	$handler = new Handler($mysql);
 	//$sql = new MySQLClass();
 	$user = new User($mysql);
 	//$user = new User();

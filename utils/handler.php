@@ -3,11 +3,12 @@
 #Requires the MySQL Class, so connection can be established.
 require_once 'mysql.php';
 require_once 'support_functions.php';
+require_once 'utils.php';
 
-$mySQL = new MySQLClass();
+$mySQL = $mysql;
 
 #Starts a session by default on the site.
-session_start();
+//session_start();
 
 /*
 	Handler Class, responsible for handling user account options, such as logging in/out, registering, checking sessions/cookies.
@@ -31,9 +32,9 @@ class Handler{
 	}
 
 	#Constructor for the class.
-	function __construct(){
+	function __construct($mysql){
 		#Opens new MySQL connection to the blog database.
-		$this->sql = new MySQLClass();
+		$this->sql = $mysql;
 	}
 	
 	#Login handles the verification of hashs.
