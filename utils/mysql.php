@@ -1,20 +1,20 @@
 <?php
 class MySQLClass{
 
-/*
+
 	protected $server = "eu-cdbr-azure-north-d.cloudapp.net";
 	protected $user = "b3216f07d20ee7";
 	protected $pass = "d597404f";
 	protected $db = "blog-db";
 	protected $port = "3306";
-*/
 
+/*
 	protected $server = "127.0.0.1";
 	protected $user = "root";
 	protected $pass = "";
-	protected $db = "blog";
+	protected $db = "blog-db";
 	protected $port = "3306";
-
+*/
 
 	private $mysqli = null;
 
@@ -24,10 +24,6 @@ class MySQLClass{
 
 	function __construct() {
 		$this->mysqli = new mysqli($this->server, $this->user, $this->pass, $this->db, $this->port);
-
-		if($this->getMysqli()->connect_errno) {
-            echo "Database connection failed.";
-        }
 	}
 
 	public function query($query){

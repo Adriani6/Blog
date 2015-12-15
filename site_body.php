@@ -18,6 +18,12 @@ if(isset($_SESSION['user'])){
 <head>
     <meta charset="utf-8">
 
+    <meta property="og:url"           content="http://www.balala.html" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Blog-dev" />
+    <meta property="og:description"   content="Testing facebook share button" />
+    <meta property="og:image"         content="imgs/wonderblog.png" />
+
     <title>
         <?php
         $title_suffix = "blog-dev - Adventures from all around the world";
@@ -33,6 +39,7 @@ if(isset($_SESSION['user'])){
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/adventure_body.css">
 
     <script src="js/jquery.js"></script>
     <script src="bootstrap_js/bootstrap.min.js"
@@ -126,6 +133,13 @@ if(isset($_SESSION['user'])){
     <img class="logo" src="imgs/wonderblog.png" alt="Logo">
     <a href="index.php">
 </div>
+<?php
+if($siteUser->isLoggedIn() == true)
+echo "Logged in as: ".$siteUser->getUsername().", user type: ".$siteUser->getType();
+else
+echo "Not logged in";
+
+?>
 <div class="nav_bottom">
     <div class="nav_items">
         <ul class="nav_board">

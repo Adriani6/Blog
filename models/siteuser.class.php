@@ -10,7 +10,7 @@ class SiteUser
     private $loggedIn;
 
     private $username;
-    private $userid;
+    private $user_id;
     private $type;
     private $country;
     private $verified;
@@ -47,7 +47,7 @@ class SiteUser
         if(!$this->isLoggedIn())
             return null;
 
-        return $this->userid;
+        return $this->user_id;
     }
 
     public function getCountry(){
@@ -60,7 +60,9 @@ class SiteUser
     function __construct($mySQL)
     {
         $this->mySQL = $mySQL;
-        //session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if(isset($_SESSION['siteuser_logged_in'])) {
             if ($_SESSION['siteuser_logged_in'] == true) {
@@ -70,8 +72,9 @@ class SiteUser
             else
                 $_SESSION['siteuser_logged_in'] = false;
         }
-        else
+        else {
             $_SESSION['siteuser_logged_in'] = false;
+        }
 
         /*
         if(isset($_COOKIE['username']) && isset($_COOKIE['login_token']))
@@ -129,8 +132,8 @@ class SiteUser
         $_SESSION['siteuser_username'] = null;
 
         $this->username = null;
-        $this->userid = null;
-        $this->account_type = null;
+        $this->user_id = null;
+        $this->type = null;
         $this->country = null;
         $this->verified = null;
     }
@@ -145,7 +148,7 @@ class SiteUser
         $this->country = new Country((int)$row['country_id']);
         $this->verified = $row['verified'];
         $this->type = $row['type'];
-        $this->userid = $row['user_id'];
+        $this->user_id = $row['user_id'];
         //$this->loadAdventures();
     }
 
@@ -186,7 +189,7 @@ class SiteUser
 
         if (strlen($name) > 50) {
             array_push($registrationResult,"Name can be maximum 50 characters long.");
-        } else if (!preg_match("/^[a-zA-Z1]*$/", $name)) {
+        } else if (!preg_match("/^[a-zA-Z1 ]*$/", $name)) {
             array_push($registrationResult, "Name can only contain letters.");
         }
 
@@ -201,8 +204,9 @@ class SiteUser
             return $registrationResult;
         }
 
-        $stmt = $mySQL->prepare("INSERT INTO users (username, password, name, country_id) VALUES (?,?,?,?)");
-        $stmt->bind_param("sssi",$username,$hash,$name,$id);
+        $type = "Reader";
+        $stmt = $mySQL->prepare("INSERT INTO users (username, password, name, country_id, type) VALUES (?,?,?,?,?)");
+        $stmt->bind_param("sssis",$username,$hash,$name,$id,$type);
         $stmt->execute();
 
         return true;
