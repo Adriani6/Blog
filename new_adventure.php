@@ -37,6 +37,9 @@ if($siteUser->isLoggedIn() == false){
 else if($siteUser->getType() == "Reader") {
     $error = "'Reader' account types cannot add adventures. Contact administrator to upgrade your account.";
 }
+else if($siteUser->getType() == "Admin") { // admin can add adventures and can edit any adventure
+
+}
 else if(isset($_GET['mode']) && $_GET['mode'] == "edit")
 {
     $stmt = $mysql->prepare("SELECT * FROM adventure WHERE user_id=? AND adventure_id=?");
@@ -130,6 +133,9 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                     $result = $mySQL->query("SELECT * FROM picture WHERE adventure_id={$edit_adventure['adventure_id']}");
                     while($picture = $result->fetch_assoc())
                     {
+                        if($picture['picture_id'] == $edit_adventure['main_picture_id'])
+                            continue;
+
                         echo '<div class="edit_picture_element">';
                         echo '<span>'.$picture['name'].'</span>';
                         echo '<a class="btn edit_picture_element_remove_btn"><span class="glyphicon glyphicon-remove"></span>Remove</a>';
@@ -240,6 +246,7 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                 });
 
                 $("#add_tag_button").click( function() {
+                    alert($("#add_tag_input").val());
                     if($("#add_tag_input").val().length < 3)
                     {
                         alert("Tags must be at least 3 characters long.");
@@ -296,11 +303,14 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                         // Code to run if the request succeeds;
                         // the response is passed to the function
                         success: function( result ) {
-                            //alert(result);
                             if(result.errors.length == 0)
                             {
-                                $("#add_adventure_success").text(JSON.stringify(result, undefined, 2) + "LEN: " +result.errors.length);
-                                //$("#add_adventure_success").text("Adventure added. Check it out <a href='/adventure.php?id=" +"'>here</a>");
+                                //$("#add_adventure_success").text(JSON.stringify(result, undefined, 2) + "LEN: " +result.errors.length);
+                                if(result.mode == "add")
+                                    $("#add_adventure_success").html("Adventure added. Check it out <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
+                                else if(result.mode == "edit")
+                                    $("#add_adventure_success").html("Adventure has been edited. Check it out <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
+
                                 $("#add_adventure_success").show();
 
                                 $('html, body').animate({

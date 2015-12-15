@@ -129,6 +129,13 @@ if(isset($_SESSION['user'])){
     <img class="logo" src="imgs/wonderblog.png" alt="Logo">
     <a href="index.php">
 </div>
+<?php
+if($siteUser->isLoggedIn() == true)
+echo "Logged in as: ".$siteUser->getUsername().", user type: ".$siteUser->getType();
+else
+echo "Not logged in";
+
+?>
 <div class="nav_bottom">
     <div class="nav_items">
         <ul class="nav_board">
