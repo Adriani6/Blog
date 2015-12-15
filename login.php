@@ -2,8 +2,7 @@
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
 
-if(isset($_SESSION['user'])){
-	$handler->checkCookie($_SESSION['user']);
+if(isset($_SESSION['userClass'])){
 	header("Location: index.php");
 }
 ?>
@@ -55,7 +54,7 @@ if(isset($_SESSION['user'])){
 					<div class="panel-body">
 						<h4>Login</h4>
 						<hr />
-						<form class="form-horizontal">
+						<form method="POST" action="utils/requests.php" class="form-horizontal">
 							<div class="form-group">
 								<label for="username" class="col-sm-2 control-label">Username</label>
 								<div class="col-sm-10">
@@ -79,7 +78,7 @@ if(isset($_SESSION['user'])){
 							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
-									<button type="submit" class="btn btn-default">Sign in</button>
+									<button type="submit" name="login" class="btn btn-default">Sign in</button>
 									<a href="register.php" style="float: right;">Don't have an account? Register!</a>
 								</div>
 							</div>

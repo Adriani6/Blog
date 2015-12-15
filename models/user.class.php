@@ -115,10 +115,12 @@ class User extends Package{
 		
 	}
 	
-	function getAccountType(){
-		$data = $this->sql->prepare("SELECT account_type FROM users WHERE username = {$this->username}");
+	function getAccountType($sql){
+		$data = $sql->query("SELECT type FROM users WHERE username = '{$this->username}'");
+		//$data->bind_param('s', $this->username);
+		//$data->execute();
 		$row = $data->fetch_assoc();
-		return $row['account_type'];
+		return $row['type'];
 	}
 	
 	function setCountry($country){$this->country = $country;}

@@ -1,6 +1,6 @@
 <?php
-require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/utils.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/support_functions.php");
+require_once("/../utils/utils.php");
+require_once("/../utils/support_functions.php");
 
 
 $_POST['title'] = htmlentities($_POST['title']);

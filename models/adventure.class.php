@@ -1,6 +1,6 @@
 <?php
 require_once '/../utils/mysql.php';
-require_once 'models/country.class.php';
+require_once 'country.class.php';
 
 class Adventure extends Country{
 	
@@ -20,6 +20,12 @@ class Adventure extends Country{
 		if(!empty($adventureId)){
 			$this->load($adventureId);
 		}
+	}
+	
+	function countAdventures(){
+		$result = $this->mysql->query("SELECT adventure_id FROM adventure");
+		
+		return mysqli_num_rows($result);
 	}
 	
 	public function load($adventureId) {
@@ -64,6 +70,27 @@ class Adventure extends Country{
 	
 	function removeVote(){
 		
+	}
+	
+	function getOffsetAdventures($offset){
+		$result = $this->mysql->query("SELECT * FROM adventure LIMIT 5 OFFSET {$offset}");
+
+		if($result->num_rows > 0) {
+			$adventure = array();
+			
+		while($row = mysqli_fetch_array($result)){
+			
+			$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
+			//array_push($holder, 'Title' => $row[0], 'Description' => $row['description'], 'Country' => getCountryName($row['country_id'],$this->mysql));
+			array_push($adventure, $holder);
+			//$adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$this->mysql);
+		}
+
+			//$title = $adventure['title'];
+			return $adventure;
+		}
+		else
+			return null;	
 	}
 	
 	function getLastFiveAdventures() {

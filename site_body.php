@@ -1,14 +1,19 @@
 <?php
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
-require_once 'models/adventure.class.php';
-require_once 'models/country.class.php';
+require_once 'models/user.class.php';
+$isLoggedIn = false;
+$userObject;
 $a = new Country();
 $adv = new Adventure();
-$isLoggedIn = false;
-if(isset($_SESSION['user'])){
-    $isLoggedIn = true;
-    $handler->checkCookie($_SESSION['user']);
+
+if(isset($_SESSION['userClass'])){
+	$userObject = $_SESSION['userClass'];
+	$isLoggedIn = $userObject->isLoggedin();
+}
+function __autoload($class){
+	$file = "models/".$class.".class.php";
+	require_once($file);
 }
 ?>
 
@@ -80,10 +85,11 @@ if(isset($_SESSION['user'])){
                 <!-- List User Options Here -->
                 <div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
                     <a href="panel/login.php">User CP</a><br />
-                    <?php if(isset($_SESSION['type']) && $_SESSION['type'] === "ADMIN"){
+                    <?php if(isset($_SESSION['userClass'])){
+							if($userObject->getAccountType(new MySQLClass()) === "ADMIN"){
                         ?>
                         <a href="panel/admincp.php">Admin CP</a><br />
-                    <?php } ?>
+                    <?php } } ?>
                     <a href="utils/requests.php?a=logout">Log Out</a>
                 </div>
 
@@ -122,7 +128,7 @@ if(isset($_SESSION['user'])){
 <div class="nav_top">
     <div class="nav_top_content">
         <?php if($isLoggedIn){
-            echo $_SESSION['user'];
+            echo $userObject->getUsername();
             ?>
         <?php }else{ ?>
             Login/Register

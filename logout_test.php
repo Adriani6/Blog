@@ -1,7 +1,7 @@
 <?php
-require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/utils.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/utils/support_functions.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/site_body.php");
+require_once("utils/utils.php");
+require_once("utils/support_functions.php");
+require_once("site_body.php");
 
 if($siteUser->isLoggedIn() == false)
 {
@@ -16,5 +16,5 @@ else
 
 
 
-require_once("{$_SERVER['DOCUMENT_ROOT']}/site_footer.php");
+require_once("site_footer.php");
 ?>
