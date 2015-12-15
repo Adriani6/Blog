@@ -6,7 +6,7 @@
 	require_once "/../models/user.class.php";
 	
 	$handler = new Handler();
-	$sql = new MySQLClass();
+	//$sql = new MySQLClass();
 	$user = new User();
 	//$user = new User();
 	#Check for form POST & Handle a login/register request.

@@ -87,7 +87,7 @@ function __autoload($class){
                 <div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
                     <a href="panel/login.php">User CP</a><br />
                     <?php if(isset($_SESSION['userClass'])){
-							if($userObject->getAccountType(new MySQLClass()) === "ADMIN"){
+							if($userObject->getAccountType($mysql) === "ADMIN"){
                         ?>
                         <a href="panel/admincp.php">Admin CP</a><br />
                     <?php } } ?>
