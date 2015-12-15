@@ -1,8 +1,8 @@
 <?php
 error_reporting(-1);
 
-phpinfo();
-exit();
+//phpinfo();
+//exit();
 require_once 'models/user.class.php';
 $title = "Home";
 $user = new User();
