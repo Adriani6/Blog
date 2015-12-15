@@ -68,7 +68,16 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
 }
 ?>
 
-    <h4>Add adventure</h4>
+    <h4>
+        <?php
+        if(!isset($edit_adventure['adventure_id']))
+            echo "Add adventure";
+        else
+            echo "Edit adventure";
+        ?>
+
+
+    </h4>
     <hr />
 
     <div id="add_adventure_success" style="display:none;" class="alert alert-success"></div>
@@ -195,7 +204,14 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" name="create" id="create_button">Create</button>
+                <button type="submit" class="btn btn-default" name="create" id="create_button">
+                    <?php
+                    if(!isset($edit_adventure['adventure_id']))
+                        echo "Create";
+                    else
+                        echo "Edit";
+                    ?>
+                </button>
             </div>
         </div>
     </form>

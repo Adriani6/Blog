@@ -189,7 +189,7 @@ class SiteUser
 
         if (strlen($name) > 50) {
             array_push($registrationResult,"Name can be maximum 50 characters long.");
-        } else if (!preg_match("/^[a-zA-Z1]*$/", $name)) {
+        } else if (!preg_match("/^[a-zA-Z1 ]*$/", $name)) {
             array_push($registrationResult, "Name can only contain letters.");
         }
 
@@ -204,8 +204,9 @@ class SiteUser
             return $registrationResult;
         }
 
-        $stmt = $mySQL->prepare("INSERT INTO users (username, password, name, country_id) VALUES (?,?,?,?)");
-        $stmt->bind_param("sssi",$username,$hash,$name,$id);
+        $type = "Reader";
+        $stmt = $mySQL->prepare("INSERT INTO users (username, password, name, country_id, type) VALUES (?,?,?,?,?)");
+        $stmt->bind_param("sssis",$username,$hash,$name,$id,$type);
         $stmt->execute();
 
         return true;
