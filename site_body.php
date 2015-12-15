@@ -4,8 +4,8 @@ require_once 'utils/requests.php';
 require_once 'models/user.class.php';
 $isLoggedIn = false;
 $userObject;
-$a = new Country();
-$adv = new Adventure();
+$a = new Country($mysql);
+$adv = new Adventure($mysql);
 
 if(isset($_SESSION['userClass'])){
 	$userObject = $_SESSION['userClass'];

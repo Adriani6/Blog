@@ -6,8 +6,8 @@ class Country{
 	private $country_name;
 	private $country_code;
 	
-	function __construct($countryId = "") {
-		$this->mySQL = new MySQLClass();
+	function __construct($mysql, $countryId = "") {
+		$this->mySQL = $mysql;
 		if(!empty($countryId)){
 			$this->createCountryDetails($countryId);
 		}

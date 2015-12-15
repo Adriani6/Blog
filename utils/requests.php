@@ -7,7 +7,7 @@
 	
 	$handler = new Handler();
 	//$sql = new MySQLClass();
-	$user = new User();
+	$user = new User($mysql);
 	//$user = new User();
 	#Check for form POST & Handle a login/register request.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){

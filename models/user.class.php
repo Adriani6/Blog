@@ -17,8 +17,8 @@ class User extends Package{
 	private $userid;
 	private $adventures = array();
 	
-	function __construct($username = "", $password = ""){
-		$this->sql = new MySQLClass();
+	function __construct($mysql, $username = "", $password = ""){
+		$this->sql = $mysql;
 		if(!empty($username) && !empty($password)){
 			$this->login($username, $password);
 		}

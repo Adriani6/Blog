@@ -15,8 +15,8 @@ class Adventure extends Country{
 	
 	
 
-	function __construct($adventureId = ""){
-		$this->mysql = new MySQLClass();
+	function __construct($mysql, $adventureId = ""){
+		$this->mysql = $mysql;
 		if(!empty($adventureId)){
 			$this->load($adventureId);
 		}
