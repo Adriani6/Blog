@@ -48,30 +48,6 @@ function __autoload($class){
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="css/adventure_body.css">
     <link rel="stylesheet" href="css/profile.css">
-
-	
-
-	<script>
-	//This sets the toolbar to stay on the page while scrolling, there's a bug with positioning...
-	/*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	$(document).ready(function(){
-	    var $sidebar   = $("#subNav"),
-        $window    = $(window),
-        offset     = $sidebar.offset(),
-        topPadding = 15;
-
-		$window.scroll(function() {
-			if ($window.scrollTop() > offset.top) {
-				$sidebar.addClass('fixed');
-			} else {
-				$sidebar.removeClass('fixed');
-			}
-		});
-	});
-*/
-
-</script>
-
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->

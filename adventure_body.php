@@ -63,15 +63,21 @@ if(isset($_POST['vote_submit']))
         echo "<div class='alert alert-info'>Your vote has been added. Thank you!</div>";
 }
 
+#Check if POST Request with Comment is received.
 if(isset($_POST['post_comment'])){
+	//Check if the comment field was empty.
 	if(empty($_POST['comment'])){
+		//Return error
 		$error = "You can't post an empty comment.";
 	}else{
+			//Prepare Statement
 		    $stmt = $mysql->prepare("INSERT INTO comments (user_id, adventure_id, message) VALUES (?, ?, ?)");
-            $stmt->bind_param("iis",$userObject->getUsername(),$adventure['adventure_id'],$_POST['comment']);
+            $stmt->bind_param("iis",$userObject->getUserId(),$adventure['adventure_id'],$_POST['comment']);
             $stmt->execute();
+			//Debug message, which isn't displayed to the user.
 			echo "Comment Added.";
-            //$r = $stmt->get_result();
+			//Redirect user to another page, so the POST header gets cleared.
+            header("Location: adventure.php?id={$adventure['adventure_id']}");
 	}	
 }
 ?>
