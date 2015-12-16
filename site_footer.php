@@ -15,9 +15,7 @@
 	});
 	</script>
     
-    <script src="bootstrap_js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
+    <script src="bootstrap_js/bootstrap.min.js"></script>
     <script src="js/html_utils.js"></script>
     <script src="js/effects/effects.js"></script>
 

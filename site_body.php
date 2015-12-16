@@ -21,7 +21,7 @@ function __autoload($class){
 
 <html lang="en">
 <head>
-	<script src="js/jquery.js"></script>
+	
     <meta charset="utf-8">
 
     <meta property="og:url"           content="http://www.balala.html" />
@@ -42,6 +42,7 @@ function __autoload($class){
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="SitePoint">
 
+	<script src="js/jquery.js"></script>
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
