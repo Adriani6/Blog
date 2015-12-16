@@ -176,6 +176,16 @@ function getAdventure ($id,$mysql) {
             $adventure['tag'][$i] = $tag["value"];
             $i++;
         }
+		
+		$result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$id} GROUP BY date DESC");
+		
+		$comments = array();
+		
+		while($comment = $result->fetch_assoc()){
+			array_push($comments, $comment);
+		}
+		
+		$adventure['comments'] = $comments;
 
         $title = $adventure['title'];
         return $adventure;

@@ -62,6 +62,18 @@ if(isset($_POST['vote_submit']))
     else
         echo "<div class='alert alert-info'>Your vote has been added. Thank you!</div>";
 }
+
+if(isset($_POST['post_comment'])){
+	if(empty($_POST['comment'])){
+		$error = "You can't post an empty comment.";
+	}else{
+		    $stmt = $mysql->prepare("INSERT INTO comments (user_id, adventure_id, message) VALUES (?, ?, ?)");
+            $stmt->bind_param("iis",$userObject->getUsername(),$adventure['adventure_id'],$_POST['comment']);
+            $stmt->execute();
+			echo "Comment Added.";
+            //$r = $stmt->get_result();
+	}	
+}
 ?>
 <div class="votingFloatPanel" style="position: fixed; right: 0; margin-right: 15px; margin-top: 15px;">
 	<div class="panel panel-primary">
@@ -139,7 +151,34 @@ if(isset($_POST['vote_submit']))
   </div>
   
   <?php echo "<p style='margin-left: 10px; margin-right: 10px;'> {$adventure['description']} </p>"; ?>
-  
+  <blockquote class="blockquote-reverse">
+ <p>Posted by <?php echo $adventure['username']; ?></p>
+</blockquote>
+ 
+</div>
+<?php 
+$comments = $adventure['comments'];
+foreach($comments as $comment){
+	$commentUser = User::getUsernameById($comment['user_id'], $mysql); 
+	$datetime = new DateTime($comment['date']);
+	echo "<div class='panel panel-default'>
+		  <div class='panel-body'>
+		  {$comment['message']}
+		  </div>
+		  <div class='panel-footer'>Comment By: <b>{$commentUser}</b> <span>On: <b>{$datetime->format('Y-m-d')}</b> at <b>{$datetime->format('H:i:s')}</b></span>
+		  </div>
+		</div>";
+}
+?>
+<div class="well">
+<?php if(isset($_SESSION['userClass'])){ ?>
+<form method="POST" action="adventure.php?id=<?php echo $adventure["adventure_id"]; ?>">
+<textarea style="resize:none" class="form-control" name="comment" rows="5"></textarea><br />
+<button name='post_comment' type="submit" class="btn btn-danger">Post Comment</button>
+</form>
+<?php }else{ ?>
+<div class="alert alert-danger" role="alert">Please login to post comments.</div>
+<?php } ?>
 </div>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
