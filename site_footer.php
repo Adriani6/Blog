@@ -5,7 +5,8 @@
 
     </div> <!-- row -->
 </div> <!-- container -->
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
 	$(document).ready(function(){
 		$('.dropdown-toggle').dropdown()
@@ -14,7 +15,7 @@
 		});
 	});
 	</script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    
     <script src="bootstrap_js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
