@@ -1,54 +1,50 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 1204848
- * Date: 30/11/2015
- * Time: 16:27
- */
+$title = "Profile";
+include("models/user.class.php");
+require_once("utils/utils.php");
+require_once("utils/support_functions.php");
 
-//Connection to database
-include ("db_connect.php");
+include("site_body.php");
 
-//user_id stored in local variable.
-$ID = $_GET["ID"];
+
+$userData = User::getUserData($_GET['user'], $mysql)[0];
+$userAdventures = $adv->getUsersAdventures($_GET['user']);
 ?>
+<div class="panel panel-default" style="margin-top: 20px;">
+	<div class="panel-body">
+		<div class="page-header">
+			<h3><?php echo $userData['Username'];			 
+				if($userData['Verified'] === '1'){
+					echo "<small><span class='glyphicon glyphicon-ok-circle' style='color: blue;' title='Verified'> </span>";
+				} ?>
+			
+			<span style='float:right;'><?php echo "Last Seen: {$userData['LastSeen']}"; ?></span></small></h3>
+		</div>
+		<blockquote>
+			<p><?php echo $userData['Name']; ?></p>
+			<footer class='text-capitalize'><?php echo "{$userData['Type']} from {$a->getCountryNameById($userData['Country'])}"; ?></footer>
+		</blockquote>
+		<hr />
+		<h3>Contributions</h3>
+			<div class='row'>
+			  <?php foreach($userAdventures as $hisadv){
+				  echo "
+						
+			  <div class='col-sm-6 col-md-4'>
+				<div class='thumbnail'>
+				  <img src='{$hisadv["MainPicture"]}' alt='...'>
+				  <div class='caption'>
+					<h3>{$hisadv['Title']}</h3>
+					<p>{$hisadv['ShortDescription']}...</p>
+					<p><a href='adventure.php?id={$hisadv['ID']}'>View Adventure</a></p>
+				  </div>
+				</div>		  
+			</div>";
+		  } ?>
+		</div>
+	</div>
+</div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<nav>
-    <?//Link to homepage.?>
-    <p><a href=/coursework/Index.php>Home</a></p>
-    <?//Link to panel.?>
-    <p><a href=/coursework/Panel.php>Edit Profile</a></p>
-    <?
-
-    //Getting name of user from database based on userID.
-    $sql_query_name = "SELECT name FROM Users where user_id = $ID";
-    $result = $db->query($sql_query_name);
-    while($row = $result->fetch_array()){
-        echo "<p>Name: ".$row['name'];
-    }
-
-    //Getting user's country from database based on userID.
-    $sql_query_country = "SELECT country FROM Users where user_id = $ID";
-    $result = $db->query($sql_query_country);
-    while($row = $result->fetch_array()){
-        echo "<p>Country: ".$row['country'];
-    }
-    ?>
-    <p>Adventures:</p>
-    <?
-    //Creating list of adventure links using userID.
-    $sql_query_adventures = "SELECT * FROM Adventure where user_ID = $ID";
-    $result = $db->query($sql_query_adventures);
-    while($row = $result->fetch_array()){
-        echo "<li><a href=\"Adventure.php?adventureID=". $row['adventure_id']."\">".$row['title']."</a>";
-    }
-    ?>
-</nav>
-
+<?php
+require_once("site_footer.php");
+?>

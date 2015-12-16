@@ -73,8 +73,21 @@ class Adventure extends Country{
 		
 	}
 	
-	function getOffsetAdventures($offset){
-		$result = $this->mysql->query("SELECT * FROM adventure LIMIT 5 OFFSET {$offset}");
+	function getOffsetAdventures($offset, $link = ""){
+		$query = "SELECT * FROM adventure ";
+		if(!empty($link)){
+			if($link === "newest"){
+				$query .= "ORDER BY adventure_id DESC";
+			}else if($link === "latest"){
+				$query .= "ORDER BY adventure_id ASC";
+			}else if($link === "top"){
+				$query .= "ORDER BY score DESC";
+			}else if($link === "bottom"){
+				$query .= "ORDER BY score ASC";
+			}
+		}
+		$query .= " LIMIT 5 OFFSET {$offset}";
+		$result = $this->mysql->query($query);
 
 		if($result->num_rows > 0) {
 			$adventure = array();
@@ -119,12 +132,13 @@ class Adventure extends Country{
 	}
 	
 	function getAdventure ($id) {
-		$result = $this->mysql->query("SELECT * FROM adventure WHERE adventure_id={$id}");
+		$result = $this->mysql->query("SELECT * FROM adventure WHERE adventure_id = {$id}");
 
 		if($result->num_rows == 1) {
 			$row = $result->fetch_assoc();
-
-			$adventure['username'] = User::getUsernameById($row['user_id'], $this->mysql);
+			if(!empty($row['user_id'])){
+				$adventure['username'] = User::getUsernameById($row['user_id'], $this->mysql);
+			}else{$adventure['username'] = "Undefined User";}
 			$adventure['title'] = $row['title'];
 			$adventure['description'] = $row['description'];
 			$adventure['country'] = parent::getCountryNameById($row['country_id'],$this->mysql);
@@ -148,8 +162,9 @@ class Adventure extends Country{
 			$title = $adventure['title'];
 			return $adventure;
 		}
-		else
+		else{
 			return null;
+		}
 	}
 	
 	function getUsersAdventures($userid){

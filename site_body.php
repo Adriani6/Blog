@@ -64,11 +64,32 @@ function __autoload($class){
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
 	$(document).ready(function(){
+		$('.dropdown-toggle').dropdown()
 		$("#calendar").click(function(){
 			$("#calendar").datepicker();
 		});
 	});
 	</script>
+	<script>
+	//This sets the toolbar to stay on the page while scrolling, there's a bug with positioning...
+	/*
+	$(document).ready(function(){
+	    var $sidebar   = $("#subNav"),
+        $window    = $(window),
+        offset     = $sidebar.offset(),
+        topPadding = 15;
+
+		$window.scroll(function() {
+			if ($window.scrollTop() > offset.top) {
+				$sidebar.addClass('fixed');
+			} else {
+				$sidebar.removeClass('fixed');
+			}
+		});
+	});
+*/
+
+</script>
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -129,7 +150,7 @@ function __autoload($class){
 <div class="nav_top">
     <div class="nav_top_content">
         <?php if($isLoggedIn){
-            echo $userObject->getUsername();
+            echo "<div class='glyphicon glyphicon-user' style='display: inline-block; line-height: normal; vertical-align: middle;'>{$userObject->getUsername()}</div>";
             ?>
         <?php }else{ ?>
             Login/Register
@@ -140,17 +161,12 @@ function __autoload($class){
     <img class="logo" src="imgs/wonderblog.png" alt="Logo">
     <a href="index.php">
 </div>
-<?php
-if($siteUser->isLoggedIn() == true)
-echo "Logged in as: ".$siteUser->getUsername().", user type: ".$siteUser->getType();
-else
-echo "Not logged in";
 
-?>
 <div class="nav_bottom">
     <div class="nav_items">
         <ul class="nav_board">
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
+			<li class="nav_board"><a href="alladventures.php" class="nav_board">Adventures</a></li>
             <li class="nav_board"><a href="login_test.php" class="nav_board">Log in</a></li>
             <li class="nav_board"><a href="logout_test.php" class="nav_board">Log out</a></li>
             <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
