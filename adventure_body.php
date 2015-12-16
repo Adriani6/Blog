@@ -5,41 +5,32 @@
 	</div>
 	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 	  <!-- Indicators -->
-	  <ol class="carousel-indicators">
-	  
-	  <?php
-	  
+
+	<div class="carousel-inner" role="listbox">
+	  <!-- Wrapper for slides --><?php 
 			$i = 0;
 			foreach($adventure['picture'] as $picture){
-				putImage($picture, $adventure['title'], $adventure['country'], $i);
-				if($i == 0){
-					echo "<li data-target='#carousel-example-generic' data-slide-to='0' class='active'></li>";
-				}else{
-					echo "<li data-target='#carousel-example-generic' data-slide-to='{$i}'></li>";
-				}
-				$i++;
-			}
-	  ?>
-	  </ol>
-
-	  <!-- Wrapper for slides -->
-	  <div class="carousel-inner" role="listbox">
-		
-		<?php 
-			function putImage($url, $title, $country, $i){
 				$output = "";
-				if($i == 0){$output.="<div class='item active'>";}else{$output.="<div class='item'>";}
+				if($i == 0){
+					$output.="<div class='item active' style='height: 500px;'>";
+					}else{
+						$output.="<div class='item'>";
+					}
+					
 				$output.= "
-						<img src='{$url}' alt='{$url}'>
+						<img src='http://blog-dev.azurewebsites.net/{$picture}' height='400px' width='100%' alt='{$picture}'>
 						<div class='carousel-caption'>
-						<h3>{$country}</h3>
-						<p>{$title}</p>
+						<h3>{$adventure['country']}</h3>
+						<p>{$adventure['title']}</p>
 						</div>
 						</div>";
-						
+
 						echo $output;
 			} ?>
-		</div>
+		  
+	</div>
+		
+
 
 	  <!-- Controls -->
 	  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -52,6 +43,9 @@
 	  </a>
 	</div>
   </div>
+  
+  <?php echo "<p style='margin-left: 10px; margin-right: 10px;'> {$adventure['description']} </p>"; ?>
+  
 </div>
 
     <div id="fb-root"></div>
