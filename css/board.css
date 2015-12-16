@@ -162,3 +162,9 @@ input[type="submit"]{
 	width: 400px !important;
 	margin-left: 50% !important;
 }
+.votingFloatPanel{
+height: 50px;
+width: 250px;
+background-color: grey;
+z-index: 9999;
+}
