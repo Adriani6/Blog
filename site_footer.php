@@ -5,9 +5,8 @@
 
     </div> <!-- row -->
 </div> <!-- container -->
-
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script>
-	/*<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*/
 	$(document).ready(function(){
 		$('.dropdown-toggle').dropdown()
 		$("#calendar").click(function(){
