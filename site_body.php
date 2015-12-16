@@ -21,6 +21,7 @@ function __autoload($class){
 
 <html lang="en">
 <head>
+	<script src="js/jquery.js"></script>
     <meta charset="utf-8">
 
     <meta property="og:url"           content="http://www.balala.html" />
