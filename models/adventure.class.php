@@ -1,6 +1,7 @@
 <?php
 require_once '/../utils/mysql.php';
 require_once 'country.class.php';
+require_once 'user.class.php';
 
 class Adventure extends Country{
 	
@@ -123,6 +124,7 @@ class Adventure extends Country{
 		if($result->num_rows == 1) {
 			$row = $result->fetch_assoc();
 
+			$adventure['username'] = User::getUsernameById($row['user_id'], $this->mysql);
 			$adventure['title'] = $row['title'];
 			$adventure['description'] = $row['description'];
 			$adventure['country'] = parent::getCountryNameById($row['country_id'],$this->mysql);
@@ -148,6 +150,29 @@ class Adventure extends Country{
 		}
 		else
 			return null;
+	}
+	
+	function getUsersAdventures($userid){
+	    $result = $this->mysql->query("SELECT * FROM adventure WHERE user_id = {$userid}");
+		if(!$result){
+				die('Could not query:' . $this->mysql->error);
+			}
+
+		if($result->num_rows > 0) {
+			$adventure = array();
+			
+		while($row = mysqli_fetch_array($result)){
+			
+			$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
+			
+			array_push($adventure, $holder);
+
+		}
+
+			return $adventure;
+		}
+		else
+			return null;	
 	}
 	
 	function getAdventurePictures($id){

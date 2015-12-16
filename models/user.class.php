@@ -128,6 +128,29 @@ class User extends Package{
 	function getSalt(){
 		return $this->salt;
 	}
+	
+	static function getUserData($id, $mysql){
+		$data = $mysql->query("SELECT * FROM users WHERE user_id = {$id}");
+		if($data->num_rows == 0) {
+			return null;
+		}
+		$dataArray = array();
+		$row = $data->fetch_assoc();
+		
+		array_push($dataArray, array('Username' => $row['username'], 'Name' => $row['name'], 'Verified' => $row['verified'], 'LastSeen' => $row['last_login'], 'Type' => $row['type'], 'Country' => $row['country_id']));
+		
+		return $dataArray;
+	}
+	
+	static function getUsernameById($id, $mysql){
+		$data = $mysql->query("SELECT * FROM users WHERE user_id = {$id}");
+		if($data->num_rows == 0) {
+			return null;
+		}
+		$row = $data->fetch_assoc();
+		
+		return $row['username'];
+	}
 }
 
 ?>

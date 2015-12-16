@@ -48,7 +48,7 @@ class Country{
 	function getCountryCode(){
 		return $this->country_code;
 	}
-	
+		
 }
 
 ?>

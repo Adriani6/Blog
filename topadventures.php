@@ -6,7 +6,7 @@
 	<div class='panel panel-default' style='margin-top: 10px;'>
 		<div class='panel-heading' style='background-color: orange;'>
 			<a href='adventure.php?id={$adve['ID']}'>".$adve['Title']."</a>
-			<span style='float:right;' class='glyphicon glyphicon-user'>{$user->getUsernameFromID($adve['User'])}</span>
+			<span style='float:right;' class='glyphicon glyphicon-user'><a href='profile.php?user={$adve['User']}'>{$user->getUsernameFromID($adve['User'])}</a></span>
 		</div>
 		<div class='panel-body'>
 			<span style='float:left;'><a href=''>View Adventure</a></span>

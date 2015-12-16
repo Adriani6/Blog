@@ -47,7 +47,7 @@ function __autoload($class){
     <link rel="stylesheet" href="css/adventure_body.css">
     <link rel="stylesheet" href="css/profile.css">
 
-    <script src="js/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="bootstrap_js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
