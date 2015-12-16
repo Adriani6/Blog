@@ -1,14 +1,17 @@
 <?php
+
+require_once("utils/support_functions.php");
 require_once("site_body.php");
-require_once("utils/utils.php");
-require_once("utils/handler.php");
-require_once("models/adventure.class.php");
 
-$id = intval($_GET['id']);
-$adventure = $adv->getAdventure($id,$mySQL);
+$adventure = null;
 
+if(isset($_GET['id']))
+    $adventure = getAdventure($_GET['id'],$mysql);
 
-require_once("adventure_body.php");
+if($adventure != null)
+    require_once("adventure_body.php");
+else
+    echo "<div class='alert alert-warning'>The adventure you are looking for does not exist or has been deleted.</div>";
 ?>
 
 

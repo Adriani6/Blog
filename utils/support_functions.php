@@ -138,19 +138,25 @@ function generateUniqueImageName($filename, $username, $mySQL) {
 //$adventure['description']
 //$adventure['country']
 //$adventure['main_picture']
+//$adventure['score']
 //$adventure['username']
 //$adventure['picture'][]
 //$adventure['tag'][]
 function getAdventure ($id,$mysql) {
-    $result = $mysql->query("SELECT * FROM adventure WHERE adventure_id={$id}");
+    $stmt = $mysql->prepare("SELECT * FROM adventure WHERE adventure_id=?");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if($result->num_rows == 1) {
         $row = $result->fetch_assoc();
 
+        $adventure['adventure_id'] = $row['adventure_id'];
         $adventure['title'] = $row['title'];
         $adventure['description'] = $row['description'];
         $adventure['country'] = getCountryName($row['country_id'],$mysql);
         $adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$mysql);
+        $adventure['rating'] = $row['rating'];
 
         $result = $mysql->query("SELECT username FROM users WHERE user_id={$row['user_id']}");
         $user_row= $result->fetch_assoc();
