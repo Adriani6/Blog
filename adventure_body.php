@@ -11,7 +11,7 @@
 	  
 			$i = 0;
 			foreach($adventure['picture'] as $picture){
-				putImage($picture, $adventure['title'], $adventure['country']);
+				putImage($picture, $adventure['title'], $adventure['country'], $i);
 				if($i == 0){
 					echo "<li data-target='#carousel-example-generic' data-slide-to='0' class='active'></li>";
 				}else{
@@ -24,24 +24,22 @@
 
 	  <!-- Wrapper for slides -->
 	  <div class="carousel-inner" role="listbox">
-		<div class="item active">
-		  <img src="..." alt="...">
-		  <div class="carousel-caption">
-			...
-		  </div>
-		</div>
+		
 		<?php 
-			function putImage($url, $title, $country){
-				echo "<div class='item'>
+			function putImage($url, $title, $country, $i){
+				$output = "";
+				if($i == 0){$output.="<div class='item active'>";}else{$output.="<div class='item'>";}
+				$output.= "
 						<img src='{$url}' alt='{$url}'>
 						<div class='carousel-caption'>
 						<h3>{$country}</h3>
 						<p>{$title}</p>
 						</div>
 						</div>";
+						
+						echo $output;
 			} ?>
-		...
-	  </div>
+		</div>
 
 	  <!-- Controls -->
 	  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
