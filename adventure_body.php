@@ -115,12 +115,14 @@ if(isset($_POST['post_comment'])){
 	  <h1><?php echo $adventure['title']; ?> <small><?php echo $adventure['country']; ?> 	  
 	  <div style="float: right;" class="fb-share-button" data-href="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" data-layout="button_count"></div></small></h1>
 	</div>
+	<?php if(sizeof($adventure['picture']) > 0){ ?>
 	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 	  <!-- Indicators -->
 
 	<div class="carousel-inner" role="listbox">
 	  <!-- Wrapper for slides --><?php 
 			$i = 0;
+			
 			foreach($adventure['picture'] as $picture){
 				$output = "";
 				if($i == 0){
@@ -141,7 +143,7 @@ if(isset($_POST['post_comment'])){
 			} ?>
 		  
 	</div>
-		
+	<?php } ?>	
 
 
 	  <!-- Controls -->
