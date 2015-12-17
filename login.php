@@ -67,6 +67,7 @@ if(isset($_SESSION['userClass'])){
 									<input type="password" class="form-control" id="password" placeholder="Password">
 								</div>
 							</div>
+							<!--
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<div class="checkbox">
@@ -76,6 +77,7 @@ if(isset($_SESSION['userClass'])){
 									</div>
 								</div>
 							</div>
+							-->
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<button type="submit" name="login" class="btn btn-default">Sign in</button>

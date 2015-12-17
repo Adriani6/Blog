@@ -19,8 +19,7 @@
 			}else{
 				header('Location: ../login.php?err=authError');
 			}*/
-			if($user->login($_POST['username'],$_POST['password'])){
-				$_SESSION['userClass'] = $user;
+			if($siteUser->login($_POST['username'],$_POST['password'])){
 				//var_dump($user);
 				header("Location: ../index.php");
 			}
@@ -44,46 +43,62 @@
 		#Logout Request
 		if(isset($_GET['a'])){
 			if($_GET['a'] === 'logout'){
-				$handler->logout();
+				$siteUser->logOut();
 				header('Location: ../index.php');
 			}
 		}else
 		if(isset($_GET['data'])){
 			
 			if($_GET['data'] === "usercp"){
-				if($_SESSION['token'] === $_GET['token']){
-					$result = $sql->query("SELECT username, type, country_id, verified, name FROM users WHERE username = '".$_SESSION['user']."'");
+				if($siteUser->isLoggedIn() == true)
+                {
+					$result = $mysql->query("SELECT username, type, country_id, verified, name FROM users WHERE username = '".$siteUser->getUsername()."'");
 					$outp = "[";
 					while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
 						if ($outp != "[") {$outp .= ",";}
 						$outp .= '{"Username":"'  . $rs["username"] . '",';
 						$outp .= '"Name":"'  . $rs["name"] . '",';
 						$outp .= '"Verified":"'  . $rs["verified"] . '",';
-						$outp .= '"Location":"'  . $rs["country_id"] . '",';
+						$outp .= '"Country":"'. getCountryName($rs["country_id"],$mysql) . '",';
 						$outp .= '"Type":"'   . $rs["type"]        . '"}';
 					}
 					$outp .="]";
 					
-					echo($outp);	
-				}else{
-					echo "Unauthorized Access: Invalid Token.";
-				}
+					echo($outp);
+                }
 			}
 		}
 			
 		if(isset($_POST['val'])){
-			if(strcmp($_POST['val'], "ucpupdate")){
+			if($siteUser->isLoggedIn() == false)
+				return;
+
+			if($_POST['val'] == "cpupdate"){
 				if(isset($_POST['change']) && $_POST['change'] === "name"){
-					if(isset($_POST["data"])){
-						$sql->query("UPDATE users SET name = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");
-						$_SESSION['user'] = $_POST['change'];
-						echo "Update Ran";
-					}else{
-						echo "New username cannot be empty.";
+					if(isset($_POST["data"]))
+					{
+						$name_check = validateName($_POST['data']);
+						if($name_check === true)
+						{
+							$stmt = $mysql->prepare("UPDATE users SET name = ? WHERE user_id = {$siteUser->getUserId()}  ");
+							$stmt->bind_param("s",$_POST['data']);
+							$stmt->execute();
+
+							echo "Your name has been updated.";
+						}
+						else
+							echo $name_check;
 					}
 				}elseif(isset($_POST['change']) && $_POST['change'] === "country") {
-					$sql->query("UPDATE users SET country_id = '".$_POST['data']."' WHERE username = '".$_SESSION['user']."' ");				
-					echo "Country Updated.";
+                    $id = getCountryID($_POST['data'],$mysql);
+					if($id != null)
+					{
+						$mysql->query("UPDATE users SET country_id = '".$id."' WHERE user_id = {$siteUser->getUserId()} ");
+						echo "Country Updated.";
+					}
+					else
+						echo "Invalid country";
+
 				}else{
 					echo "Invalid data change request.";
 				}

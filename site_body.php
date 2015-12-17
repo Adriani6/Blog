@@ -8,12 +8,12 @@ $a = new Country($mysql);
 $adv = new Adventure($mysql);
 
 if(isset($_SESSION['userClass'])){
-	$userObject = $_SESSION['userClass'];
-	$isLoggedIn = $userObject->isLoggedin();
+    $userObject = $_SESSION['userClass'];
+    $isLoggedIn = $userObject->isLoggedIn();
 }
 function __autoload($class){
-	$file = "models/".$class.".class.php";
-	require_once($file);
+    $file = "models/".$class.".class.php";
+    require_once($file);
 }
 ?>
 
@@ -21,7 +21,7 @@ function __autoload($class){
 
 <html lang="en">
 <head>
-	
+
     <meta charset="utf-8">
 
     <meta property="og:url"           content="http://www.balala.html" />
@@ -42,12 +42,36 @@ function __autoload($class){
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="SitePoint">
 
-	<script src="js/jquery.js"></script>
+    <script src="js/jquery.js"></script>
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="css/adventure_body.css">
     <link rel="stylesheet" href="css/profile.css">
+
+
+
+    <script>
+        //This sets the toolbar to stay on the page while scrolling, there's a bug with positioning...
+        /*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+         $(document).ready(function(){
+         var $sidebar   = $("#subNav"),
+         $window    = $(window),
+         offset     = $sidebar.offset(),
+         topPadding = 15;
+
+         $window.scroll(function() {
+         if ($window.scrollTop() > offset.top) {
+         $sidebar.addClass('fixed');
+         } else {
+         $sidebar.removeClass('fixed');
+         }
+         });
+         });
+         */
+
+    </script>
+
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -63,12 +87,14 @@ function __autoload($class){
                 ?>
                 <!-- List User Options Here -->
                 <div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
-                    <a href="panel/login.php">User CP</a><br />
-                    <?php if(isset($_SESSION['userClass'])){
-							if($userObject->getAccountType($mysql) === "ADMIN"){
-                        ?>
-                        <a href="panel/admincp.php">Admin CP</a><br />
-                    <?php } } ?>
+                    <a href="panel/usercp.php">Edit Profile</a><br />
+                    <?php
+                    if($siteUser->getType() == "Admin")
+                    {
+                        echo '<a href="panel/usercp.php?tab=admin">Admin Panel</a><br />';
+                    }
+
+                    ?>
                     <a href="utils/requests.php?a=logout">Log Out</a>
                 </div>
 
@@ -123,13 +149,11 @@ function __autoload($class){
     <div class="nav_items">
         <ul class="nav_board">
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
-			<li class="nav_board"><a href="alladventures.php" class="nav_board">Adventures</a></li>
-            <li class="nav_board"><a href="login_test.php" class="nav_board">Log in</a></li>
-            <li class="nav_board"><a href="logout_test.php" class="nav_board">Log out</a></li>
+            <li class="nav_board"><a href="alladventures.php" class="nav_board">Adventures</a></li>
             <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
             <li class="nav_board"><a href="adventure.php?id=" class="nav_board">Show Adventure</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
-			<li class="nav_board"><span id="calendar" class="glyphicon glyphicon-calendar" style="font-size:20px; color: white;"></span></li>
+            <li class="nav_board"><span id="calendar" class="glyphicon glyphicon-calendar" style="font-size:20px; color: white;"></span></li>
         </ul>
     </div>
 </div>

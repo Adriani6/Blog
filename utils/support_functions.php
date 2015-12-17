@@ -16,7 +16,7 @@ function renderCountrySelectControl($mySQL, $preSelect = "Unspecified")
     $result = $mySQL->query("SELECT name from country");
     while ($row = $result->fetch_assoc())
     {
-	    if($preSelect == $row['name'])
+        if($preSelect == $row['name'])
         {
             echo "<option selected='selected' value='".$row['name']."'>" . $row['name'] . "</option>";
         }
@@ -43,7 +43,7 @@ function renderCountrySelectControl($mySQL, $preSelect = "Unspecified")
 
 </script>';
 */
-    }
+}
 
 function getCountryID($country,$mySQL) {
     $stmt = $mySQL->prepare("SELECT id FROM country WHERE name = ?");
@@ -60,8 +60,11 @@ function getCountryID($country,$mySQL) {
 }
 
 function getCountryName($id,$mySQL) {
-    $id = intval($id);
-    $result = $mySQL->query("SELECT name FROM country WHERE id = {$id}");
+    $stmt = $mySQL->prepare("SELECT name FROM country WHERE id = ?");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
     if($result->num_rows == 0) {
         return null;
     }
@@ -97,7 +100,7 @@ function rearrayFiles(&$file_post) {
 }
 
 // $file - an entry from rearrayFiles($_FILES)
-// return "1" success
+// return true success
 // return "<error_message>" error
 function validateUploadedImageFile($file) {
     $file['name'] = preg_replace("/[^A-Z0-9._-]/i", "_", $file['name']);
@@ -138,7 +141,8 @@ function generateUniqueImageName($filename, $username, $mySQL) {
 //$adventure['description']
 //$adventure['country']
 //$adventure['main_picture']
-//$adventure['score']
+//$adventure['rating']
+//$adventure['user_id']
 //$adventure['username']
 //$adventure['picture'][]
 //$adventure['tag'][]
@@ -157,6 +161,7 @@ function getAdventure ($id,$mysql) {
         $adventure['country'] = getCountryName($row['country_id'],$mysql);
         $adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$mysql);
         $adventure['rating'] = $row['rating'];
+        $adventure['user_id'] = $row['user_id'];
 
         $result = $mysql->query("SELECT username FROM users WHERE user_id={$row['user_id']}");
         $user_row= $result->fetch_assoc();
@@ -176,16 +181,16 @@ function getAdventure ($id,$mysql) {
             $adventure['tag'][$i] = $tag["value"];
             $i++;
         }
-		
-		$result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$id} GROUP BY date ASC");
-		
-		$comments = array();
-		
-		while($comment = $result->fetch_assoc()){
-			array_push($comments, $comment);
-		}
-		
-		$adventure['comments'] = $comments;
+
+        $result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$id} GROUP BY date ASC");
+
+        $comments = array();
+
+        while($comment = $result->fetch_assoc()){
+            array_push($comments, $comment);
+        }
+
+        $adventure['comments'] = $comments;
 
         $title = $adventure['title'];
         return $adventure;
@@ -194,4 +199,15 @@ function getAdventure ($id,$mysql) {
         return null;
 }
 
+
+function validateName($name)
+{
+    if (strlen($name) > 50) {
+        return "Name can be maximum 50 characters long.";
+    } else if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
+        return "Name can only contain letters and spaces.";
+    }
+
+    return true;
+}
 ?>

@@ -115,6 +115,7 @@ if (!empty($errors))
  ***** Attempt to add or edit the adventure.
  *****/
 $adventure_id = -1;
+$user_id = $siteUser->getUserId();
 
 $stmt = $mysql->prepare("SELECT * FROM adventure WHERE adventure_id = ?");
 $stmt->bind_param("i",$_POST['adventure_id']);
@@ -127,7 +128,7 @@ $main_picture_id = $row['main_picture_id'];
 if (!isset($_POST['edit'])) // ADDING adventure
 {
     $stmt = $mysql->prepare("INSERT INTO adventure(title,country_id,description,user_id) VALUES (?,?,?,?)");
-    $stmt->bind_param("sisi",$_POST['title'],$countryId,$_POST['description'],$siteUser->getUserId());
+    $stmt->bind_param("sisi",$_POST['title'],$countryId,$_POST['description'],$user_id);
     $stmt->execute();
 
     $adventure_id = $stmt->insert_id;

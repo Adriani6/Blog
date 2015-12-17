@@ -2,38 +2,38 @@
 class MySQLClass{
 
 
-	protected $server = "eu-cdbr-azure-north-d.cloudapp.net";
-	protected $user = "b3216f07d20ee7";
-	protected $pass = "d597404f";
-	protected $db = "blog-db";
-	protected $port = "3306";
+        protected $server = "eu-cdbr-azure-north-d.cloudapp.net";
+        protected $user = "b3216f07d20ee7";
+        protected $pass = "d597404f";
+        protected $db = "blog-db";
+        protected $port = "3306";
 
-	
-	public static $CONN = 0;
 
-/*
-	protected $server = "127.0.0.1";
-	protected $user = "root";
-	protected $pass = "";
-	protected $db = "blog";
-	protected $port = "3306";
-*/
+        public static $CONN = 0;
+
+	/*
+            protected $server = "127.0.0.1";
+            protected $user = "root";
+            protected $pass = "";
+            protected $db = "blog-db";
+            protected $port = "3306";
+    */
 	private $mysqli = null;
 
 	public function getMysqli() {
 		return $this->mysqli;
-		
+
 	}
 
 	function __destruct(){
 		//$this->mysqli->close();
 	}
-	
+
 	function __construct() {
 		$this->mysqli = new mysqli($this->server, $this->user, $this->pass, $this->db, $this->port);
 		$this::$CONN++;
 		//echo "Connections: " . $this::$CONN."<br>";
-		
+
 	}
 
 	public function query($query){

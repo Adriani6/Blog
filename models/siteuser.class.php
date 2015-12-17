@@ -1,6 +1,7 @@
 <?php
 require_once ("/../utils/mysql.php");
 require_once 'country.class.php';
+require_once 'user.class.php';
 
 
 class SiteUser
@@ -27,6 +28,13 @@ class SiteUser
     }
 
     public function getType() {
+        if(!$this->isLoggedIn())
+            return null;
+
+        return $this->type;
+    }
+
+    public function getAccountType() {
         if(!$this->isLoggedIn())
             return null;
 
@@ -116,6 +124,7 @@ class SiteUser
             //setcookie("login_token",$login_token,time() + 3600 * 24 * 14,'/');
             //$this->mySQL->query("UPDATE users SET login_token='{$login_token}' WHERE username='{$username}'");
 
+            $_SESSION['userClass'] = $this;
             return true;
         }
         else
@@ -136,6 +145,8 @@ class SiteUser
         $this->type = null;
         $this->country = null;
         $this->verified = null;
+
+        $_SESSION['userClass'] = null;
     }
 
     private function loadUserData(){
@@ -187,10 +198,10 @@ class SiteUser
             array_push($registrationResult,"Passwords do not match.");
         }
 
-        if (strlen($name) > 50) {
-            array_push($registrationResult,"Name can be maximum 50 characters long.");
-        } else if (!preg_match("/^[a-zA-Z1 ]*$/", $name)) {
-            array_push($registrationResult, "Name can only contain letters.");
+        $name_check = validateName($name);
+        if($name_check !== true)
+        {
+            array_push($registrationResult,$name_check);
         }
 
         if (!empty($registrationResult)) {

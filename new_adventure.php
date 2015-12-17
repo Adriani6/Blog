@@ -44,8 +44,9 @@ else if($siteUser->getType() == "Admin") { // admin can add adventures and can e
 }
 else if(isset($_GET['mode']) && $_GET['mode'] == "edit")
 {
+    $user_id = $siteUser->getUserId();
     $stmt = $mysql->prepare("SELECT * FROM adventure WHERE user_id=? AND adventure_id=?");
-    $stmt->bind_param("ii",$siteUser->getUserId(),$_POST['adventure_id']);
+    $stmt->bind_param("ii",$user_id,$_POST['adventure_id']);
     $stmt->execute();
     $r = $stmt->get_result();
     if($r->num_rows != 1)
