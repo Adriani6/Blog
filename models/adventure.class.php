@@ -73,6 +73,19 @@ class Adventure extends Country{
 		
 	}
 	
+	function getScore($id){
+		$statement = $this->mysql->prepare("SELECT rating FROM adventure WHERE adventure_id = ?");
+		$statement->bind_param('i', $id);
+		$statement->execute();
+		$data = $statement->fetch();
+		
+		if($data['rating'] === null){
+			return 0;
+		}else{
+			return $data['rating'];		
+		}
+	}
+	
 	function getOffsetAdventures($offset, $link = ""){
 		$query = "SELECT * FROM adventure ";
 		if(!empty($link)){
@@ -81,9 +94,9 @@ class Adventure extends Country{
 			}else if($link === "latest"){
 				$query .= "ORDER BY adventure_id ASC";
 			}else if($link === "top"){
-				$query .= "ORDER BY score DESC";
+				$query .= "ORDER BY rating DESC";
 			}else if($link === "bottom"){
-				$query .= "ORDER BY score ASC";
+				$query .= "ORDER BY rating ASC";
 			}
 		}
 		$query .= " LIMIT 5 OFFSET {$offset}";
@@ -94,7 +107,7 @@ class Adventure extends Country{
 			
 		while($row = mysqli_fetch_array($result)){
 			
-			$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
+			$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Rating' => $row['rating'], 'Images' => $this->getAdventurePictures($row['adventure_id']));
 			//array_push($holder, 'Title' => $row[0], 'Description' => $row['description'], 'Country' => getCountryName($row['country_id'],$this->mysql));
 			array_push($adventure, $holder);
 			//$adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$this->mysql);
@@ -118,7 +131,7 @@ class Adventure extends Country{
 		
 	while($row = mysqli_fetch_array($result)){
 		
-		$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
+		$holder = array('Title' => $row['title'], 'Rating' => $row['rating'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
         //array_push($holder, 'Title' => $row[0], 'Description' => $row['description'], 'Country' => getCountryName($row['country_id'],$this->mysql));
 		array_push($adventure, $holder);
         //$adventure['main_picture'] = getPictureFilename($row['main_picture_id'],$this->mysql);
@@ -143,6 +156,7 @@ class Adventure extends Country{
 			$adventure['description'] = $row['description'];
 			$adventure['country'] = parent::getCountryNameById($row['country_id'],$this->mysql);
 			$adventure['main_picture'] = $this->getPictureFilename($row['main_picture_id'],$this->mysql);
+			$adventure['rating'] = $row['rating'];
 
 			$result = $this->mysql->query("SELECT picture_id,name FROM picture where adventure_id={$id}");
 			$i = 0;
