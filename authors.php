@@ -21,13 +21,14 @@ while($obj = $contributors->fetch_assoc()){
 
 foreach($contributors_array as $contributor){
 	$query2 = "SELECT * FROM users WHERE user_id = '{$contributor}'";
+	$contibutionsCount = mysqli_num_rows($query2);
 	$result = $mySQL->query($query2);
 	while($res = $result->fetch_assoc()){
 		echo "
 		<div class='panel panel-default'>
 		  <div class='panel-body'>
 		  <b>".User::getUsernameById($res['user_id'], $mySQL)."</b> ({$res['name']}) from {$a->getCountryNameById($res['country_id'], $mySQL)}
-		  <span style='float:right;'>Contributions: 2</span>
+		  <span style='float:right;'>Contributions: {$contibutionsCount}</span>
 		  </div>
 		  <div class='panel-footer'><a href='profile.php?user={$res['user_id']}'>View Profile</a></div>
 		</div>
