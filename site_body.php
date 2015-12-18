@@ -115,13 +115,13 @@ function __autoload($class){
                         <div class="form-group">
                             <label for="input" class="col-sm-2 control-label" style="color: white;">Username</label>
                             <div class="col-sm-10">
-                                <input type="username" name="username" class="form-control" id="input" placeholder="Username">
+                                <input type="text" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="input" class="col-sm-2 control-label" style="color: white;">Password</label>
                             <div class="col-sm-10">
-                                <input type="password" name="password" class="form-control" id="input" placeholder="Password">
+                                <input type="password" name="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group">
@@ -150,8 +150,9 @@ function __autoload($class){
     </div>
 </div>
 <div class="nav_mid">
-    <img class="logo" src="imgs/wonderblog.png" alt="Logo">
-    <a href="index.php">
+	<a href="index.php">
+		<img class="logo" src="imgs/wonderblog.png" alt="Logo">
+	</a>
 </div>
 
 <div class="nav_bottom">
@@ -160,7 +161,7 @@ function __autoload($class){
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
             <li class="nav_board"><a href="alladventures.php?&sort=newest" class="nav_board">Latest</a></li>
 			 <li class="nav_board"><a href="authors.php" class="nav_board">Authors</a></li>
-            <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
+            <li class="nav_board"><a href="search.php" class="nav_board">Search Adventures</a></li>
         </ul>
     </div>
 </div>

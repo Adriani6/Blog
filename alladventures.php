@@ -3,7 +3,7 @@
 	$link = "";
 	
 	include("site_body.php");
-	echo "<div id='subNav' style='margin-top: 0px; padding-top:0px; line-height: 50px;'>
+	echo "<div id='subNav' style='margin-top: 0px; padding-top:0px; margin-top: 15px; line-height: 50px;'>
 	<span>Toolbar</span>
 	<span style='float:right; line-height:50px;'>
 		<div class='dropdown'>
