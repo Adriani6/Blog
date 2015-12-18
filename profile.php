@@ -20,7 +20,7 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
 				$datetime = new DateTime($userData['RegistrationDate']);
 				?>
 			
-			<span style='float:right;'><?php echo "Last Seen: {$datetime->format('Y-m-d')}"; ?></span></small></h3>
+			<span style='float:right;'><?php echo "Registered: {$datetime->format('Y-m-d')}"; ?></span></small></h3>
 		</div>
 		<blockquote>
 			<p><?php echo $userData['Name']; ?></p>
