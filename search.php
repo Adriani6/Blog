@@ -106,11 +106,21 @@ if (isset($_POST['search'])) {
         echo "<div class='alert alert-info'>Found {$result->num_rows} results.</div>";
 
         while ($row = $result->fetch_assoc()) {
-            //echo "<br>ID: ".$row['adventure_id']."<br>";
-
-
-
-        }
+	echo "
+	<div class='panel panel-default' style='margin-top: 10px;'>
+		<div class='panel-heading' style='background-color: orange;'>
+			<a href='adventure.php?id={$row['adventure_id']}'>".$row['title']."(Score: {$row['rating']})</a>
+			<span style='float:right;' class='glyphicon glyphicon-user'><a href='profile.php?user={$row['user_id']}'>{$user->getUsernameFromID($row['user_id'])}</a></span>
+		</div>
+		<div class='panel-body'>
+			<span style='float:right;' class='glyphicon glyphicon-globe'>".$a->getCountryNameById($row['country_id'])."</span><hr />
+			<img src='{$row['main_picture_id']}' height='300px' width='450px'>
+			<h4>Description</h4>
+			<div class='well well-sm'>
+				<span>{$adv->createShortDescription($row['description'])}...</span>
+			</div>
+		</div>
+	</div>";  } 
     }
     else {
         echo "<div class='alert alert-warning'>No results were found. Please update parameteres and try again. </div>";
