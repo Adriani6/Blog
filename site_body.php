@@ -87,22 +87,22 @@ function __autoload($class){
             <?php if($isLoggedIn){
                 ?>
                 <!-- List User Options Here -->
-				<div class="well well-sm" style='margin-top: 10px;'>
-				<h4>Panel</h4>
-				<div class="list-group">
-				  <a href="panel/usercp.php" class="list-group-item">Edit Profile</a>
+				<div class="well well-sm" style='margin-top: 10px; background-color: inherit;'>
+				<h4 style='color: white;'>Panel</h4>
+				<div class="list-group" style='background-color: inherit; background-color: inherit;'>
+				  <a href="panel/usercp.php" class="list-group-item" style='background-color: inherit; color: white;'>Edit Profile</a>
 				  <?php
                     if($siteUser->getType() == "Admin")
                     {
-                        echo "<a href='panel/usercp.php?tab=admin' class='list-group-item'>Admin Panel</a>";
+                        echo "<a href='panel/usercp.php?tab=admin' class='list-group-item' style='background-color: inherit; color: white;'>Admin Panel</a>";
                     }
 					if($siteUser->getType() == "Admin" or $siteUser->getType() == "Author"){
-						 echo "<a href='new_adventure.php' class='list-group-item'>New Adventure</a>";
+						 echo "<a href='new_adventure.php' class='list-group-item' style='background-color: inherit; color: white;'>New Adventure</a>";
 					}
 
                   ?>
 				  
-				  <a href="utils/requests.php?a=logout" class="list-group-item">Log Out</a>
+				  <a href="utils/requests.php?a=logout" class="list-group-item" style='background-color: inherit; color: white;'>Log Out</a>
 				</div>
 				</div>
                     				
