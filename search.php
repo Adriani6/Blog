@@ -107,10 +107,13 @@ if (isset($_POST['search'])) {
 
         while ($row = $result->fetch_assoc()) {
             //echo "<br>ID: ".$row['adventure_id']."<br>";
+
+
+
         }
     }
     else {
-        echo "<div class='alert alert-warning'>No results were found. Please update paramteres and try again. </div>";
+        echo "<div class='alert alert-warning'>No results were found. Please update parameteres and try again. </div>";
     }
 }
 

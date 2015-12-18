@@ -265,7 +265,6 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                 });
 
                 $("#add_tag_button").click( function() {
-                    alert($("#add_tag_input").val());
                     if($("#add_tag_input").val().length < 3)
                     {
                         alert("Tags must be at least 3 characters long.");

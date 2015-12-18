@@ -160,6 +160,7 @@ function hideEdit(){
 				if($siteUser->getType() == "Admin"){ ?>
 			<li role="presentation" id="nav_admin_tab" onclick="changeTab('admin_tab')"><a href="#">Admin Panel</a></li>
 			<?php }  ?>
+			<li role="presentation"><a href="../index.php">Home</a></li>
 			<li role="presentation"><a href="../utils/requests.php?a=logout">Log Out</a></li>
 		</ul>
 	  </div>

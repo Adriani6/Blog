@@ -3,6 +3,44 @@
 
 $error = '';
 
+if(isset($_POST['remove_adventure']))
+{
+	if($siteUser->isLoggedIn() == true && $siteUser->getType() == "Admin")
+	{
+		// removal process steps:
+		// 1) Delete all adventure's pictures filesg
+		// 2) Delete all adventure's pictures entries in the database
+		// 3) Delete all adventure's tags entries in the database
+		// 4) Delete all adventure's comment entries in the database
+		// 5) Delete adventure's entry in the database
+
+		// 1) Delete all adventure's pictures files
+		$result = $mysql->query("SELECT * FROM picture WHERE adventure_id={$adventure['adventure_id']}");
+		while($picture = $result->fetch_assoc())
+		{
+			// unlink file
+			unlink("{$_SERVER['DOCUMENT_ROOT']}/uploads/".$picture['name']);
+		}
+
+		// 2) Delete all adventure's pictures entries in the database
+		$mysql->query("DELETE FROM picture WHERE adventure_id={$adventure['adventure_id']}");
+
+		// 3) Delete all adventure's tags entries in the database
+		$mysql->query("DELETE FROM tags WHERE adventure_id={$adventure['adventure_id']}");
+
+		// 4) Delete all adventure's comment entries in the database
+		$mysql->query("DELETE FROM comments WHERE adventure_id={$adventure['adventure_id']}");
+
+		// 5) Delete adventure's entry in the database
+		$mysql->query("DELETE FROM adventure WHERE adventure_id={$adventure['adventure_id']}");
+
+
+		echo "<div class='alert alert-info'>Adventure has been removed.</div>";
+		return;
+	}
+}
+
+
 if(isset($_POST['vote_submit']))
 {
 	if($siteUser->isLoggedIn() == false)
@@ -66,22 +104,22 @@ if(isset($_POST['vote_submit']))
 		echo "<div class='alert alert-info'>Your vote has been added. Thank you!</div>";
 }
 
+$error = "";
 #Check if POST Request with Comment is received.
 if(isset($_POST['post_comment'])){
 	//Check if the comment field was empty.
-	if(empty($_POST['comment'])){
-		//Return error
-		$error = "You can't post an empty comment.";
-	}else{
+	$len = strlen($_POST['comment']);
+	if($len < 10)
+		$error = "Comments must be at least 10 characters long.";
+	else if($len > 500)
+		$error = "Comments can not be longer than 500 characters.";
+	else
+	{
 		//Prepare Statement
 		$stmt = $mysql->prepare("INSERT INTO comments (user_id, adventure_id, message) VALUES (?, ?, ?)");
 		$user_id = $userObject->getUserId();
 		$stmt->bind_param("iis",$user_id,$adventure['adventure_id'],$_POST['comment']);
 		$stmt->execute();
-		//Debug message, which isn't displayed to the user.
-		echo "Comment Added.";
-		//Redirect user to another page, so the POST header gets cleared.
-		header("Location: adventure.php?id={$adventure['adventure_id']}");
 	}
 }
 ?>
@@ -106,7 +144,7 @@ if(isset($_POST['post_comment'])){
 					if($adventure['rating'] == 0)
 						echo "The adventure has not been rated yet.";
 					else
-						echo "<h3> Your rating: {$adventure['rating']} </h4>";
+						echo "<h3> Overall Rating: {$adventure['rating']} </h4>";
 					?>
 				</span>
 			</span>
@@ -115,6 +153,26 @@ if(isset($_POST['post_comment'])){
 </div>
 <div class="panel panel-default" style="margin-top: 20px;">
 	<div class="panel-body">
+		<?php
+			if($siteUser->isLoggedIn() == true)
+			{
+				if($adventure['user_id'] == $siteUser->getUserId() || $siteUser->getType() == "Admin")
+				{
+					echo "<a class='btn btn-warning' target='blank'
+							 href='http://$_SERVER[HTTP_HOST]/new_adventure.php?mode=edit&id={$adventure['adventure_id']}'
+							 style='margin-right: 10px;'
+							 >Edit Adventure</a>";
+				}
+
+				if($siteUser->getType() == "Admin")
+				{
+					echo "<form action='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]' method='POST' style='display: inline !important'>";
+					echo "<button type='submit' class='btn btn-danger' name='remove_adventure'>Remove adventure</button>";
+					echo "</form>";
+					//echo "<a target='blank' href='http://$_SERVER[HTTP_HOST]/new_adventure.php?mode=edit&id={$adventure['adventure_id']}'>[edit adventure
+				}
+			}
+		?>
 		<div class="page-header">
 			<h1><?php echo $adventure['title']; ?> <small><?php echo $adventure['country']; ?>
 					<div style="float: right;" class="fb-share-button" data-href="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" data-layout="button_count"></div></small></h1>
@@ -188,10 +246,10 @@ foreach($comments as $comment){
 	<?php if(isset($_SESSION['userClass'])){ ?>
 		<form method="POST" action="adventure.php?id=<?php echo $adventure["adventure_id"]; ?>">
 			<textarea style="resize:none" class="form-control" name="comment" rows="5"></textarea><br />
-			<button name='post_comment' type="submit" class="btn btn-danger">Post Comment</button>
+			<button name='post_comment' type="submit" class="btn btn-default">Post Comment</button>
 		</form>
 	<?php }else{ ?>
-		<div class="alert alert-danger" role="alert">Please login to post comments.</div>
+		<div class="alert alert-warning" role="alert">Please login to post comments.</div>
 	<?php } ?>
 </div>
 <div id="fb-root"></div>
