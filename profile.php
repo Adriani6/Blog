@@ -27,6 +27,7 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
 			<footer class='text-capitalize'><?php echo "{$userData['Type']} from {$a->getCountryNameById($userData['Country'])}"; ?></footer>
 		</blockquote>
 		<hr />
+		<?php if(!empty($hisadv)){ ?>
 		<h3>Contributions</h3>
 			<div class='row'>
 			  <?php foreach($userAdventures as $hisadv){
@@ -42,7 +43,8 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
 				  </div>
 				</div>		  
 			</div>";
-		  } ?>
+		  }
+		}	?>
 		</div>
 	</div>
 </div>
