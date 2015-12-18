@@ -9,26 +9,26 @@ $noContributors = 0;
 if(isset($_GET['page'])){
 	$offset .= 5*$page;
 }
+
 $noContributors = mysqli_num_rows($mySQL->query("SELECT user_id FROM adventure GROUP BY user_id"));
 
-
-$query = "SELECT user_id FROM adventure GROUP BY user_id LIMIT 5 OFFSET {$offset};";
+$query = "SELECT user_id, COUNT(user_id) as count_id FROM adventure GROUP BY user_id LIMIT 5 OFFSET {$offset};";
 $contributors = $mySQL->query($query);
 $contributors_array = array();
 while($obj = $contributors->fetch_assoc()){
-	array_push($contributors_array, $obj['user_id']);
+	array_push($contributors_array, array('User_Id' => $obj['user_id'], 'Contributions' => $obj['count_id']));
 }
 
 foreach($contributors_array as $contributor){
-	$query2 = "SELECT * FROM users WHERE user_id = '{$contributor}'";
-	$contibutionsCount = mysqli_num_rows($query2);
+	$query2 = "SELECT * FROM users WHERE user_id = '{$contributor['User_Id']}'";
+	
 	$result = $mySQL->query($query2);
 	while($res = $result->fetch_assoc()){
 		echo "
 		<div class='panel panel-default'>
 		  <div class='panel-body'>
 		  <b>".User::getUsernameById($res['user_id'], $mySQL)."</b> ({$res['name']}) from {$a->getCountryNameById($res['country_id'], $mySQL)}
-		  <span style='float:right;'>Contributions: {$contibutionsCount}</span>
+		  <span style='float:right;'>Contributions: {$contributor['Contributions']}</span>
 		  </div>
 		  <div class='panel-footer'><a href='profile.php?user={$res['user_id']}'>View Profile</a></div>
 		</div>
