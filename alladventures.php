@@ -55,7 +55,6 @@
 			<span style='float:right;' class='glyphicon glyphicon-user'><a href='profile.php?user={$adve['User']}'>{$user->getUsernameFromID($adve['User'])}</a></span>
 		</div>
 		<div class='panel-body'>
-			<span style='float:left;'><a href='adventure.php?id={$adve['ID']}'>View Adventure</a></span>
 			<span style='float:right;' class='glyphicon glyphicon-globe'>".$a->getCountryNameById($adve['Country'])."</span><hr />
 			<h4>Cover Image</h4>
 			<img src='{$adve['MainPicture']}' height='300px' width='450px'>
