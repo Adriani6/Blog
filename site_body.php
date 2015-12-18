@@ -113,13 +113,13 @@ function __autoload($class){
                     <form class="form-horizontal" action="utils/requests.php" method="POST">
                         <h4 style="color: white;">Enter your login Credentials:</h4>
                         <div class="form-group">
-                            <label for="input" class="col-sm-2 control-label" style="color: white;">Username</label>
+                            <label for="username" class="col-sm-2 control-label" style="color: white;">Username</label>
                             <div class="col-sm-10">
                                 <input type="text" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="input" class="col-sm-2 control-label" style="color: white;">Password</label>
+                            <label for="password" class="col-sm-2 control-label" style="color: white;">Password</label>
                             <div class="col-sm-10">
                                 <input type="password" name="password" class="form-control" placeholder="Password">
                             </div>
