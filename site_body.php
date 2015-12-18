@@ -150,9 +150,7 @@ function __autoload($class){
     </div>
 </div>
 <div class="nav_mid">
-	<a href="index.php">
-		<img class="logo" src="imgs/wonderblog.png" alt="Logo">
-	</a>
+    <img class="logo" src="imgs/wonderblog.png" alt="Logo">
 </div>
 
 <div class="nav_bottom">
