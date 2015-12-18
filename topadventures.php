@@ -11,7 +11,7 @@
 		</div>
 		<div class='panel-body'>
 			<span style='float:right;' class='glyphicon glyphicon-globe'>".$a->getCountryNameById($adve['Country'])."</span><hr />
-			<div class='row'><div class='col-md-6 col-md-offset-3'><img src='{$adve['MainPicture']}' height='300px' width='450px'></div></div>
+			<div class='row'><div class='col-md-6 col-md-offset-3'><img src='{$adve['MainPicture']}' height='300' width='450'></div></div>
 			<h4>Description</h4>
 			<div class='well well-sm'>
 				<span>{$adve['ShortDescription']}...</span>

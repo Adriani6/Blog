@@ -115,13 +115,13 @@ function __autoload($class){
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label" style="color: white;">Username</label>
                             <div class="col-sm-10">
-                                <input type="text" name="username" class="form-control" placeholder="Username">
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="password" class="col-sm-2 control-label" style="color: white;">Password</label>
                             <div class="col-sm-10">
-                                <input type="password" name="password" class="form-control" placeholder="Password">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group">
