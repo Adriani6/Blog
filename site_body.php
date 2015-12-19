@@ -27,7 +27,7 @@ function __autoload($class){
     <meta property="og:url"           content="http://www.balala.html" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="Blog-dev" />
-    <meta property="og:description"   content="Testing facebook share button" />
+    <meta property="og:description"   content="View adventures from around the world." />
     <meta property="og:image"         content="imgs/wonderblog.png" />
 
     <title>
@@ -39,8 +39,8 @@ function __autoload($class){
             echo $title." - ".$title_suffix;
         ?>
     </title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
+    <meta name="description" content="Share Adventures from around the world.">
+    <meta name="author" content="Here for Beer">
 
     <script src="js/jquery.js"></script>
     <link rel="stylesheet" href="css/board.css">
@@ -79,40 +79,49 @@ function __autoload($class){
 
 <body>
 
-<div class="container-fluid login">
+<div id="login" class="container-fluid login" style='z-index: 999'>
 
     <div class="row">
-        <div class="center-block">
+	<div class="col-md-6 col-md-offset-3">
+
             <?php if($isLoggedIn){
                 ?>
                 <!-- List User Options Here -->
-                <div class="col-md-4" style="color:white;"><h4>User Panel</h4><br />
-                    <a href="panel/usercp.php">Edit Profile</a><br />
-                    <?php
+				<div class="well well-sm" style='margin-top: 10px; background-color: inherit;'>
+				<h4 style='color: white;'>Panel</h4>
+				<div class="list-group" style='background-color: inherit; background-color: inherit;'>
+				  <a href="panel/usercp.php" class="list-group-item" style='background-color: inherit; color: white;'>Edit Profile</a>
+				  <?php
                     if($siteUser->getType() == "Admin")
                     {
-                        echo '<a href="panel/usercp.php?tab=admin">Admin Panel</a><br />';
+                        echo "<a href='panel/usercp.php?tab=admin' class='list-group-item' style='background-color: inherit; color: white;'>Admin Panel</a>";
                     }
+					if($siteUser->getType() == "Admin" or $siteUser->getType() == "Author"){
+						 echo "<a href='new_adventure.php' class='list-group-item' style='background-color: inherit; color: white;'>New Adventure</a>";
+					}
 
-                    ?>
-                    <a href="utils/requests.php?a=logout">Log Out</a>
-                </div>
-
+                  ?>
+				  
+				  <a href="utils/requests.php?a=logout" class="list-group-item" style='background-color: inherit; color: white;'>Log Out</a>
+				</div>
+				</div>
+                    				
             <?php }else{ ?>
-                <div class="col-md-4" ></div>
-                <div class="col-md-4" style="margin-top: 5px;">
+			
+                
+                <div style="margin-top: 5px;">
                     <form class="form-horizontal" action="utils/requests.php" method="POST">
                         <h4 style="color: white;">Enter your login Credentials:</h4>
                         <div class="form-group">
-                            <label for="input" class="col-sm-2 control-label" style="color: white;">Username</label>
+                            <label for="username" class="col-sm-2 control-label" style="color: white;">Username</label>
                             <div class="col-sm-10">
-                                <input type="username" name="username" class="form-control" id="input" placeholder="Username">
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="input" class="col-sm-2 control-label" style="color: white;">Password</label>
+                            <label for="password" class="col-sm-2 control-label" style="color: white;">Password</label>
                             <div class="col-sm-10">
-                                <input type="password" name="password" class="form-control" id="input" placeholder="Password">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group">
@@ -123,7 +132,7 @@ function __autoload($class){
                         </div>
                     </form>
                 </div>
-                <div class="col-md-4" ></div>
+              
             <?php }?>
         </div>
     </div>
@@ -142,18 +151,22 @@ function __autoload($class){
 </div>
 <div class="nav_mid">
     <img class="logo" src="imgs/wonderblog.png" alt="Logo">
-    <a href="index.php">
 </div>
 
 <div class="nav_bottom">
     <div class="nav_items">
         <ul class="nav_board">
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
-            <li class="nav_board"><a href="alladventures.php" class="nav_board">Adventures</a></li>
-            <li class="nav_board"><a href="new_adventure.php" class="nav_board">New Adventure</a></li>
-            <li class="nav_board"><a href="adventure.php?id=" class="nav_board">Show Adventure</a></li>
-            <li class="nav_board"><a href="search.php" class="nav_board">Search</a></li>
-            <li class="nav_board"><span id="calendar" class="glyphicon glyphicon-calendar" style="font-size:20px; color: white;"></span></li>
+            <li class="nav_board"><a href="alladventures.php?&sort=newest" class="nav_board">Latest</a></li>
+			<li class="nav_board"><a href="authors.php" class="nav_board">Authors</a></li>
+            <li class="nav_board"><a href="search.php" class="nav_board">Search Adventures</a></li>
+			<li class="nav_board" style='float:right; font-size:20px; cursor:pointer;'><span id='search' class='glyphicon glyphicon-search'></span>
+			<div id='navSearchBox' style='float: right; visibility:hidden;'>
+				<form action="search.php" method="POST">
+					<input type="text" name='title' class="form-control nav_board" placeholder="Search for Adventure" style='display: table-cell; vertical-align: middle; overflow: hidden;'>
+					<input type='submit' name='search' style='visibility: hidden;'>
+				</form>
+			</div>
         </ul>
     </div>
 </div>

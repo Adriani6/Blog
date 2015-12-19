@@ -16,15 +16,18 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
 			<h3><?php echo $userData['Username'];			 
 				if($userData['Verified'] === '1'){
 					echo "<small><span class='glyphicon glyphicon-ok-circle' style='color: blue;' title='Verified'> </span>";
-				} ?>
+				} 
+				$datetime = new DateTime($userData['RegistrationDate']);
+				?>
 			
-			<span style='float:right;'><?php echo "Last Seen: {$userData['LastSeen']}"; ?></span></small></h3>
+			<span style='float:right;'><?php echo "Registered: {$datetime->format('Y-m-d')}"; ?></span></small></h3>
 		</div>
 		<blockquote>
 			<p><?php echo $userData['Name']; ?></p>
 			<footer class='text-capitalize'><?php echo "{$userData['Type']} from {$a->getCountryNameById($userData['Country'])}"; ?></footer>
 		</blockquote>
 		<hr />
+		<?php if(!empty($hisadv)){ ?>
 		<h3>Contributions</h3>
 			<div class='row'>
 			  <?php foreach($userAdventures as $hisadv){
@@ -40,7 +43,8 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
 				  </div>
 				</div>		  
 			</div>";
-		  } ?>
+		  }
+		}	?>
 		</div>
 	</div>
 </div>

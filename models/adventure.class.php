@@ -121,7 +121,7 @@ class Adventure extends Country{
 	}
 	
 	function getLastFiveAdventures() {
-    $result = $this->mysql->query("SELECT * FROM adventure ORDER BY adventure_id DESC LIMIT 5");
+    $result = $this->mysql->query("SELECT * FROM adventure ORDER BY rating DESC LIMIT 5");
 	if(!$result){
 			die('Could not query:' . $this->mysql->error);
 		}

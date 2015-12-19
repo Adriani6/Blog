@@ -10,9 +10,9 @@ $(document).ready(function(){
 
     });
 
-    $("body").click(function(e){
-        if(!$(e.target).is(".login")) {
-            if(!$(e.target).is("#input")){
+    $(document).click(function(e){
+        if(!$(e.target).is("#login")) {
+            if(!$(e.target).is("input")){
                 if ($(".nav_top").is(":hidden")) {
                     $(".login").hide("slow");
                     $(".nav_top").slideDown("slow");

@@ -137,7 +137,7 @@ class User extends Package{
 		$dataArray = array();
 		$row = $data->fetch_assoc();
 		
-		array_push($dataArray, array('Username' => $row['username'], 'Name' => $row['name'], 'Verified' => $row['verified'], 'LastSeen' => $row['last_login'], 'Type' => $row['type'], 'Country' => $row['country_id']));
+		array_push($dataArray, array('Username' => $row['username'], 'Name' => $row['name'], 'Verified' => $row['verified'], 'RegistrationDate' => $row['registration_date'], 'Type' => $row['type'], 'Country' => $row['country_id']));
 		
 		return $dataArray;
 	}

@@ -13,8 +13,6 @@ require_once("site_body.php");
 // site content
 include("topadventures.php");
 
-echo "Elo " . $mySQL::$CONN;
-
 ?>
 
 	
