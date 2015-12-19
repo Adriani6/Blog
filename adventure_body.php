@@ -369,6 +369,7 @@ if($update_comments == 1)
 	<?php echo "<p style='margin-left: 10px; margin-right: 10px;'> {$adventure['description']} </p>"; ?>
 	<blockquote class="blockquote-reverse">
 		<p>Posted by <?php echo $adventure['username']; ?></p>
+
 	</blockquote><hr />
 	<h4>Tags</h4>
 	<?php 
@@ -382,6 +383,7 @@ if($update_comments == 1)
 	?>
 	
 </div></div>
+
 <?php
 $comments = $adventure['comments'];
 foreach($comments as $comment){

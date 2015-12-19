@@ -1,7 +1,4 @@
-
-</div>
-
-
+        </div> <!-- col-md-12-->
     </div> <!-- row -->
 </div> <!-- container -->
 	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -37,7 +34,7 @@
 	</script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 		
-	<div class="footer">
+	<div class="footer" style="position: relative; bottom: 0; left: 0; height: 130px;">
 	<div class="container-fluid">
 		<div class="row">
 		  <div class="col-md-6 col-md-offset-3" style='margin-top: 15px; color: white; font-size: 18px; margin-bottom: 5px;'>
@@ -51,5 +48,6 @@
 		</div>
 		</div>
 	</div>
+</div> <!-- wrapper -->
 </body>
 </html>

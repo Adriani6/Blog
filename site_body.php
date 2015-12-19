@@ -19,7 +19,7 @@ function __autoload($class){
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" style="margin: 0; padding: 0; height:100%;">
 <head>
 
     <meta charset="utf-8">
@@ -77,8 +77,7 @@ function __autoload($class){
     <![endif]-->
 </head>
 
-<body>
-
+<body style="margin: 0; padding: 0; height:100%;">
 <div id="login" class="container-fluid login" style='z-index: 999'>
 
     <div class="row">
@@ -173,7 +172,8 @@ function __autoload($class){
     </div>
 </div>
 
-<div class="container">
+<div id="wrapper" style="position: relative; min-height: 100%;">
+<div class="container" style="padding-bottom: 150px;">
     <div class="row">
         <div class="col-md-12">
             
