@@ -191,7 +191,6 @@ class Adventure extends Country{
 			$adventure = array();
 			
 		while($row = mysqli_fetch_array($result)){
-			
 			$holder = array('Title' => $row['title'], 'Country' => $row['country_id'], 'ID' => $row['adventure_id'], 'User' => $row['user_id'], 'ShortDescription' => $this->createShortDescription($row['description']), 'Description' => $row['description'], 'MainPicture' => $this->getPictureFilename($row['main_picture_id']), 'Images' => $this->getAdventurePictures($row['adventure_id']));
 			
 			array_push($adventure, $holder);

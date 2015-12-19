@@ -356,7 +356,7 @@ if($update_comments == 1)
 		<p>Posted by <?php echo $adventure['username']; ?></p>
 	</blockquote>
 
-</div></div>
+</div>
 <?php
 $comments = $adventure['comments'];
 foreach($comments as $comment){
