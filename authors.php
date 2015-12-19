@@ -70,5 +70,5 @@ foreach($contributors_array as $contributor){
 </nav>	";
 
 
-
+include ('site_footer.php');
 ?>
