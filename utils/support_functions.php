@@ -182,7 +182,7 @@ function getAdventure ($id,$mysql) {
             $i++;
         }
 
-        $result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$id} GROUP BY date ASC");
+        $result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$id} ORDER BY comment_id ASC");
 
         $comments = array();
 
