@@ -307,33 +307,48 @@ if($update_comments == 1)
 					<div style="float: right;" class="fb-share-button" data-href="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>" data-layout="button_count"></div></small></h1>
 		</div>
 		<?php
-		if(isset($adventure['picture']))
-		if(count($adventure['picture']) > 0){ ?>
+		if(isset($adventure['picture']) || isset($adventure['main_picture'])){
+		?>
 		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 
 			<div class="carousel-inner" role="listbox">
 				<!-- Wrapper for slides --><?php
 				$i = 0;
-
-				foreach($adventure['picture'] as $picture){
-					$output = "";
-					if($i == 0){
-						$output.="<div class='item active' style='height: 500px;'>";
-					}else{
-						$output.="<div class='item'>";
-					}
-
-					$output.= "
-						<img src='http://blog-dev.azurewebsites.net/{$picture}' height='400px' width='100%' alt='{$picture}'>
+				
+				if(isset($adventure['main_picture'])){
+					$i++;
+					echo"
+					<div class='item active' style='height: 500px;'>
+					<img src='http://blog-dev.azurewebsites.net/{$adventure['main_picture']}' width='100%' alt='{$adventure['main_picture']}'>
 						<div class='carousel-caption'>
 						<h3>{$adventure['country']}</h3>
 						<p>{$adventure['title']}</p>
 						</div>
-						</div>";
+					</div>
+					";
+				}
+				if(isset($adventure['picture'])){ 
+					foreach($adventure['picture'] as $picture){
+						$output = "";
+						if($i == 0){
+							$output.="<div class='item active' style='height: 500px;'>";
+						}else{
+							$output.="<div class='item'>";
+						}
 
-					echo $output;
-				} ?>
+						$output.= "
+							<img src='http://blog-dev.azurewebsites.net/{$picture}' width='100%' alt='{$picture}'>
+							<div class='carousel-caption'>
+							<h3>{$adventure['country']}</h3>
+							<p>{$adventure['title']}</p>
+							</div>
+							</div>";
+
+						echo $output;
+						$i++;
+					} 
+				}?>
 
 			</div>
 
@@ -354,8 +369,18 @@ if($update_comments == 1)
 	<?php echo "<p style='margin-left: 10px; margin-right: 10px;'> {$adventure['description']} </p>"; ?>
 	<blockquote class="blockquote-reverse">
 		<p>Posted by <?php echo $adventure['username']; ?></p>
-	</blockquote>
-
+	</blockquote><hr />
+	<h4>Tags</h4>
+	<?php 
+		if(isset($adventure['tag'])){
+			foreach($adventure['tag'] as $tag){
+				echo "<span class='badge' style='margin-right: 5px;'>{$tag}</span>";
+			}
+		}else{
+			echo "Adventure not associated with any tags.";
+		}
+	?>
+	
 </div></div>
 <?php
 $comments = $adventure['comments'];

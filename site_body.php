@@ -90,6 +90,7 @@ function __autoload($class){
 				<div class="well well-sm" style='margin-top: 10px; background-color: inherit;'>
 				<h4 style='color: white;'>Panel</h4>
 				<div class="list-group" style='background-color: inherit; background-color: inherit;'>
+				  <a href="profile.php?user=<?php echo $userObject->getUserId(); ?>" class="list-group-item" style='background-color: inherit; color: white;'>Your Profile</a>
 				  <a href="panel/usercp.php" class="list-group-item" style='background-color: inherit; color: white;'>Edit Profile</a>
 				  <?php
                     if($siteUser->getType() == "Admin")
@@ -158,6 +159,7 @@ function __autoload($class){
         <ul class="nav_board">
             <li class="nav_board"><a href="index.php" class="nav_board">Home</a></li>
             <li class="nav_board"><a href="alladventures.php?&sort=newest" class="nav_board">Latest</a></li>
+			<li class="nav_board"><a href="users.php" class="nav_board">All Users</a></li>
 			<li class="nav_board"><a href="authors.php" class="nav_board">Authors</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search Adventures</a></li>
 			<li class="nav_board" style='float:right; font-size:20px; cursor:pointer;'><span id='search' class='glyphicon glyphicon-search'></span>
