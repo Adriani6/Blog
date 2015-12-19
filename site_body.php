@@ -79,7 +79,7 @@ function __autoload($class){
 
 <body>
 
-<div class="container-fluid login" style='z-index: 999'>
+<div id="login" class="container-fluid login" style='z-index: 999'>
 
     <div class="row">
 	<div class="col-md-6 col-md-offset-3">
