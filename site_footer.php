@@ -40,7 +40,7 @@
 	<div class="footer">
 	<div class="container-fluid">
 		<div class="row">
-		  <div class="col-md-6 col-md-offset-3" style='margin-top: 15px; color: white; font-size: 18px;'>
+		  <div class="col-md-6 col-md-offset-3" style='margin-top: 15px; color: white; font-size: 18px; margin-bottom: 5px;'>
 		  All images and any other content could be copyrighted by their authors.<br /><br />
 		  Designed and built by Krzysztof, Adrian, Robert and John.<br />
 		  Here for Beer &copy; 2015
