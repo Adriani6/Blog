@@ -33,7 +33,7 @@ if(isset($_POST['set_user_type']))
 
 		if($user_type != "")
 		{
-			$stmt = $mysql->prepare("UPDATE users SET type = ? WHERE user_id = ?");
+			$stmt = $mysql->prepare("UPDATE users SET type = ?, verified = 1 WHERE user_id = ?");
 			$stmt->bind_param("si",$user_type,$_GET['user']);
 			$stmt->execute();
 			$result = $stmt->get_result();
@@ -72,8 +72,9 @@ $userAdventures = $adv->getUsersAdventures($_GET['user']);
     					<option value='Admin' ".$admin_selected.">Admin</option>
  					 </select>";
 
-					echo "<button type='submit' class='btn btn-default' name='set_user_type' style='margin-left: 10px;'>Set</button>";
-					echo "</form>";
+					echo "<button type='submit' class='btn btn-default' name='set_user_type' style='margin-left: 10px;'>Set";
+					if ($userData['Verified'] === '0') echo " and Verify";
+					echo "</button></form>";
 				}
 
 			?>

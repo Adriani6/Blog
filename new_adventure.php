@@ -42,7 +42,7 @@ else if($siteUser->getType() == "Reader") {
 else if($siteUser->getType() == "Admin") { // admin can add adventures and can edit any adventure
 
 }
-else if(isset($_GET['mode']) && $_GET['mode'] == "edit")
+else if(isset($_GET['mode']) && $_GET['mode'] == "edit") // check if it's current author's adventure
 {
     $user_id = $siteUser->getUserId();
     $stmt = $mysql->prepare("SELECT * FROM adventure WHERE user_id=? AND adventure_id=?");
