@@ -161,12 +161,12 @@ function __autoload($class){
 			<li class="nav_board"><a href="authors.php" class="nav_board">Authors</a></li>
             <li class="nav_board"><a href="search.php" class="nav_board">Search Adventures</a></li>
 			<li class="nav_board" style='float:right; font-size:20px; cursor:pointer;'><span id='search' class='glyphicon glyphicon-search'></span>
-			<span id='navSearchBox' style='float: right; visibility:hidden;'>
+			<div id='navSearchBox' style='float: right; visibility:hidden;'>
 				<form action="search.php" method="POST">
 					<input type="text" name='title' class="form-control nav_board" placeholder="Search for Adventure" style='display: table-cell; vertical-align: middle; overflow: hidden;'>
 					<input type='submit' name='search' style='visibility: hidden;'>
 				</form>
-			</span>
+			</div>
         </ul>
     </div>
 </div>
