@@ -15,7 +15,7 @@
 					<div class='row'>"; 
 					if(!empty($adve['MainPicture'])){
 						echo"<div class='col-md-6 col-md-offset-3'><img src='{$adve['MainPicture']}' alt='{$adve['MainPicture']}' height='300' width='450'></div>
-					</div>"; } echo"
+					"; } echo"</div>
 					<h4>Description</h4>
 					<div class='well well-sm'>
 						<span>{$adve['ShortDescription']}...</span>
