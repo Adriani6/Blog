@@ -43,7 +43,7 @@ class SiteUser
 
     public function isVerified(){
         if(!$this->isLoggedIn())
-            return null;
+            return false;
 
         if($this->verified == 1)
             return true;
@@ -157,7 +157,10 @@ class SiteUser
         }
         $row = $data->fetch_assoc();
         $this->country = new Country((int)$row['country_id']);
-        $this->verified = $row['verified'];
+        if($row['verified'] == 1)
+            $this->verified = true;
+        else
+            $this->verified = false;
         $this->type = $row['type'];
         $this->user_id = $row['user_id'];
         //$this->loadAdventures();

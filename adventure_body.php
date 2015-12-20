@@ -46,6 +46,8 @@ if(isset($_POST['vote_submit']))
 
 	if($siteUser->isLoggedIn() == false)
 		$error = "You need to be logged in to vote.";
+	else if($siteUser->isVerified() == false)
+		$error = "Your account has to be verified before you can vote.";
 	else if($adventure['user_id'] == $siteUser->getUserId())
 		$error = "You cannot vote for your own adventure.";
 	else
@@ -113,32 +115,37 @@ if(isset($_POST['comment'])){
 
 	if($siteUser->isLoggedIn() ==  true)
 	{
-		$len = strlen($_POST['comment']);
-		if($len < 10)
-			$error = "Comments must be at least 10 characters long.";
-		else if($len > 500)
-			$error = "Comments can not be longer than 500 characters.";
+		if($siteUser->isVerified() == false)
+			$error = "Your account has to be verified before you can comment.";
 		else
 		{
-			$comment = htmlentities($_POST['comment']);
+			$len = strlen($_POST['comment']);
+			if($len < 10)
+				$error = "Comments must be at least 10 characters long.";
+			else if($len > 500)
+				$error = "Comments can not be longer than 500 characters.";
+			else
+			{
+				$comment = htmlentities($_POST['comment']);
 
-			// Prepare Statement
-			$stmt = $mysql->prepare("INSERT INTO comments (user_id, adventure_id, message) VALUES (?, ?, ?)");
-			$user_id = $userObject->getUserId();
-			$stmt->bind_param("iis",$user_id,$adventure['adventure_id'],$comment);
-			$stmt->execute();
+				// Prepare Statement
+				$stmt = $mysql->prepare("INSERT INTO comments (user_id, adventure_id, message) VALUES (?, ?, ?)");
+				$user_id = $userObject->getUserId();
+				$stmt->bind_param("iis",$user_id,$adventure['adventure_id'],$comment);
+				$stmt->execute();
 
-			// Update comments
-			$result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$adventure['adventure_id']} ORDER BY comment_id ASC");
-			$comments = array();
+				// Update comments
+				$result = $mysql->query("SELECT * FROM comments WHERE adventure_id = {$adventure['adventure_id']} ORDER BY comment_id ASC");
+				$comments = array();
 
-			while($comment = $result->fetch_assoc()){
-				array_push($comments, $comment);
+				while($comment = $result->fetch_assoc()){
+					array_push($comments, $comment);
+				}
+
+				$adventure['comments'] = $comments;
+
+				$update_comments = 1;
 			}
-
-			$adventure['comments'] = $comments;
-
-			$update_comments = 1;
 		}
 	}
 	else
