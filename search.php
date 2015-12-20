@@ -36,6 +36,36 @@ require_once("site_body.php");
             </div>
         </div>
         <div class="form-group">
+            <label for="min_rating" class="col-sm-2 control-label">Minimum Rating:</label>
+
+            <div class="col-sm-10">
+                <input type="text" name="min_rating" class="form-control" id="tags" style="width: 70px;"
+                       placeholder="Example: rock-climing, desert, bicycle"
+                       value="<?php if (isset($_POST['min_rating'])) echo $_POST['min_rating']; else echo '1'; ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="max_rating" class="col-sm-2 control-label">Maximum Rating:</label>
+
+            <div class="col-sm-10">
+                <input type="text" name="max_rating" class="form-control" id="tags" style="width: 70px;"
+                       value="<?php if (isset($_POST['max_rating'])) echo $_POST['max_rating']; else echo '5' ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="unrated_adventures" class="col-sm-2 control-label">Include: </label>
+
+            <div class="col-sm-10">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="unrated_adventures" id="unrated_adventures" checked>Unrated Adventures</label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" name="search" id="search_button">Search</button>
             </div>
@@ -45,7 +75,7 @@ require_once("site_body.php");
 <?php
 
 if (isset($_POST['search'])) {
-    $search_query = "SELECT * FROM adventure WHERE ";
+    $search_query = "SELECT * FROM adventure WHERE (";
 // add "AND" before condition if it is not the first one
     $first_condition = true;
 
@@ -67,13 +97,17 @@ if (isset($_POST['search'])) {
     }
 
     if (!empty($_POST['author'])) {
-        $result = $mySQL->query("SELECT user_id FROM users WHERE username='{$_POST['author']}'");
+        $stmt = $mysql->prepare("SELECT user_id FROM users WHERE username = ?");
+        $stmt->bind_param("s",$_POST['author']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         if ($result->num_rows != 1) {
-            echo "NO AUTHOR";
-            exit(); // change later
+            echo "<div class='alert alert-warning'>No results were found. Please update parameteres and try again. </div>";
+            require_once("site_footer.php");
+            exit();
         }
         $row = $result->fetch_assoc();
-        //echo "ALTOR: ".$row['user_id'];
 
         if (!$first_condition)
             $search_query .= " AND ";
@@ -89,6 +123,8 @@ if (isset($_POST['search'])) {
         $tags = explode(",", $tags);
 
         foreach ($tags as $tag) {
+            $tag = $mysql->getMysqli()->real_escape_string($tag);
+
             if (!$first_condition)
                 $search_query .= "AND ";
             $first_condition = false;
@@ -97,9 +133,35 @@ if (isset($_POST['search'])) {
         }
     }
 
-    //echo $search_query;
-    if(!$first_condition){
-        $result = $mySQL->query($search_query);
+    if (!empty($_POST['min_rating'])) {
+        $min_rating = floatval($_POST['min_rating']);
+        if($min_rating >= 1 && $min_rating <= 5)
+        {
+            if (!$first_condition)
+                $search_query .= "AND ";
+            $first_condition = false;
+
+            $search_query .= "rating >= $min_rating ";
+        }
+    }
+
+    if (!empty($_POST['max_rating'])) {
+        $max_rating = floatval($_POST['max_rating']);
+        if($max_rating >= 1 && $max_rating <= 5)
+        {
+            if (!$first_condition)
+                $search_query .= "AND ";
+            $first_condition = false;
+
+            $search_query .= "rating <= $max_rating ";
+        }
+    }
+
+    if(!$first_condition) {
+        if (isset($_POST['unrated_adventures']))      // include unrated adventures
+            $result = $mySQL->query($search_query . ") OR rating = 0");
+        else
+            $result = $mySQL->query($search_query.")");
     }
 
     if (!$first_condition && $result->num_rows > 0) {
@@ -114,15 +176,13 @@ if (isset($_POST['search'])) {
 		</div>
 		<div class='panel-body'>
 			<span style='float:right;' class='glyphicon glyphicon-globe'>".$a->getCountryNameById($row['country_id'])."</span><hr />
-			<div class='row'>
-			<div class='col-md-6 col-md-offset-3'>
-			<img src='{$row['main_picture_id']}' height='300' width='450'></div></div>
+			<img src='".getPictureFilename($row['main_picture_id'],$mysql)."' height='300px' width='450px'>
 			<h4>Description</h4>
 			<div class='well well-sm'>
 				<span>{$adv->createShortDescription($row['description'])}...</span>
 			</div>
 		</div>
-	</div>";  } 
+	</div>";  }
     }
     else {
         echo "<div class='alert alert-warning'>No results were found. Please update parameteres and try again. </div>";
