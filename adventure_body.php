@@ -371,18 +371,17 @@ if($update_comments == 1)
 		<p>Posted by <?php echo $adventure['username']; ?></p>
 
 	</blockquote><hr />
-	<h4>Tags</h4>
 	<?php 
 		if(isset($adventure['tag'])){
 			foreach($adventure['tag'] as $tag){
-				echo "<span class='badge' style='margin-right: 5px;'>{$tag}</span>";
+				echo "<span class='badge' style='margin-left: 5px; margin-bottom: 5px;'>{$tag}</span>";
 			}
 		}else{
 			echo "Adventure not associated with any tags.";
 		}
 	?>
 	
-</div></div>
+</div></div></div>
 
 <?php
 $comments = $adventure['comments'];
@@ -391,7 +390,7 @@ foreach($comments as $comment){
 	$datetime = new DateTime($comment['date']);
 	echo "<div class='panel panel-default'>
 		  <div class='panel-body comment_text' comment_id='{$comment['comment_id']}'>{$comment['message']}</div>
-		  <div class='panel-footer'>Comment By: <b>{$commentUser}</b> <span>On: <b>{$datetime->format('Y-m-d')}</b> at <b>{$datetime->format('H:i:s')}</b></span>";
+		  <div class='panel-footer'>Comment By: <b><a href='profile.php?user={$comment['user_id']}'>$commentUser</a></b> <span>On: <b>{$datetime->format('Y-m-d')}</b> at <b>{$datetime->format('H:i:s')}</b></span>";
 
 		  if($siteUser->getUserId() == $comment['user_id'])
 		  {

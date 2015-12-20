@@ -27,8 +27,12 @@ foreach($contributors_array as $contributor){
 		echo "
 		<div class='panel panel-default'>
 		  <div class='panel-body'>
-		  <b>".User::getUsernameById($res['user_id'], $mySQL)."</b> ({$res['name']}) from {$a->getCountryNameById($res['country_id'], $mySQL)}
-		  <span style='float:right;'>Contributions: {$contributor['Contributions']}</span>
+		  <b><a href='profile.php?user={$res['user_id']}'>".User::getUsernameById($res['user_id'], $mySQL)."</a></b>";
+		  if(!empty($res['name'])){
+			echo " ({$res['name']})"; } 
+			if(!empty($res['country_id'])){
+			echo " from {$a->getCountryNameById($res['country_id'], $mySQL)}";}
+			echo "<span style='float:right;'>Contributions: {$contributor['Contributions']}</span>
 		  </div>
 		  <div class='panel-footer'><a href='profile.php?user={$res['user_id']}'>View Profile</a></div>
 		</div>

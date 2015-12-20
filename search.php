@@ -114,7 +114,9 @@ if (isset($_POST['search'])) {
 		</div>
 		<div class='panel-body'>
 			<span style='float:right;' class='glyphicon glyphicon-globe'>".$a->getCountryNameById($row['country_id'])."</span><hr />
-			<img src='{$row['main_picture_id']}' height='300px' width='450px'>
+			<div class='row'>
+			<div class='col-md-6 col-md-offset-3'>
+			<img src='{$row['main_picture_id']}' height='300' width='450'></div></div>
 			<h4>Description</h4>
 			<div class='well well-sm'>
 				<span>{$adv->createShortDescription($row['description'])}...</span>
