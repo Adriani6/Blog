@@ -22,7 +22,17 @@ if(isset($_GET['page'])){
 		echo "
 		<div class='panel panel-default'>
 		  <div class='panel-body'>
-		  <b>".User::getUsernameById($res['user_id'], $mySQL)."</b> ({$res['name']}) from {$a->getCountryNameById($res['country_id'], $mySQL)}
+		  <b><a href='profile.php?user={$res['user_id']}'>".User::getUsernameById($res['user_id'], $mySQL)."</a></b>";
+
+			if(!empty($res['name'])){
+				echo " ({$res['name']})";
+			}
+		  
+			if(!empty($res['country_id']) && $res['country_id'] != 1){
+				echo " from {$a->getCountryNameById($res['country_id'], $mySQL)}";
+			}
+		  
+		   echo"
 		  </div>
 		  <div class='panel-footer'><a href='profile.php?user={$res['user_id']}'>View Profile</a></div>
 		</div>
