@@ -1,4 +1,6 @@
 <?php
+if(count(get_included_files()) ==1) exit("Access denied");
+
 require_once 'utils/handler.php';
 require_once 'utils/requests.php';
 require_once 'models/user.class.php';
@@ -43,6 +45,7 @@ function __autoload($class){
     <meta name="author" content="Here for Beer">
 
     <script src="js/jquery.js"></script>
+    <script src="js/jquery.isloading.min.js"></script>
     <link rel="stylesheet" href="css/board.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap_css/bootstrap.min.css">
@@ -166,13 +169,14 @@ function __autoload($class){
 				<form action="search.php" method="POST">
 					<input type="text" name='title' class="form-control nav_board" placeholder="Search for Adventure" style='display: table-cell; vertical-align: middle; overflow: hidden;'>
 					<input type='submit' name='search' style='visibility: hidden;'>
+                    <input type="hidden" name="unrated_adventures" value="true"/>
 				</form>
 			</div>
         </ul>
     </div>
 </div>
 
-<div id="wrapper" style="position: relative; min-height: 100%;">
+<div id="wrapper" style="position: relative; min-height: 100%; padding-top: 10px;">
 <div class="container" style="padding-bottom: 150px;">
     <div class="row">
         <div class="col-md-12">

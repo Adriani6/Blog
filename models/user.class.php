@@ -1,4 +1,6 @@
 <?php
+if(count(get_included_files()) ==1) exit("Access denied");
+
 require_once '/../utils/mysql.php';
 require_once 'package.class.php';
 require_once 'country.class.php';

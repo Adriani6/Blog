@@ -1,3 +1,7 @@
+<?php
+    if(count(get_included_files()) ==1) exit("Access denied");
+?>
+
         </div> <!-- col-md-12-->
     </div> <!-- row -->
 </div> <!-- container -->

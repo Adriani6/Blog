@@ -75,7 +75,7 @@ require_once("site_body.php");
 <?php
 
 if (isset($_POST['search'])) {
-    $search_query = "SELECT * FROM adventure WHERE (";
+    $search_query = "SELECT * FROM adventure WHERE ";
 // add "AND" before condition if it is not the first one
     $first_condition = true;
 
@@ -133,6 +133,8 @@ if (isset($_POST['search'])) {
         }
     }
 
+    $min_rating = 0;
+
     if (!empty($_POST['min_rating'])) {
         $min_rating = floatval($_POST['min_rating']);
         if($min_rating >= 1 && $min_rating <= 5)
@@ -141,8 +143,13 @@ if (isset($_POST['search'])) {
                 $search_query .= "AND ";
             $first_condition = false;
 
-            $search_query .= "rating >= $min_rating ";
+            if (isset($_POST['unrated_adventures']))
+                $search_query .= "(rating = 0 or (rating >= $min_rating ";
+            else
+                $search_query .= "rating >= $min_rating ";
         }
+        else
+            $min_rating = 0;
     }
 
     if (!empty($_POST['max_rating'])) {
@@ -153,15 +160,21 @@ if (isset($_POST['search'])) {
                 $search_query .= "AND ";
             $first_condition = false;
 
-            $search_query .= "rating <= $max_rating ";
+            if (isset($_POST['unrated_adventures']))
+            {
+                if($min_rating == 0)
+                    $search_query .= "rating <= $max_rating ";
+                else
+                    $search_query .= "rating <= $max_rating ))";
+            }
+            else
+                $search_query .= "rating <= $max_rating ";
         }
     }
 
-    if(!$first_condition) {
-        if (isset($_POST['unrated_adventures']))      // include unrated adventures
-            $result = $mySQL->query($search_query . ") OR rating = 0");
-        else
-            $result = $mySQL->query($search_query.")");
+    if(!$first_condition)
+    {
+        $result = $mySQL->query($search_query);
     }
 
     if (!$first_condition && $result->num_rows > 0) {
@@ -171,7 +184,13 @@ if (isset($_POST['search'])) {
 	echo "
 	<div class='panel panel-default' style='margin-top: 10px;'>
 		<div class='panel-heading' style='background-color: orange;'>
-			<a href='adventure.php?id={$row['adventure_id']}'>".$row['title']."(Score: {$row['rating']})</a>
+			<a href='adventure.php?id={$row['adventure_id']}'>".$row['title'];
+            if($row['rating'] != 0)
+                echo " (Rating: {$row['rating']})";
+            else
+                echo " (Not rated yet)";
+
+			echo "</a>
 			<span style='float:right;' class='glyphicon glyphicon-user'><a href='profile.php?user={$row['user_id']}'>{$user->getUsernameFromID($row['user_id'])}</a></span>
 		</div>
 		<div class='panel-body'>

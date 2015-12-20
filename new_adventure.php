@@ -9,6 +9,7 @@ $siteUser = new SiteUser($mysql);
 
 ?>
     <style>
+        /* upload file button styles */
         .btn-file {
             position: relative;
             overflow: hidden;
@@ -207,7 +208,7 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" name="create" id="create_button">
+                <button type="submit" class="btn btn-default" name="create" id="create_button" style="margin-right: 10px;">
                     <?php
                     if(!isset($edit_adventure['adventure_id']))
                         echo "Create";
@@ -297,10 +298,14 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
 
                 $( "#new_adventure_form" ).on( "submit", function( event ) {
                     event.preventDefault();
+
                     $("#add_adventure_success").hide();
                     $("#add_adventure_fail").hide();
 
                     var formData = new FormData(this);
+
+                    $("#new_adventure_form :input").prop("disabled", true);
+                    $("#create_button").isLoading();
 
                     $.ajax({
                         // The URL for the request
@@ -325,11 +330,13 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                             {
                                 //$("#add_adventure_success").text(JSON.stringify(result, undefined, 2) + "LEN: " +result.errors.length);
                                 if(result.mode == "add")
-                                    $("#add_adventure_success").html("Adventure added. Check it out <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
+                                    $("#add_adventure_success").html("Adventure added. You can view it <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
                                 else if(result.mode == "edit")
-                                    $("#add_adventure_success").html("Adventure has been edited. Check it out <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
+                                    $("#add_adventure_success").html("Adventure has been updated. You can view it <a target='_blank' href='/adventure.php?id=" + result.adventure_id +"'>here</a>");
 
+                                $("#new_adventure_form").hide();
                                 $("#add_adventure_success").show();
+
 
                                 $('html, body').animate({
                                     scrollTop: $("#add_adventure_success").offset().top - 20
@@ -350,6 +357,8 @@ if(isset($_GET['mode']) && isset($_GET['id'])) {
                                 $("#add_adventure_fail").html(errorMsg);
                                 $("#add_adventure_fail").show();
 
+                                $("#new_adventure_form :input").prop("disabled", false);
+                                $("#create_button").isLoading("hide");
 
                                 $('html, body').animate({
                                     scrollTop: $("#add_adventure_fail").offset().top - 20

@@ -51,7 +51,14 @@
 	echo "
 	<div class='panel panel-default' style='margin-top: 10px;'>
 		<div class='panel-heading' style='background-color: orange;'>
-			<a href='adventure.php?id={$adve['ID']}'>".$adve['Title']."(Score: {$adve['Rating']})</a>
+			<a href='adventure.php?id={$adve['ID']}'>".$adve['Title'];
+
+		if($adve['Rating'] != 0)
+			echo " (Rating: {$adve['Rating']})";
+		else
+			echo " (Not rated yet)";
+
+			echo "</a>
 			<span style='float:right;' class='glyphicon glyphicon-user'><a href='profile.php?user={$adve['User']}'>{$user->getUsernameFromID($adve['User'])}</a></span>
 		</div>
 		<div class='panel-body'>

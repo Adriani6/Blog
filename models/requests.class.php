@@ -1,4 +1,5 @@
 <?php
+if(count(get_included_files()) ==1) exit("Access denied");
 
 require_once 'user.class.php';
 require_once 'country.class.php';

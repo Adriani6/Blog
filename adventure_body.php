@@ -1,4 +1,6 @@
 <?php
+if(count(get_included_files()) ==1) exit("Access denied");
+
 // if this page is included it means that $_GET['id'] is valid
 
 

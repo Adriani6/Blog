@@ -1,4 +1,5 @@
 <?php
+if(count(get_included_files()) ==1) exit("Access denied");
 
 #Requires the MySQL Class, so connection can be established.
 require_once 'mysql.php';
