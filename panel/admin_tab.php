@@ -59,7 +59,7 @@ if (isset($_POST['verify']))
         while($user = $result->fetch_assoc())
         {
             echo "<tr>";
-            echo "<td><a href='/../profile.php?id={$user['user_id']}'>{$user['username']}</a></td>";
+            echo "<td><a href='/../profile.php?user={$user['user_id']}'>{$user['username']}</a></td>";
             echo "<td>{$user['name']}</td>";
             echo "<td>".getCountryName($user['country_id'],$mysql)."</td>";
             echo "<td><div class='checkbox' style='margin: 0 !important;'><label><input name='username[]' type='checkbox' value='{$user['username']}'></label></div></td>";

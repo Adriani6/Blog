@@ -3,23 +3,23 @@ if(count(get_included_files()) ==1) exit("Access denied");
 
 class MySQLClass{
 
-
+	/*
                     protected $server = "eu-cdbr-azure-north-d.cloudapp.net";
                     protected $user = "b3216f07d20ee7";
                     protected $pass = "d597404f";
                     protected $db = "blog-db";
                     protected $port = "3306";
-
+ */
 
                     public static $CONN = 0;
 
-	/*
+
                         protected $server = "127.0.0.1";
                         protected $user = "root";
                         protected $pass = "";
                         protected $db = "blog-db";
                         protected $port = "3306";
- */
+
 	private $mysqli = null;
 
 	public function getMysqli() {

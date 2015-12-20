@@ -50,7 +50,7 @@ if(isset($_POST['vote_submit']))
 		$error = "You need to be logged in to vote.";
 	else if($siteUser->isVerified() == false)
 		$error = "Your account has to be verified before you can vote.";
-	else if($adventure['user_id'] == $siteUser->getUserId())
+	else if($adventure['user_id'] == $siteUser->getUserId() && $siteUser->getType() != "Admin")
 		$error = "You cannot vote for your own adventure.";
 	else
 	{
@@ -74,7 +74,7 @@ if(isset($_POST['vote_submit']))
 			$stmt->execute();
 			$r = $stmt->get_result();
 
-			if($r->num_rows != 0)
+			if($r->num_rows != 0 && $siteUser->getType() != "Admin")
 				$error = "You already voted for this adventure.";
 			else
 			{
@@ -260,6 +260,51 @@ if($update_comments == 1)
 	$adventure['comments'] = $comments;
 }
 
+
+
+
+if (isset($_POST['remove_votes']) && $siteUser->getType() == "Admin")
+{
+	$removed_votes_count = 0;
+	$vote = '';
+
+	if(isset($_POST['vote_id']))
+	{
+		$stmt = $mysql->prepare("DELETE FROM votes WHERE vote_id=? AND adventure_id={$adventure['adventure_id']}");
+		$stmt->bind_param("i",$vote);
+
+		foreach($_POST['vote_id'] as $v)
+		{
+			$vote = $v;
+			// ignore all hack attemps, just remove valid vote_ids
+			if ($stmt->execute() == true)
+				$removed_votes_count++;
+		}
+
+		if($removed_votes_count != 0)
+		{
+			echo "<div class='alert alert-info'>Successfully removed $removed_votes_count votes.</div>";
+
+
+			// calculate new adventure rating
+			$stmt = $mysql->prepare("SELECT sum(value),count(value) FROM votes WHERE adventure_id=?");
+			$stmt->bind_param("i",$adventure['adventure_id']);
+			$stmt->execute();
+			$r = $stmt->get_result();
+			$row = $r->fetch_row();
+
+			$rating = round($row[0]/$row[1],1);
+
+			// update adventure rating
+			$s = $mysql->prepare("UPDATE adventure SET rating=? WHERE adventure_id=?");
+			echo $mysql->getMysqli()->error;
+			$s->bind_param("di",$rating,$adventure['adventure_id']);
+			$s->execute();
+
+			$adventure['rating'] = $rating;
+		}
+	}
+}
 ?>
 <div class="votingFloatPanel" style="position: fixed; right: 0; margin-right: 15px; margin-top: 15px;">
 	<div class="panel panel-primary">
@@ -377,7 +422,7 @@ if($update_comments == 1)
 	<?php } ?>
 	<?php echo "<p style='margin-left: 10px; margin-right: 10px;'> {$adventure['description']} </p>"; ?>
 	<blockquote class="blockquote-reverse">
-		<p>Posted by <?php echo $adventure['username']; ?></p>
+		<p>Posted by <?php echo "<b><a href='profile.php?user={$adventure['user_id']}'>".$adventure['username']."</a></b>"; ?></p>
 
 	</blockquote><hr />
 	<?php 
@@ -391,6 +436,53 @@ if($update_comments == 1)
 	?>
 	
 </div></div></div>
+<?php
+if($siteUser->getType() == "Admin")
+{
+	echo "<div style='opacity: 0.8; padding-bottom: 20px;'>
+	  <button type='submit' class='btn btn-default' id='votes_show'>Show Votes</button>
+	  <div id='votes_list' style='display: none;'>";
+
+
+	$result = $mysql->query("SELECT * FROM votes WHERE adventure_id = {$adventure['adventure_id']}");
+
+	if($result->num_rows == 0)
+		echo "The adventure has not been rated yet.";
+	else
+	{
+		echo "<form action='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]' method='POST'>";
+		echo "<table class='table table-hover'><thead><tr><th>Username</th><th>Value</th><th>Remove</th></tr></thead><tbody>";
+		while($vote = $result->fetch_assoc())
+		{
+			echo "<tr>";
+			$r = $mysql->query("SELECT * FROM users WHERE user_id={$vote['user_id']}");
+			$user = $r->fetch_assoc();
+
+			echo "<td><a href='/../profile.php?user={$user['user_id']}'>{$user['username']}</a></td>";
+			echo "<td>{$vote['value']}</td>";
+			echo "<td><div class='checkbox' style='margin: 0 !important;'><label><input name='vote_id[]' type='checkbox' value='{$vote['vote_id']}'></label></div></td>";
+			echo "</tr>";
+		}
+
+		echo "<tr><td></td><td></td><td><button type='submit' class='btn btn-primary' name='remove_votes'>Remove</button></td></tr>";
+		echo "</tbody></table>";
+		echo '<div></div>';
+		echo "</form>";
+	}
+
+
+
+	echo "</div></div>";
+}
+?>
+
+<script>
+	$(document).ready(function () {
+		$("#votes_show").click( function () {
+			$("#votes_list").show();
+		});
+	});
+</script>
 
 <?php
 $comments = $adventure['comments'];
